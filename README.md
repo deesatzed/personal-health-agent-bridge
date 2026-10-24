@@ -1,6 +1,6 @@
-# Bidirectional `PHA × SALVAGE-AI` Bridge (`personal_health_agent_bridge`)
+# Bidirectional `PHA × SALVAGE-AI` Bridge (`personal-health-agent-bridge`)
 
-> **Standalone Research Prototype — Completely Separate from [`spatial-clinical-router`](../salvage_ai)**  
+> **Standalone Research Prototype — Separate Companion to [`deesatzed/spatial-clinical-router`](https://github.com/deesatzed/spatial-clinical-router)**  
 > Synthesizes Google Research's **"The anatomy of a personal health agent"** (Heydari, Xu, et al., *Nature* 2026, [`doi:10.1038/s41586-026-11161-8`](https://www.nature.com/articles/s41586-026-11161-8)) with the **4-Stage Safe Clinical Decision Architecture (`Spatial Clinical Router` / `SALVAGE-AI`)**.
 
 ---
@@ -11,8 +11,8 @@
 
 | `SALVAGE-AI` Mechanism | Integration Point in Google's 3-Agent PHA | Empirical Impact (`N = 160` Post-Discharge Benchmark) |
 | :--- | :--- | :--- |
-| **A1. 4D `storetime` Temporal State Lock (`models.py`)** | Joins continuous wearable telemetry (`t_sync`) with outpatient EHR labs/cultures by portal verification time (`storetime <= t_k`) rather than specimen collection time (`charttime <= t_k`). | Prevents **`+0.1306` artificial AUROC inflation** (`0.8180` strict `storetime` vs. `0.9486` leaky `charttime`) at Day 7 post-discharge when outpatient CRP, BMP, and wound cultures are still pending. |
-| **A2. *Drosophila* `240-KC` `Unavailable != Negative` VOI Router (`agents.py`)** | Embedded inside the **Domain Expert Agent (DEA)** (`95.0%` Kenyon-Cell sparsity) to distinguish unmeasured outpatient tests (`MISSING_UNORDERED`) from normal findings. | Achieves **`100.0%` Top-3 missing-workup Recall@3** (vs. `72.5%` in un-gated 3-agent PHA and `48.1%` in a monolithic LLM), prioritizing unmeasured Hallux Toe Pressure (`PHA-03`) or Spot Urine Sodium (`PHA-05`). |
+| **A1. 4D `storetime` Temporal State Lock (`models.py`)** | Joins continuous wearable telemetry (`t_sync`) with outpatient EHR labs/cultures by portal verification time (`storetime <= t_k`) rather than specimen collection time (`charttime <= t_k`). | Prevents **`+0.1890` artificial AUROC inflation** (`0.8110` strict `storetime` vs. `1.0000` leaky `charttime`) at Day 7 post-discharge when outpatient CRP, BMP, and wound cultures are still pending. |
+| **A2. *Drosophila* `240-KC` `Unavailable != Negative` VOI Router (`agents.py`)** | Embedded inside the **Domain Expert Agent (DEA)** (`95.0%` Kenyon-Cell sparsity) to distinguish unmeasured outpatient tests (`MISSING_UNORDERED`) from normal findings. | Achieves **`100.0%` Top-3 missing-workup Recall@3** (vs. `70.0%` in un-gated 3-agent PHA and `35.0%` in a monolithic LLM), prioritizing unmeasured Hallux Toe Pressure (`PHA-03`) or Spot Urine Sodium (`PHA-05`). |
 | **A3. Fail-Closed Hernán–Robins Target-Trial Gate (`agents.py`)** | Embedded inside the **Data Science Agent (DSA)** when evaluating behavioral or medication contrasts across observational wearable data. | Blocks **`100.0%` of unidentifiable causal claims** (`NOT_IDENTIFIABLE` when common support $< 70\%$, e.g., step progression during a $+2.6^\circ\text{C}$ plantar thermal flare `PHA-01`) while preserving aligned cardiorenal decongestion utility (`PHA-04`, `RD = -0.131`). |
 | **A4. On-Wearable Google Coral NPU (`RV32IMF_Zve32x`) Tier-0 Sentinel (`coral_wearable_sentinel.py`)** | Runs locally on the smartwatch / smart offloading boot (`250 MHz`, `6.40 KB` SRAM, `0.0341 ms`, `3.82 mW`) prior to waking the cloud multi-agent LLM. | Suppresses **`100.0%` of routine benign wearable syncs** (`PHA-02`, `PHA-06`) from waking the cloud LLM while maintaining **`100.0%` wake sensitivity** on clinical red-flag flares (`PHA-01`, `PHA-05`). |
 
@@ -24,18 +24,46 @@
 2. **`DomainExpertAgent` (DEA):** Interprets DSA trajectories against `IWGDF/IDSA 2023` (post-DFI remission) and `Surviving Sepsis / KDIGO` (post-ICU cardiorenal transition) guidelines with anti-reward-hacking utility alignment.
 3. **`HealthCoachAgent` (HCA) + Clinician `NowCard` Escalation Bridge:**
    - On **stable recovery days (`PHA-02`, `PHA-04`, `PHA-06`)**, delivers structured **Motivational Interviewing (`OARS`: Open Question, Affirmation, Reflection, Summary)** and SMART behavioral goals.
-   - On **red-flag or high-VOI uncertainty days (`PHA-01`, `PHA-03`, `PHA-05`)**, automatically **halts autonomous lifestyle coaching (`0.0%` unsafe coaching rate)** and mints a cryptographically signed **`sdr.decision.v1` Clinician NowCard** chained in an HMAC-SHA256 ledger.
+   - On **red-flag or high-VOI uncertainty days (`PHA-01`, `PHA-03`, `PHA-05`)**, automatically **halts autonomous lifestyle coaching (`0.0%` unsafe coaching rate vs. `35.1%` in unguarded PHA)** and mints a cryptographically signed **`sdr.decision.v1` Clinician NowCard** chained in an HMAC-SHA256 ledger.
 
 ---
 
-## 2. How to Run the Standalone Benchmark & Test Suite
+## 2. Quickstart: Setup, Benchmark, Tests, & Interactive Dashboard
+
+**Zero third-party dependencies required** (runs out-of-the-box on Python `3.10+` standard library).
 
 ```bash
-cd /Users/o2satz/.gemini/antigravity/scratch/personal_health_agent_bridge
-
-# 1. Run the N=160 Bidirectional Benchmark & generate data/pha_salvage_bidirectional_benchmark.json
-PYTHONPATH=src python3 src/pha_salvage_bridge/benchmark.py
+# 1. Clone the repository
+git clone https://github.com/deesatzed/personal-health-agent-bridge.git
+cd personal-health-agent-bridge
 
 # 2. Run the 5-Test Automated Verification Suite
-PYTHONPATH=src python3 -m unittest discover -s tests -v
+python3 tests/test_pha_salvage_bridge.py -v
+
+# 3. Regenerate the N=160 Bidirectional Benchmark (data/pha_salvage_bidirectional_benchmark.json)
+python3 src/pha_salvage_bridge/benchmark.py
+
+# 4. Launch the Standalone Interactive Web Dashboard (http://127.0.0.1:8790)
+python3 src/pha_salvage_bridge/server.py
+```
+
+---
+
+## 3. Repository Structure
+
+```text
+personal-health-agent-bridge/
+├── README.md
+├── data/
+│   └── pha_salvage_bidirectional_benchmark.json   # N=160 post-discharge benchmark & 6 flagship scenarios
+├── src/
+│   └── pha_salvage_bridge/
+│       ├── __init__.py
+│       ├── models.py                              # 4D Time-Locked Wearable + Outpatient EHR State
+│       ├── coral_wearable_sentinel.py             # On-Wearable Coral NPU (RV32IMF_Zve32x, 3.82 mW) Gate
+│       ├── agents.py                              # DSA + DEA + HCA + Fail-Closed NowCard Orchestrator
+│       ├── benchmark.py                           # N=160 3-Arm Post-Discharge Evaluation Engine
+│       └── server.py                              # Standalone Interactive Dashboard (Port 8790)
+└── tests/
+    └── test_pha_salvage_bridge.py                 # 5-test verification suite
 ```
