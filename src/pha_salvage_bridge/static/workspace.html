@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHA × SALVAGE-AI Live Clinical &amp; Wearable Workspace</title>
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: rgba(15, 23, 42, 0.92);
+      --card: rgba(2, 6, 23, 0.78);
+      --border: rgba(56, 189, 248, 0.25);
+      --text: #f8fafc;
+      --secondary: #cbd5e1;
+      --muted: #94a3b8;
+      --cyan: #22d3ee;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --crimson: #ef4444;
+      --violet: #a855f7;
+      --mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      background: rgba(2, 6, 23, 0.96);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .cube {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, rgba(34,211,238,0.3), rgba(16,185,129,0.35));
+      border: 1px solid var(--cyan);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-weight: 800; font-size: 12px;
+    }
+    .btn {
+      padding: 7px 13px; border-radius: 8px; font-size: 12px; font-weight: 700;
+      cursor: pointer; border: 1px solid var(--border); background: rgba(15,23,42,0.85);
+      color: var(--text); text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn:hover { border-color: var(--cyan); color: var(--cyan); }
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4, #10b981);
+      color: #020617 !important; border: none;
+    }
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 350px 1fr 370px;
+      gap: 16px;
+      padding: 16px 24px;
+      flex: 1;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .panel-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid rgba(148,163,184,0.15);
+      padding-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .control-group {
+      background: var(--card);
+      border: 1px solid rgba(148,163,184,0.16);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .control-header {
+      display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 6px;
+    }
+    .control-val { font-family: var(--mono); color: var(--cyan); font-weight: 700; }
+    input[type="range"] { width: 100%; accent-color: var(--cyan); cursor: pointer; }
+    select {
+      width: 100%; padding: 8px 10px; border-radius: 8px; background: #020617;
+      color: var(--text); border: 1px solid var(--border); font-size: 12px; font-weight: 600;
+    }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 999px;
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+    }
+    .b-cyan { background: rgba(34,211,238,0.16); color: var(--cyan); border: 1px solid rgba(34,211,238,0.45); }
+    .b-emerald { background: rgba(16,185,129,0.16); color: var(--emerald); border: 1px solid rgba(16,185,129,0.45); }
+    .b-crimson { background: rgba(239,68,68,0.18); color: #fca5a5; border: 1px solid rgba(239,68,68,0.5); }
+    .b-amber { background: rgba(245,158,11,0.18); color: #fcd34d; border: 1px solid rgba(245,158,11,0.45); }
+    .agent-box {
+      background: var(--card);
+      border: 1px solid rgba(56,189,248,0.22);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .agent-box h4 { font-size: 14px; margin: 6px 0; }
+    .agent-box p { font-size: 12px; color: var(--secondary); line-height: 1.45; }
+    .voi-item {
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.2);
+      padding: 8px 10px; border-radius: 8px; margin-top: 6px; font-size: 11.5px;
+    }
+    pre {
+      background: #020617; padding: 10px; border-radius: 8px;
+      font-family: var(--mono); font-size: 10.5px; color: #cbd5e1;
+      overflow-x: auto; border: 1px solid rgba(148,163,184,0.15); margin-top: 6px;
+    }
+    @media (max-width: 1150px) {
+      .workspace-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="cube">PHA</div>
+      <div>
+        <div style="font-size:14px;font-weight:800;">PHA × SALVAGE-AI · LIVE INTERACTIVE SIMULATION WORKSPACE</div>
+        <div style="font-size:11px;color:var(--muted);font-family:var(--mono);">Wayne Satz &amp; Google Science Program · Real-Time Wearable + 4D Outpatient EHR Simulator</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <span class="badge b-emerald" id="merkleBadge">Merkle:Computing...</span>
+      <a href="/landing" class="btn">← Back to 3D Showpiece Landing Page (`/landing`)</a>
+    </div>
+  </header>
+
+  <main class="workspace-grid">
+    <!-- Column 1: Wearable & 4D EHR Controls -->
+    <section class="panel">
+      <div class="panel-title">
+        <span>1. Wearable &amp; 4D EHR Telemetry Controls</span>
+        <span class="badge b-cyan">STEP 01</span>
+      </div>
+
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px;">Load Preset Flagship Scenario or Customize Sliders:</label>
+        <select id="presetSelect" onchange="loadPreset(this.value)">
+          <option value="PHA-01">PHA-01 · Post-DFI Thermal Flare (+2.6°C) + Pending Swab</option>
+          <option value="PHA-02">PHA-02 · Post-DFI Minor Ray Remission (Cloud Sleeps)</option>
+          <option value="PHA-03">PHA-03 · Post-DFI Unmeasured Toe Pressure (VOI #1)</option>
+          <option value="PHA-04">PHA-04 · Post-Sepsis Permissive Hypercreatininemia (UNa 84)</option>
+          <option value="PHA-05">PHA-05 · Post-Sepsis +2.5 kg Fluid Surge (Fail-Closed)</option>
+          <option value="PHA-06">PHA-06 · Post-Sepsis Stable Euvolemic Recovery</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px;">Cohort Domain:</label>
+        <select id="domainSelect" onchange="runLiveSimulation()">
+          <option value="POST_DFI_SALVAGE">POST_DFI_SALVAGE (Diabetic Foot Limb Salvage)</option>
+          <option value="POST_SEPSIS_CARDIORENAL">POST_SEPSIS_CARDIORENAL (Post-ICU Cardiorenal)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <div class="control-header">
+          <span>Plantar Thermal Asymmetry (ΔT °C)</span>
+          <span class="control-val" id="valTemp">2.6 °C</span>
+        </div>
+        <input type="range" id="slTemp" min="0.1" max="3.8" step="0.1" value="2.6" oninput="syncSliders(); runLiveSimulation();" />
+      </div>
+
+      <div class="control-group">
+        <div class="control-header">
+          <span>72h Body Weight Change (Δkg)</span>
+          <span class="control-val" id="valWeight">+0.3 kg</span>
+        </div>
+        <input type="range" id="slWeight" min="-2.5" max="3.5" step="0.1" value="0.3" oninput="syncSliders(); runLiveSimulation();" />
+      </div>
+
+      <div class="control-group">
+        <div class="control-header">
+          <span>Resting Heart Rate (RHR bpm)</span>
+          <span class="control-val" id="valRhr">88 bpm</span>
+        </div>
+        <input type="range" id="slRhr" min="58" max="115" step="1" value="88" oninput="syncSliders(); runLiveSimulation();" />
+      </div>
+
+      <div class="control-group">
+        <div class="control-header">
+          <span>HRV RMSSD (ms)</span>
+          <span class="control-val" id="valHrv">24 ms</span>
+        </div>
+        <input type="range" id="slHrv" min="12" max="65" step="1" value="24" oninput="syncSliders(); runLiveSimulation();" />
+      </div>
+
+      <div class="control-group">
+        <div class="control-header">
+          <span>Smart-Boot Offloading Adherence (%)</span>
+          <span class="control-val" id="valBoot">52%</span>
+        </div>
+        <input type="range" id="slBoot" min="25" max="100" step="1" value="52" oninput="syncSliders(); runLiveSimulation();" />
+      </div>
+
+      <div class="control-group" style="border-color:rgba(34,211,238,0.4);">
+        <div class="control-header">
+          <span>4D Outpatient `storetime <= t_k` Lock</span>
+          <input type="checkbox" id="chkStoretime" checked onchange="runLiveSimulation()" />
+        </div>
+        <p style="font-size:11px;color:var(--muted);">Uncheck to simulate naive `charttime` lookahead leakage (admitting unverified outpatient labs drawn at 164h whose results post at 172h–212h).</p>
+      </div>
+    </section>
+
+    <!-- Column 2: Tier-0 Coral NPU + DSA + DEA Live Output -->
+    <section class="panel">
+      <div class="panel-title">
+        <span>2. Tier-0 Coral NPU Sentinel &amp; Specialist Agents (`DSA` + `DEA`)</span>
+        <span class="badge b-emerald">STEP 02</span>
+      </div>
+
+      <div class="agent-box" id="coralBox"></div>
+      <div class="agent-box" id="dsaBox"></div>
+      <div class="agent-box" id="deaBox"></div>
+    </section>
+
+    <!-- Column 3: Health Coach Agent (OARS) & Clinician NowCard Handoff -->
+    <section class="panel">
+      <div class="panel-title">
+        <span>3. Health Coach (`HCA`) &amp; Clinician `NowCard` Sign-Off</span>
+        <span class="badge b-amber">STEP 03</span>
+      </div>
+
+      <div class="agent-box" id="hcaBox"></div>
+
+      <div class="agent-box">
+        <span class="badge b-cyan">PROVIDER ACTION · SIGN SDR.DECISION.V1 LEDGER</span>
+        <h4>Confirm or Modify Pathway Choice</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+          <button class="btn btn-primary" onclick="signDecision('PASS_ORDER_TOP_VOI_PANEL')">✅ Pass: Order Top-VOI Outpatient Panel &amp; Tele-Triage</button>
+          <button class="btn" onclick="signDecision('MODIFY_OPTIONRING_PROTOCOL')">🔄 Modify (OptionRing): Adjust Offloading / Diuretic Bounds</button>
+          <button class="btn" style="border-color:rgba(239,68,68,0.5);color:#fca5a5;" onclick="signDecision('STAT_CLINIC_ESCALATION')">🚨 Escalate: Direct Urgent Limb-Salvage / Cardiorenal Admission</button>
+        </div>
+        <pre id="ledgerStatus">Awaiting clinician or coach sign-off...</pre>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const PRESETS = {
+      'PHA-01': { domain: 'POST_DFI_SALVAGE', temp: 2.6, weight: 0.3, rhr: 88, hrv: 24, boot: 52, verifiedKeys: [] },
+      'PHA-02': { domain: 'POST_DFI_SALVAGE', temp: 0.5, weight: -0.2, rhr: 68, hrv: 46, boot: 94, verifiedKeys: ['pedal_doppler_toe_pressure_mmhg', 'crp_mg_l'] },
+      'PHA-03': { domain: 'POST_DFI_SALVAGE', temp: 1.8, weight: 0.2, rhr: 82, hrv: 28, boot: 72, verifiedKeys: [] },
+      'PHA-04': { domain: 'POST_SEPSIS_CARDIORENAL', temp: 0.3, weight: -1.8, rhr: 73, hrv: 38, boot: 100, verifiedKeys: ['serum_creatinine_mg_dl', 'spot_urine_sodium_mmol_l'] },
+      'PHA-05': { domain: 'POST_SEPSIS_CARDIORENAL', temp: 0.5, weight: 2.5, rhr: 101, hrv: 18, boot: 100, verifiedKeys: [] },
+      'PHA-06': { domain: 'POST_SEPSIS_CARDIORENAL', temp: 0.2, weight: -0.1, rhr: 66, hrv: 48, boot: 100, verifiedKeys: ['serum_creatinine_mg_dl'] }
+    };
+
+    let VERIFIED_VOI_KEYS = [];
+    let LAST_RESPONSE = null;
+
+    function syncSliders() {
+      document.getElementById('valTemp').textContent = `${parseFloat(document.getElementById('slTemp').value).toFixed(1)} °C`;
+      const w = parseFloat(document.getElementById('slWeight').value);
+      document.getElementById('valWeight').textContent = `${w >= 0 ? '+' : ''}${w.toFixed(1)} kg`;
+      document.getElementById('valRhr').textContent = `${document.getElementById('slRhr').value} bpm`;
+      document.getElementById('valHrv').textContent = `${document.getElementById('slHrv').value} ms`;
+      document.getElementById('valBoot').textContent = `${document.getElementById('slBoot').value}%`;
+    }
+
+    function loadPreset(id) {
+      const p = PRESETS[id];
+      if (!p) return;
+      document.getElementById('domainSelect').value = p.domain;
+      document.getElementById('slTemp').value = p.temp;
+      document.getElementById('slWeight').value = p.weight;
+      document.getElementById('slRhr').value = p.rhr;
+      document.getElementById('slHrv').value = p.hrv;
+      document.getElementById('slBoot').value = p.boot;
+      VERIFIED_VOI_KEYS = [...p.verifiedKeys];
+      syncSliders();
+      runLiveSimulation();
+    }
+
+    function orderVoiLab(featureKey) {
+      if (!VERIFIED_VOI_KEYS.includes(featureKey)) {
+        VERIFIED_VOI_KEYS.push(featureKey);
+      }
+      runLiveSimulation();
+    }
+
+    function runLiveSimulation() {
+      const payload = {
+        episode_id: document.getElementById('presetSelect').value,
+        cohort_domain: document.getElementById('domainSelect').value,
+        plantar_temp_asymmetry_c: parseFloat(document.getElementById('slTemp').value),
+        weight_delta_kg: parseFloat(document.getElementById('slWeight').value),
+        rhr_bpm: parseFloat(document.getElementById('slRhr').value),
+        hrv_rmssd_ms: parseFloat(document.getElementById('slHrv').value),
+        boot_offloading_adherence_pct: parseFloat(document.getElementById('slBoot').value),
+        strict_storetime_lock: document.getElementById('chkStoretime').checked,
+        verified_outpatient_keys: VERIFIED_VOI_KEYS
+      };
+
+      fetch('/api/simulate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(r => r.json())
+      .then(renderSimulationResponse)
+      .catch(err => console.error(err));
+    }
+
+    function renderSimulationResponse(res) {
+      LAST_RESPONSE = res;
+      document.getElementById('merkleBadge').textContent = `Merkle: ${res.merkle_root.slice(0, 16)}...`;
+      const c = res.coral_sentinel;
+      const dsa = res.dsa_output;
+      const dea = res.dea_output;
+      const hca = res.hca_output;
+
+      document.getElementById('coralBox').innerHTML = `
+        <span class="badge ${c.wake_cloud_orchestrator ? 'b-crimson' : 'b-emerald'}">TIER-0 · GOOGLE CORAL NPU WEARABLE SENTINEL</span>
+        <h4>${c.wake_cloud_orchestrator ? '🚨 Cloud 3-Agent PHA Woken' : '🛌 Suppressed on Edge (Cloud LLM Sleeps)'}</h4>
+        <p><strong>Latency / Power / SRAM:</strong> <code>${c.latency_ms} ms</code> · <code>${c.active_power_mw} mW</code> · <code>${c.sram_kb} KB</code> (${c.kc_sparsity_pct}% KC Sparsity)</p>
+        <p style="margin-top:4px;color:var(--muted);">${c.wake_reason}</p>
+      `;
+
+      document.getElementById('dsaBox').innerHTML = `
+        <span class="badge b-cyan">AGENT 1 · DATA SCIENCE AGENT (DSA) + TARGET-TRIAL GATE</span>
+        <h4>Predicted 30d Relapse Risk: ${(dsa.predicted_30d_readmission_risk * 100).toFixed(1)}% (${dsa.leakage_rows_blocked} Pending Rows Masked)</h4>
+        <p><strong>Target Trial (<code>${dsa.target_trial_contrast.trial_id}</code>):</strong> <span class="badge ${dsa.target_trial_contrast.gate_status === 'NOT_IDENTIFIABLE' ? 'b-crimson' : 'b-emerald'}">${dsa.target_trial_contrast.gate_status}</span> (Overlap ${dsa.target_trial_contrast.common_support_pct}%)</p>
+        <p style="margin-top:4px;color:var(--muted);">${dsa.target_trial_contrast.rationale}</p>
+      `;
+
+      const voiHtml = dea.top_voi_missing_workup.map(v => `
+        <div class="voi-item">
+          <div>
+            <strong>${v.label}</strong> (<code>${v.epistemic_status}</code>)<br/>
+            <span style="color:var(--muted);font-family:var(--mono);">VOI=${v.voi_score} · If-Wrong=[${v.if_wrong_risk_interval[0]}, ${v.if_wrong_risk_interval[1]}]</span>
+          </div>
+          <button class="btn" onclick="orderVoiLab('${v.feature_key}')">+ Order &amp; Verify</button>
+        </div>
+      `).join('') || '<p style="margin-top:6px;color:var(--emerald);">All top-VOI outpatient tests verified!</p>';
+
+      document.getElementById('deaBox').innerHTML = `
+        <span class="badge b-emerald">AGENT 2 · DOMAIN EXPERT AGENT (DEA) + 240-KC VOI ROUTER</span>
+        <h4>Urgency: <code>${dea.escalation_urgency}</code></h4>
+        <p>${dea.reward_alignment_note}</p>
+        <div style="margin-top:8px;">${voiHtml}</div>
+      `;
+
+      document.getElementById('hcaBox').innerHTML = `
+        <span class="badge ${hca.coaching_mode.includes('HALTED') ? 'b-crimson' : 'b-emerald'}">AGENT 3 · HEALTH COACH AGENT (HCA)</span>
+        <h4>Mode: <code>${hca.coaching_mode}</code></h4>
+        <p><strong>SMART Goal:</strong> ${hca.smart_goal}</p>
+        <pre>${JSON.stringify(hca.clinician_nowcard_handoff || hca.mi_strategy_oars, null, 2)}</pre>
+      `;
+    }
+
+    function signDecision(actionCode) {
+      if (!LAST_RESPONSE) return;
+      document.getElementById('ledgerStatus').textContent = JSON.stringify({
+        status: "SIGNED_AND_COMMITTED_TO_LEDGER",
+        action: actionCode,
+        episode_id: LAST_RESPONSE.episode_id,
+        merkle_root: LAST_RESPONSE.merkle_root,
+        ledger_entry_hash: LAST_RESPONSE.ledger_entry_hash,
+        hmac_sha256_signature: LAST_RESPONSE.ledger_hmac_signature
+      }, null, 2);
+    }
+
+    loadPreset('PHA-01');
+  </script>
+</body>
+</html>

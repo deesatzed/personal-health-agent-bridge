@@ -124,6 +124,32 @@ class TestPHASalvageBridge(unittest.TestCase):
             1.0,
         )
 
+    def test_two_tier_frontend_landing_and_live_workspace_simulation(self) -> None:
+        """Verify separate `/landing` and `/workspace` HTML assets and live `/api/simulate` engine."""
+        from pha_salvage_bridge.server import STATIC_LANDING_PATH, STATIC_WORKSPACE_PATH, simulate_custom_pha_state
+
+        self.assertTrue(STATIC_LANDING_PATH.exists())
+        self.assertTrue(STATIC_WORKSPACE_PATH.exists())
+        self.assertNotEqual(STATIC_LANDING_PATH.read_text(encoding="utf-8"), STATIC_WORKSPACE_PATH.read_text(encoding="utf-8"))
+
+        sim_flare = simulate_custom_pha_state(
+            {
+                "episode_id": "PHA-SIM-FLARE",
+                "cohort_domain": "POST_DFI_SALVAGE",
+                "plantar_temp_asymmetry_c": 2.7,
+                "weight_delta_kg": 0.4,
+                "rhr_bpm": 91.0,
+                "hrv_rmssd_ms": 22.0,
+                "boot_offloading_adherence_pct": 50.0,
+                "strict_storetime_lock": True,
+                "verified_outpatient_keys": [],
+            }
+        )
+        self.assertTrue(sim_flare["coral_sentinel"]["wake_cloud_orchestrator"])
+        self.assertEqual(sim_flare["dsa_output"]["leakage_rows_blocked"], 3)
+        self.assertEqual(sim_flare["hca_output"]["coaching_mode"], "HALTED_FOR_CLINICIAN_ESCALATION")
+        self.assertIsNotNone(sim_flare["hca_output"]["clinician_nowcard_handoff"])
+
 
 if __name__ == "__main__":
     unittest.main()
