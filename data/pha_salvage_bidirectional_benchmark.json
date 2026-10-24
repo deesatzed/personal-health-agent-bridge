@@ -1,0 +1,701 @@
+{
+  "benchmark_name": "PHA_x_SALVAGE_AI_Bidirectional_Inpatient_to_Home_Benchmark",
+  "nature_reference_doi": "10.1038/s41586-026-11161-8",
+  "total_episodes_n": 160,
+  "post_dfi_salvage_n": 80,
+  "post_sepsis_cardiorenal_n": 80,
+  "outpatient_timestamp_leakage_audit": {
+    "strict_storetime_auroc": 0.811,
+    "naive_charttime_leaked_auroc": 1.0,
+    "auroc_inflation_delta": 0.189,
+    "episodes_with_delayed_outpatient_labs_pct": 100.0
+  },
+  "coral_npu_wearable_sentinel_audit": {
+    "isa_target": "RV32IMF_Zve32x_CoralNPU_Wearable250MHz",
+    "simulated_latency_ms": 0.0341,
+    "simulated_power_mw": 3.82,
+    "sram_footprint_kb": 6.4,
+    "routine_benign_syncs_suppressed_pct": 100.0,
+    "clinical_red_flag_wake_sensitivity_pct": 100.0
+  },
+  "three_arm_architecture_comparison": {
+    "Arm_1_Monolithic_Ungated_LLM": {
+      "outpatient_lookahead_leakage_exposed": true,
+      "missing_workup_voi_recall_at_3": 0.4562,
+      "unidentifiable_causal_claims_blocked_pct": 0.0,
+      "unsafe_coaching_during_acute_flare_pct": 34.0
+    },
+    "Arm_2_Standard_3Agent_PHA_No_SALVAGE_Guards": {
+      "outpatient_lookahead_leakage_exposed": true,
+      "missing_workup_voi_recall_at_3": 0.6875,
+      "unidentifiable_causal_claims_blocked_pct": 0.0,
+      "unsafe_coaching_during_acute_flare_pct": 12.5
+    },
+    "Arm_3_Bidirectional_PHA_x_SALVAGE_AI_Bridge": {
+      "outpatient_lookahead_leakage_exposed": false,
+      "missing_workup_voi_recall_at_3": 1.0,
+      "unidentifiable_causal_claims_blocked_pct": 100.0,
+      "unsafe_coaching_during_acute_flare_pct": 0.0
+    }
+  },
+  "flagship_scenarios": [
+    {
+      "scenario_id": "PHA-01",
+      "title": "Post-DFI Plantar Thermal Flare (+2.6 C) + Pending Outpatient Wound Culture (`storetime` Trap)",
+      "cohort_domain": "POST_DFI_SALVAGE",
+      "clinical_story": "62M discharged after 1st-ray debridement. At Day 7 (168h), Smart Offloading Boot mat detects plantar temperature asymmetry +2.6 C (threshold >= 2.2 C) and RHR rose from 71 to 88 bpm. Outpatient deep wound swab & CRP were collected at 164h (`charttime`), but CRP posts at 172h and MRSA speciation posts at 212h (`storetime`).",
+      "t_landmark_hours": 168.0,
+      "merkle_root": "8cd8f93c5d7e248a102245afaaaf024efcdf180b1e8b516292133bbcbba7ab73",
+      "coral_sentinel": {
+        "latency_ms": 0.0035,
+        "active_power_mw": 3.82,
+        "sram_kb": 6.4,
+        "kc_sparsity_pct": 95.0,
+        "wake_cloud_orchestrator": true,
+        "wake_reason": "IMMEDIATE_CLINICAL_ESCALATION (RED_FLAG_PLANTAR_THERMAL_FLARE_GE_2_2C, RED_FLAG_UNPROTECTED_WEIGHT_BEARING_SURGE)",
+        "red_flags_detected": [
+          "RED_FLAG_PLANTAR_THERMAL_FLARE_GE_2_2C",
+          "RED_FLAG_UNPROTECTED_WEIGHT_BEARING_SURGE"
+        ]
+      },
+      "dsa_output": {
+        "personal_z_scores": {
+          "rhr_z": 2.11,
+          "hrv_z": -2.0,
+          "plantar_temp_z": 4.0,
+          "weight_delta_kg": 0.3
+        },
+        "trajectory_trends_7d": {
+          "resting_heart_rate": "71.0 -> 88.0 bpm (Z=+2.11)",
+          "hrv_rmssd": "42.0 -> 24.0 ms (Z=-2.00)",
+          "body_weight_delta_kg": "+0.30 kg over 4 days",
+          "plantar_thermal_asymmetry": "2.60 C (Boot adherence 52%)"
+        },
+        "predicted_30d_readmission_risk": 0.5112,
+        "leakage_rows_blocked": 2,
+        "target_trial_contrast": {
+          "trial_id": "PHA_TT1_STEP_GRADED_RELOADING_DURING_THERMAL_FLARE",
+          "gate_status": "NOT_IDENTIFIABLE",
+          "common_support_pct": 31.4,
+          "risk_difference_point": null,
+          "manski_bounds": [
+            -0.48,
+            0.52
+          ],
+          "rationale": "FAIL-CLOSED POSITIVITY GATE: Common support is 31.4% (< 70%) because IWGDF 2023 guidelines mandate immediate 48-72h step reduction & offloading when plantar asymmetry >= 2.2 C. Point causal claim for exercise progression is suppressed to prevent ulceration."
+        }
+      },
+      "dea_output": {
+        "guideline_reference": "IWGDF/IDSA 2023 Diabetic Foot Remission & SVS WIfI Post-Debridement Protocol",
+        "clinical_assessment": "30-day relapse/readmission risk estimated at 51.1% (population 57.3th percentile) under strict `storetime <= 168.0h` lock (2 future/pending EHR records masked). 240-KC Sparse VOI Router identified 3 high-yield missing/pending workup items.",
+        "reward_alignment_note": "Aligned Functional Salvage Utility (+3.00): Prior minor 1st-ray resection with intact heel/plantar arch is modeled as successful functional limb preservation\u2014coaching focuses on protective offloading.",
+        "requires_clinician_escalation": true,
+        "escalation_urgency": "STAT_PROVIDER_CROSSROADS",
+        "top_voi_missing_workup": [
+          {
+            "feature_key": "pedal_doppler_toe_pressure_mmhg",
+            "label": "Outpatient Hallux Toe Pressure / Perfusion Check",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.95,
+            "if_wrong_risk_interval": [
+              0.281,
+              0.834
+            ],
+            "clinical_rationale": "Unmeasured hallux toe pressure masks critical ischemia or calcified ABI artifact (`Unavailable != Negative`)."
+          },
+          {
+            "feature_key": "wound_probe_or_culture",
+            "label": "Outpatient Deep Wound / Blood Culture Speciation",
+            "epistemic_status": "PENDING_AT_LANDMARK",
+            "voi_score": 0.95,
+            "if_wrong_risk_interval": [
+              0.281,
+              0.834
+            ],
+            "clinical_rationale": "Two-stage wound/bone culture speciation is required before narrowing oral/OPAT antibiotics."
+          },
+          {
+            "feature_key": "crp_mg_l",
+            "label": "C-Reactive Protein (Inflammatory Trend)",
+            "epistemic_status": "PENDING_AT_LANDMARK",
+            "voi_score": 0.92,
+            "if_wrong_risk_interval": [
+              0.281,
+              0.824
+            ],
+            "clinical_rationale": "Outpatient CRP trend differentiates sterile mechanical inflammation from deep recurrent osteomyelitis."
+          }
+        ]
+      },
+      "hca_output": {
+        "coaching_mode": "HALTED_FOR_CLINICIAN_ESCALATION",
+        "mi_strategy_oars": {
+          "Open_Question": "I noticed an important physiological shift on your wearable sensor today\u2014have you experienced any new foot warmth/throbbing or shortness of breath over the past 12 hours?",
+          "Affirmation": "Thank you for wearing your sensor and syncing your recovery logs consistently\u2014catching this early protects your recovery.",
+          "Reflection": "When a clinical safety threshold or pending diagnostic gap (`Unavailable != Negative`) is detected, lifestyle self-coaching alone is not safe.",
+          "Summary": "Autonomous exercise/fluid coaching is paused (STAT_PROVIDER_CROSSROADS). I have routed a time-locked Spatial Decision NowCard to your clinical care team and highlighted the top missing tests: Outpatient Hallux Toe Pressure / Perfusion Check, Outpatient Deep Wound / Blood Culture Speciation, C-Reactive Protein (Inflammatory Trend)."
+        },
+        "smart_goal": "PAUSE autonomous step/diuretic progression for 24h; rest/offload the limb, complete the ordered high-VOI workup (Outpatient Hallux Toe Pressure / Perfusion Check), and await your provider's signed NowCard.",
+        "clinician_nowcard_handoff": {
+          "schema": "sdr.decision.v1",
+          "episode_id": "PHA-01",
+          "patient_id": "PHA_PT_DFI01",
+          "landmark_hours": 168.0,
+          "merkle_root": "8cd8f93c5d7e248a102245afaaaf024efcdf180b1e8b516292133bbcbba7ab73",
+          "urgency": "STAT_PROVIDER_CROSSROADS",
+          "red_flags": [
+            "RED_FLAG_PLANTAR_THERMAL_FLARE_GE_2_2C",
+            "RED_FLAG_UNPROTECTED_WEIGHT_BEARING_SURGE"
+          ],
+          "top_voi_queries": [
+            {
+              "feature": "pedal_doppler_toe_pressure_mmhg",
+              "voi": 0.95,
+              "if_wrong": [
+                0.281,
+                0.834
+              ]
+            },
+            {
+              "feature": "wound_probe_or_culture",
+              "voi": 0.95,
+              "if_wrong": [
+                0.281,
+                0.834
+              ]
+            },
+            {
+              "feature": "crp_mg_l",
+              "voi": 0.92,
+              "if_wrong": [
+                0.281,
+                0.824
+              ]
+            }
+          ],
+          "target_trial_gate": "NOT_IDENTIFIABLE",
+          "recommended_clinician_options": [
+            "Pass: Order Top-VOI Outpatient Panel & Same-Day Tele-Triage",
+            "Modify (OptionRing): Adjust Offloading / Diuretic Protocol with Safety Bounds",
+            "Escalate: Direct Urgent Limb-Salvage / Cardiorenal Clinic Admission"
+          ]
+        }
+      },
+      "ledger_entry_hash": "aa8797db6df5d4d5771db71ec9e2e682440746fe5c1205c1faceec1e61b9a6e4"
+    },
+    {
+      "scenario_id": "PHA-02",
+      "title": "Post-DFI Minor Ray Resection Remission (Anti-Reward-Hacking + Active OARS Coaching)",
+      "cohort_domain": "POST_DFI_SALVAGE",
+      "clinical_story": "58F s/p planned 2nd-toe minor ray resection achieving clean granulating wound and 94% smart-boot adherence (`Delta T = 0.5 C`, `RHR = 68 bpm`, `HRV = 46 ms`). Demonstrates Coral NPU suppressing unnecessary cloud wake-ups on routine days and aligned functional salvage utility (+3.00).",
+      "t_landmark_hours": 336.0,
+      "merkle_root": "8d0f0c60d4b628ad2cf9bc540b5926fc6e531c3b9c28aad28e53ed916c3afd61",
+      "coral_sentinel": {
+        "latency_ms": 0.0034,
+        "active_power_mw": 3.82,
+        "sram_kb": 6.4,
+        "kc_sparsity_pct": 95.0,
+        "wake_cloud_orchestrator": false,
+        "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)",
+        "red_flags_detected": []
+      },
+      "dsa_output": {
+        "personal_z_scores": {
+          "rhr_z": -0.22,
+          "hrv_z": 0.27,
+          "plantar_temp_z": -0.2,
+          "weight_delta_kg": -0.2
+        },
+        "trajectory_trends_7d": {
+          "resting_heart_rate": "70.0 -> 68.0 bpm (Z=-0.22)",
+          "hrv_rmssd": "43.0 -> 46.0 ms (Z=+0.27)",
+          "body_weight_delta_kg": "-0.20 kg over 3 days",
+          "plantar_thermal_asymmetry": "0.50 C (Boot adherence 94%)"
+        },
+        "predicted_30d_readmission_risk": 0.1195,
+        "leakage_rows_blocked": 0,
+        "target_trial_contrast": {
+          "trial_id": "PHA_TT2_HIGH_OFFLOADING_BOOT_ADHERENCE_GE_85PCT",
+          "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
+          "common_support_pct": 94.2,
+          "risk_difference_point": -0.164,
+          "manski_bounds": [
+            -0.42,
+            0.38
+          ],
+          "rationale": "Propensity overlap 94.2% (>= 70%) and post-IPTW |SMD| = 0.052 (<= 0.12). Consistent >=85% boot adherence is associated with a -16.4% absolute reduction in 90-day re-ulceration (E-value 2.84)."
+        }
+      },
+      "dea_output": {
+        "guideline_reference": "IWGDF/IDSA 2023 Diabetic Foot Remission & SVS WIfI Post-Debridement Protocol",
+        "clinical_assessment": "30-day relapse/readmission risk estimated at 11.9% (population 13.4th percentile) under strict `storetime <= 336.0h` lock (0 future/pending EHR records masked). 240-KC Sparse VOI Router identified 2 high-yield missing/pending workup items.",
+        "reward_alignment_note": "Aligned Functional Salvage Utility (+3.00): Prior minor 1st-ray resection with intact heel/plantar arch is modeled as successful functional limb preservation\u2014coaching focuses on protective offloading.",
+        "requires_clinician_escalation": false,
+        "escalation_urgency": "ROUTINE_COACHING",
+        "top_voi_missing_workup": [
+          {
+            "feature_key": "wound_probe_or_culture",
+            "label": "Outpatient Deep Wound / Blood Culture Speciation",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.92,
+            "if_wrong_risk_interval": [
+              0.066,
+              0.432
+            ],
+            "clinical_rationale": "Two-stage wound/bone culture speciation is required before narrowing oral/OPAT antibiotics."
+          },
+          {
+            "feature_key": "hba1c_pct",
+            "label": "Glycated Hemoglobin (HbA1c)",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.74,
+            "if_wrong_risk_interval": [
+              0.066,
+              0.371
+            ],
+            "clinical_rationale": "Glycemic control trajectory modulates microvascular wound healing."
+          }
+        ]
+      },
+      "hca_output": {
+        "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
+        "mi_strategy_oars": {
+          "Open_Question": "Your recovery metrics look steady this week\u2014what part of your daily offloading or hydration routine feels easiest to maintain right now?",
+          "Affirmation": "You maintained 94% smart-boot adherence and 7.9h of restorative sleep\u2014that directly supports tissue and organ recovery.",
+          "Reflection": "Aligned Functional Salvage Utility (+3.00): Prior minor 1st-ray resection with intact heel/plantar arch is modeled as successful functional limb preservation\u2014coaching focuses on protective offloading. Your target-trial feasibility check (PHA_TT2_HIGH_OFFLOADING_BOOT_ADHERENCE_GE_85PCT) is EXPLORATORY_FEASIBLE_WITH_BOUNDS.",
+          "Summary": "Let's keep building on this momentum while keeping an eye on any unmeasured follow-up labs (Outpatient Deep Wound / Blood Culture Speciation, Glycated Hemoglobin (HbA1c))."
+        },
+        "smart_goal": "Maintain >=88% smart-boot offloading adherence (or daily morning weight + symptom check) over the next 7 days and complete scheduled outpatient follow-up.",
+        "clinician_nowcard_handoff": null
+      },
+      "ledger_entry_hash": "0ed87528be552f3a0222f4986d344990377dfc331ede1db1fe87844666ac52cb"
+    },
+    {
+      "scenario_id": "PHA-03",
+      "title": "Post-DFI Unmeasured Outpatient Perfusion (`Unavailable != Negative` VOI Routing)",
+      "cohort_domain": "POST_DFI_SALVAGE",
+      "clinical_story": "71M with medial arterial calcinosis (prior inpatient ABI 1.42) discharged to outpatient wound clinic. At Day 10, hallux toe pressure (`pedal_doppler_toe_pressure_mmhg`) has never been ordered. 240-KC VOI router flags `MISSING_UNORDERED` (`VOI = 0.95`) rather than assuming normal perfusion.",
+      "t_landmark_hours": 240.0,
+      "merkle_root": "26e25f20842f542a26e539bd7170bfb8405ab0ad37c4eea2a323427860e0aedb",
+      "coral_sentinel": {
+        "latency_ms": 0.0034,
+        "active_power_mw": 3.82,
+        "sram_kb": 6.4,
+        "kc_sparsity_pct": 95.0,
+        "wake_cloud_orchestrator": true,
+        "wake_reason": "SUBCLINICAL_PHYSIOLOGICAL_DRIFT (Wake 3-Agent PHA)",
+        "red_flags_detected": []
+      },
+      "dsa_output": {
+        "personal_z_scores": {
+          "rhr_z": 0.67,
+          "hrv_z": -0.6,
+          "plantar_temp_z": 2.4,
+          "weight_delta_kg": 0.2
+        },
+        "trajectory_trends_7d": {
+          "resting_heart_rate": "76.0 -> 82.0 bpm (Z=+0.67)",
+          "hrv_rmssd": "34.0 -> 28.0 ms (Z=-0.60)",
+          "body_weight_delta_kg": "+0.20 kg over 3 days",
+          "plantar_thermal_asymmetry": "1.80 C (Boot adherence 72%)"
+        },
+        "predicted_30d_readmission_risk": 0.236,
+        "leakage_rows_blocked": 0,
+        "target_trial_contrast": {
+          "trial_id": "PHA_TT2_HIGH_OFFLOADING_BOOT_ADHERENCE_GE_85PCT",
+          "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
+          "common_support_pct": 94.2,
+          "risk_difference_point": -0.164,
+          "manski_bounds": [
+            -0.42,
+            0.38
+          ],
+          "rationale": "Propensity overlap 94.2% (>= 70%) and post-IPTW |SMD| = 0.052 (<= 0.12). Consistent >=85% boot adherence is associated with a -16.4% absolute reduction in 90-day re-ulceration (E-value 2.84)."
+        }
+      },
+      "dea_output": {
+        "guideline_reference": "IWGDF/IDSA 2023 Diabetic Foot Remission & SVS WIfI Post-Debridement Protocol",
+        "clinical_assessment": "30-day relapse/readmission risk estimated at 23.6% (population 26.4th percentile) under strict `storetime <= 240.0h` lock (0 future/pending EHR records masked). 240-KC Sparse VOI Router identified 3 high-yield missing/pending workup items.",
+        "reward_alignment_note": "Aligned Functional Salvage Utility (+3.00): Prior minor 1st-ray resection with intact heel/plantar arch is modeled as successful functional limb preservation\u2014coaching focuses on protective offloading.",
+        "requires_clinician_escalation": false,
+        "escalation_urgency": "ROUTINE_COACHING",
+        "top_voi_missing_workup": [
+          {
+            "feature_key": "pedal_doppler_toe_pressure_mmhg",
+            "label": "Outpatient Hallux Toe Pressure / Perfusion Check",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.95,
+            "if_wrong_risk_interval": [
+              0.13,
+              0.559
+            ],
+            "clinical_rationale": "Unmeasured hallux toe pressure masks critical ischemia or calcified ABI artifact (`Unavailable != Negative`)."
+          },
+          {
+            "feature_key": "wound_probe_or_culture",
+            "label": "Outpatient Deep Wound / Blood Culture Speciation",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.92,
+            "if_wrong_risk_interval": [
+              0.13,
+              0.549
+            ],
+            "clinical_rationale": "Two-stage wound/bone culture speciation is required before narrowing oral/OPAT antibiotics."
+          },
+          {
+            "feature_key": "crp_mg_l",
+            "label": "C-Reactive Protein (Inflammatory Trend)",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.89,
+            "if_wrong_risk_interval": [
+              0.13,
+              0.539
+            ],
+            "clinical_rationale": "Outpatient CRP trend differentiates sterile mechanical inflammation from deep recurrent osteomyelitis."
+          }
+        ]
+      },
+      "hca_output": {
+        "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
+        "mi_strategy_oars": {
+          "Open_Question": "Your recovery metrics look steady this week\u2014what part of your daily offloading or hydration routine feels easiest to maintain right now?",
+          "Affirmation": "You maintained 72% smart-boot adherence and 6.2h of restorative sleep\u2014that directly supports tissue and organ recovery.",
+          "Reflection": "Aligned Functional Salvage Utility (+3.00): Prior minor 1st-ray resection with intact heel/plantar arch is modeled as successful functional limb preservation\u2014coaching focuses on protective offloading. Your target-trial feasibility check (PHA_TT2_HIGH_OFFLOADING_BOOT_ADHERENCE_GE_85PCT) is EXPLORATORY_FEASIBLE_WITH_BOUNDS.",
+          "Summary": "Let's keep building on this momentum while keeping an eye on any unmeasured follow-up labs (Outpatient Hallux Toe Pressure / Perfusion Check, Outpatient Deep Wound / Blood Culture Speciation)."
+        },
+        "smart_goal": "Maintain >=88% smart-boot offloading adherence (or daily morning weight + symptom check) over the next 7 days and complete scheduled outpatient follow-up.",
+        "clinician_nowcard_handoff": null
+      },
+      "ledger_entry_hash": "531a5e893fe6d9f38e36892bb3cf54ad590abdbca65daf0dd20ed1a38ad6b4ec"
+    },
+    {
+      "scenario_id": "PHA-04",
+      "title": "Post-Sepsis Cardiorenal Decongestion with Permissive Hypercreatininemia (`UNa > 70`)",
+      "cohort_domain": "POST_SEPSIS_CARDIORENAL",
+      "clinical_story": "67F recovering from urosepsis & cardiorenal syndrome on oral torsemide. Weight decreased -1.8 kg over 5 days (`82.4 -> 80.6 kg`), HRV improved (`29 -> 38 ms`), and outpatient BMP shows mild creatinine rise (`1.55 -> 1.82 mg/dL`) with brisk Spot Urine Sodium `84 mmol/L`. PHA \u00d7 SALVAGE-AI prevents AKI reward hacking and supports continued decongestion (`RD = -0.131`).",
+      "t_landmark_hours": 120.0,
+      "merkle_root": "742502abd80f0926c71ccd6e54b9223129c369095ca1901516dffb233b7b520d",
+      "coral_sentinel": {
+        "latency_ms": 0.0034,
+        "active_power_mw": 3.82,
+        "sram_kb": 6.4,
+        "kc_sparsity_pct": 95.0,
+        "wake_cloud_orchestrator": false,
+        "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)",
+        "red_flags_detected": []
+      },
+      "dsa_output": {
+        "personal_z_scores": {
+          "rhr_z": -0.96,
+          "hrv_z": 0.87,
+          "plantar_temp_z": -0.6,
+          "weight_delta_kg": -1.8
+        },
+        "trajectory_trends_7d": {
+          "resting_heart_rate": "82.0 -> 73.0 bpm (Z=-0.96)",
+          "hrv_rmssd": "29.0 -> 38.0 ms (Z=+0.87)",
+          "body_weight_delta_kg": "-1.80 kg over 3 days",
+          "plantar_thermal_asymmetry": "0.30 C (Boot adherence 100%)"
+        },
+        "predicted_30d_readmission_risk": 0.0573,
+        "leakage_rows_blocked": 0,
+        "target_trial_contrast": {
+          "trial_id": "PHA_SEPSIS_TT2_DECONGESTIVE_MAINTENANCE_PERMISSIVE_CR",
+          "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
+          "common_support_pct": 96.0,
+          "risk_difference_point": -0.131,
+          "manski_bounds": [
+            -0.46,
+            0.34
+          ],
+          "rationale": "Propensity overlap 96.0%, max |SMD| = 0.038. Preserving decongestive diuresis during benign hemoconcentration reduces 30-day heart-failure/sepsis readmission by -13.1% (anti-reward-hacking)."
+        }
+      },
+      "dea_output": {
+        "guideline_reference": "Surviving Sepsis Campaign Post-ICU & KDIGO / AHA Cardiorenal Decongestion Guidelines",
+        "clinical_assessment": "30-day relapse/readmission risk estimated at 5.7% (population 6.4th percentile) under strict `storetime <= 120.0h` lock (0 future/pending EHR records masked). 240-KC Sparse VOI Router identified 2 high-yield missing/pending workup items.",
+        "reward_alignment_note": "Aligned Cardiorenal Utility (+2.85): Mild creatinine rise (Cr 1.82 mg/dL) with brisk natriuresis (Spot UNa 84 mmol/L) and negative fluid balance represents permissive hypercreatininemia, NOT tubular AKI.",
+        "requires_clinician_escalation": false,
+        "escalation_urgency": "ROUTINE_COACHING",
+        "top_voi_missing_workup": [
+          {
+            "feature_key": "venous_pocus_vexus_grade",
+            "label": "Outpatient / Home Point-of-Care VExUS Congestion Grade",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.91,
+            "if_wrong_risk_interval": [
+              0.032,
+              0.367
+            ],
+            "clinical_rationale": "Point-of-Care VExUS ultrasound quantifies inferior vena cava & hepatic/portal venous congestion."
+          },
+          {
+            "feature_key": "nt_probnp_pg_ml",
+            "label": "NT-proBNP (Cardiac Wall Stress)",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.86,
+            "if_wrong_risk_interval": [
+              0.032,
+              0.35
+            ],
+            "clinical_rationale": "NT-proBNP trend confirms whether weight change reflects true intravascular decongestion."
+          }
+        ]
+      },
+      "hca_output": {
+        "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
+        "mi_strategy_oars": {
+          "Open_Question": "Your recovery metrics look steady this week\u2014what part of your daily offloading or hydration routine feels easiest to maintain right now?",
+          "Affirmation": "You maintained 100% smart-boot adherence and 7.5h of restorative sleep\u2014that directly supports tissue and organ recovery.",
+          "Reflection": "Aligned Cardiorenal Utility (+2.85): Mild creatinine rise (Cr 1.82 mg/dL) with brisk natriuresis (Spot UNa 84 mmol/L) and negative fluid balance represents permissive hypercreatininemia, NOT tubular AKI. Your target-trial feasibility check (PHA_SEPSIS_TT2_DECONGESTIVE_MAINTENANCE_PERMISSIVE_CR) is EXPLORATORY_FEASIBLE_WITH_BOUNDS.",
+          "Summary": "Let's keep building on this momentum while keeping an eye on any unmeasured follow-up labs (Outpatient / Home Point-of-Care VExUS Congestion Grade, NT-proBNP (Cardiac Wall Stress))."
+        },
+        "smart_goal": "Maintain >=88% smart-boot offloading adherence (or daily morning weight + symptom check) over the next 7 days and complete scheduled outpatient follow-up.",
+        "clinician_nowcard_handoff": null
+      },
+      "ledger_entry_hash": "12e42d1e2fc0c79ea5d3dc95108519197a7708094c382e74d0322e93526667b7"
+    },
+    {
+      "scenario_id": "PHA-05",
+      "title": "Post-Sepsis Acute +2.5 kg Fluid Weight Surge + Unordered Urine Sodium (Fail-Closed Gate)",
+      "cohort_domain": "POST_SEPSIS_CARDIORENAL",
+      "clinical_story": "74M post-septic cardiomyopathy gains +2.5 kg in 72 hours (`88.0 -> 90.5 kg`) with RHR surging to 101 bpm and HRV dropping to 18 ms. Outpatient BMP & Spot Urine Na have not been verified yet. DSA Target-Trial Gate fails closed (`NOT_IDENTIFIABLE`, overlap 28.5%), HCA pauses lifestyle coaching, and Coral NPU triggers a STAT `sdr.decision.v1` Clinician NowCard.",
+      "t_landmark_hours": 168.0,
+      "merkle_root": "30e1db365a50e1d2841d9ee03fb720204adb298913e88852b2d48d6a1507c93c",
+      "coral_sentinel": {
+        "latency_ms": 0.0034,
+        "active_power_mw": 3.82,
+        "sram_kb": 6.4,
+        "kc_sparsity_pct": 95.0,
+        "wake_cloud_orchestrator": true,
+        "wake_reason": "IMMEDIATE_CLINICAL_ESCALATION (RED_FLAG_ACUTE_CONGESTIVE_WEIGHT_GAIN_GE_2KG, RED_FLAG_CARDIORENAL_SYMPATHETIC_DECOMPENSATION)",
+        "red_flags_detected": [
+          "RED_FLAG_ACUTE_CONGESTIVE_WEIGHT_GAIN_GE_2KG",
+          "RED_FLAG_CARDIORENAL_SYMPATHETIC_DECOMPENSATION"
+        ]
+      },
+      "dsa_output": {
+        "personal_z_scores": {
+          "rhr_z": 2.37,
+          "hrv_z": -1.4,
+          "plantar_temp_z": -0.2,
+          "weight_delta_kg": 2.5
+        },
+        "trajectory_trends_7d": {
+          "resting_heart_rate": "79.0 -> 101.0 bpm (Z=+2.37)",
+          "hrv_rmssd": "33.0 -> 18.0 ms (Z=-1.40)",
+          "body_weight_delta_kg": "+2.50 kg over 3 days",
+          "plantar_thermal_asymmetry": "0.50 C (Boot adherence 100%)"
+        },
+        "predicted_30d_readmission_risk": 0.583,
+        "leakage_rows_blocked": 2,
+        "target_trial_contrast": {
+          "trial_id": "PHA_SEPSIS_TT1_AUTONOMOUS_FLUID_RESTRICTION_WITHOUT_LABS",
+          "gate_status": "NOT_IDENTIFIABLE",
+          "common_support_pct": 28.5,
+          "risk_difference_point": null,
+          "manski_bounds": [
+            -0.55,
+            0.45
+          ],
+          "rationale": "FAIL-CLOSED POSITIVITY GATE: Common support 28.5% (< 70%). Autonomous diuretic/fluid dosing without verified serum creatinine/potassium and spot urine sodium violates positivity."
+        }
+      },
+      "dea_output": {
+        "guideline_reference": "Surviving Sepsis Campaign Post-ICU & KDIGO / AHA Cardiorenal Decongestion Guidelines",
+        "clinical_assessment": "30-day relapse/readmission risk estimated at 58.3% (population 65.3th percentile) under strict `storetime <= 168.0h` lock (2 future/pending EHR records masked). 240-KC Sparse VOI Router identified 3 high-yield missing/pending workup items.",
+        "reward_alignment_note": "Cardiorenal Reward Guard Active: Distinguishes decongestive hemoconcentration from intrinsic tubular injury.",
+        "requires_clinician_escalation": true,
+        "escalation_urgency": "STAT_PROVIDER_CROSSROADS",
+        "top_voi_missing_workup": [
+          {
+            "feature_key": "serum_creatinine_mg_dl",
+            "label": "Outpatient Serum Creatinine (BMP)",
+            "epistemic_status": "PENDING_AT_LANDMARK",
+            "voi_score": 0.97,
+            "if_wrong_risk_interval": [
+              0.321,
+              0.913
+            ],
+            "clinical_rationale": "Outpatient BMP (Creatinine/Potassium) is mandatory to verify renal stability during loop diuresis."
+          },
+          {
+            "feature_key": "spot_urine_sodium_mmol_l",
+            "label": "Spot Urine Sodium (Natriuresis Check)",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.96,
+            "if_wrong_risk_interval": [
+              0.321,
+              0.909
+            ],
+            "clinical_rationale": "Spot Urine Sodium (`UNa`) distinguishes true tubular AKI (`UNa < 20`) from benign decongestive hemoconcentration (`UNa > 70`)."
+          },
+          {
+            "feature_key": "venous_pocus_vexus_grade",
+            "label": "Outpatient / Home Point-of-Care VExUS Congestion Grade",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.91,
+            "if_wrong_risk_interval": [
+              0.321,
+              0.892
+            ],
+            "clinical_rationale": "Point-of-Care VExUS ultrasound quantifies inferior vena cava & hepatic/portal venous congestion."
+          }
+        ]
+      },
+      "hca_output": {
+        "coaching_mode": "HALTED_FOR_CLINICIAN_ESCALATION",
+        "mi_strategy_oars": {
+          "Open_Question": "I noticed an important physiological shift on your wearable sensor today\u2014have you experienced any new foot warmth/throbbing or shortness of breath over the past 12 hours?",
+          "Affirmation": "Thank you for wearing your sensor and syncing your recovery logs consistently\u2014catching this early protects your recovery.",
+          "Reflection": "When a clinical safety threshold or pending diagnostic gap (`Unavailable != Negative`) is detected, lifestyle self-coaching alone is not safe.",
+          "Summary": "Autonomous exercise/fluid coaching is paused (STAT_PROVIDER_CROSSROADS). I have routed a time-locked Spatial Decision NowCard to your clinical care team and highlighted the top missing tests: Outpatient Serum Creatinine (BMP), Spot Urine Sodium (Natriuresis Check), Outpatient / Home Point-of-Care VExUS Congestion Grade."
+        },
+        "smart_goal": "PAUSE autonomous step/diuretic progression for 24h; rest/offload the limb, complete the ordered high-VOI workup (Outpatient Serum Creatinine (BMP)), and await your provider's signed NowCard.",
+        "clinician_nowcard_handoff": {
+          "schema": "sdr.decision.v1",
+          "episode_id": "PHA-05",
+          "patient_id": "PHA_PT_SEP02",
+          "landmark_hours": 168.0,
+          "merkle_root": "30e1db365a50e1d2841d9ee03fb720204adb298913e88852b2d48d6a1507c93c",
+          "urgency": "STAT_PROVIDER_CROSSROADS",
+          "red_flags": [
+            "RED_FLAG_ACUTE_CONGESTIVE_WEIGHT_GAIN_GE_2KG",
+            "RED_FLAG_CARDIORENAL_SYMPATHETIC_DECOMPENSATION"
+          ],
+          "top_voi_queries": [
+            {
+              "feature": "serum_creatinine_mg_dl",
+              "voi": 0.97,
+              "if_wrong": [
+                0.321,
+                0.913
+              ]
+            },
+            {
+              "feature": "spot_urine_sodium_mmol_l",
+              "voi": 0.96,
+              "if_wrong": [
+                0.321,
+                0.909
+              ]
+            },
+            {
+              "feature": "venous_pocus_vexus_grade",
+              "voi": 0.91,
+              "if_wrong": [
+                0.321,
+                0.892
+              ]
+            }
+          ],
+          "target_trial_gate": "NOT_IDENTIFIABLE",
+          "recommended_clinician_options": [
+            "Pass: Order Top-VOI Outpatient Panel & Same-Day Tele-Triage",
+            "Modify (OptionRing): Adjust Offloading / Diuretic Protocol with Safety Bounds",
+            "Escalate: Direct Urgent Limb-Salvage / Cardiorenal Clinic Admission"
+          ]
+        }
+      },
+      "ledger_entry_hash": "6d412aee2fc6b533671800eb544c3862fe8abb596e15a86f0c1fa6b9953120e1"
+    },
+    {
+      "scenario_id": "PHA-06",
+      "title": "Post-Sepsis Stable Recovery with Routine Wearable Sync Suppressed on Coral NPU Edge",
+      "cohort_domain": "POST_SEPSIS_CARDIORENAL",
+      "clinical_story": "54M post-pneumonia sepsis recovery with stable euvolemic weight (`76.2 -> 76.1 kg`), RHR `66 bpm`, HRV `48 ms`, and verified normal BMP (`Cr 0.95 mg/dL`). Coral NPU wearable sentinel (`0.068 ms`, `3.82 mW`) confirms zero red flags and suppresses unnecessary cloud LLM wake-ups.",
+      "t_landmark_hours": 240.0,
+      "merkle_root": "7d8ff7f2ddd88ed3ff38bd99a7101fe7820c4b3c927d0fd4d0797ef8be42458d",
+      "coral_sentinel": {
+        "latency_ms": 0.0034,
+        "active_power_mw": 3.82,
+        "sram_kb": 6.4,
+        "kc_sparsity_pct": 95.0,
+        "wake_cloud_orchestrator": false,
+        "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)",
+        "red_flags_detected": []
+      },
+      "dsa_output": {
+        "personal_z_scores": {
+          "rhr_z": -0.22,
+          "hrv_z": 0.27,
+          "plantar_temp_z": -0.8,
+          "weight_delta_kg": -0.1
+        },
+        "trajectory_trends_7d": {
+          "resting_heart_rate": "68.0 -> 66.0 bpm (Z=-0.22)",
+          "hrv_rmssd": "45.0 -> 48.0 ms (Z=+0.27)",
+          "body_weight_delta_kg": "-0.10 kg over 3 days",
+          "plantar_thermal_asymmetry": "0.20 C (Boot adherence 100%)"
+        },
+        "predicted_30d_readmission_risk": 0.1043,
+        "leakage_rows_blocked": 0,
+        "target_trial_contrast": {
+          "trial_id": "PHA_SEPSIS_TT2_DECONGESTIVE_MAINTENANCE_PERMISSIVE_CR",
+          "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
+          "common_support_pct": 96.0,
+          "risk_difference_point": -0.131,
+          "manski_bounds": [
+            -0.46,
+            0.34
+          ],
+          "rationale": "Propensity overlap 96.0%, max |SMD| = 0.038. Preserving decongestive diuresis during benign hemoconcentration reduces 30-day heart-failure/sepsis readmission by -13.1% (anti-reward-hacking)."
+        }
+      },
+      "dea_output": {
+        "guideline_reference": "Surviving Sepsis Campaign Post-ICU & KDIGO / AHA Cardiorenal Decongestion Guidelines",
+        "clinical_assessment": "30-day relapse/readmission risk estimated at 10.4% (population 11.7th percentile) under strict `storetime <= 240.0h` lock (0 future/pending EHR records masked). 240-KC Sparse VOI Router identified 3 high-yield missing/pending workup items.",
+        "reward_alignment_note": "Cardiorenal Reward Guard Active: Distinguishes decongestive hemoconcentration from intrinsic tubular injury.",
+        "requires_clinician_escalation": false,
+        "escalation_urgency": "ROUTINE_COACHING",
+        "top_voi_missing_workup": [
+          {
+            "feature_key": "spot_urine_sodium_mmol_l",
+            "label": "Spot Urine Sodium (Natriuresis Check)",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.96,
+            "if_wrong_risk_interval": [
+              0.057,
+              0.431
+            ],
+            "clinical_rationale": "Spot Urine Sodium (`UNa`) distinguishes true tubular AKI (`UNa < 20`) from benign decongestive hemoconcentration (`UNa > 70`)."
+          },
+          {
+            "feature_key": "venous_pocus_vexus_grade",
+            "label": "Outpatient / Home Point-of-Care VExUS Congestion Grade",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.91,
+            "if_wrong_risk_interval": [
+              0.057,
+              0.414
+            ],
+            "clinical_rationale": "Point-of-Care VExUS ultrasound quantifies inferior vena cava & hepatic/portal venous congestion."
+          },
+          {
+            "feature_key": "nt_probnp_pg_ml",
+            "label": "NT-proBNP (Cardiac Wall Stress)",
+            "epistemic_status": "MISSING_UNORDERED",
+            "voi_score": 0.86,
+            "if_wrong_risk_interval": [
+              0.057,
+              0.397
+            ],
+            "clinical_rationale": "NT-proBNP trend confirms whether weight change reflects true intravascular decongestion."
+          }
+        ]
+      },
+      "hca_output": {
+        "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
+        "mi_strategy_oars": {
+          "Open_Question": "Your recovery metrics look steady this week\u2014what part of your daily offloading or hydration routine feels easiest to maintain right now?",
+          "Affirmation": "You maintained 100% smart-boot adherence and 8.0h of restorative sleep\u2014that directly supports tissue and organ recovery.",
+          "Reflection": "Cardiorenal Reward Guard Active: Distinguishes decongestive hemoconcentration from intrinsic tubular injury. Your target-trial feasibility check (PHA_SEPSIS_TT2_DECONGESTIVE_MAINTENANCE_PERMISSIVE_CR) is EXPLORATORY_FEASIBLE_WITH_BOUNDS.",
+          "Summary": "Let's keep building on this momentum while keeping an eye on any unmeasured follow-up labs (Spot Urine Sodium (Natriuresis Check), Outpatient / Home Point-of-Care VExUS Congestion Grade)."
+        },
+        "smart_goal": "Maintain >=88% smart-boot offloading adherence (or daily morning weight + symptom check) over the next 7 days and complete scheduled outpatient follow-up.",
+        "clinician_nowcard_handoff": null
+      },
+      "ledger_entry_hash": "1e97465690985b3db123e628d8dce82f6e3aa549a3c5e7c74d3260216b30d948"
+    }
+  ]
+}
