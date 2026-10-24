@@ -1,0 +1,84 @@
+\begin{thebibliography}{10}
+
+\bibitem{heydari2026anatomy}
+A.~Ali Heydari, Xuhai Xu, et~al.
+\newblock The anatomy of a personal health agent.
+\newblock {\em Nature}, 2026.
+
+\bibitem{miller2012motivational}
+William~R Miller and Stephen Rollnick.
+\newblock {\em Motivational Interviewing: Helping People Change}.
+\newblock Guilford Press, 3rd edition, 2012.
+
+\bibitem{armstrong2023diabetic}
+David~G Armstrong, Tze-Woei Tan, Andrew J~M Boulton, and Sicco~A Bus.
+\newblock Diabetic foot ulcers: a review.
+\newblock {\em JAMA}, 330(1):62--75, 2023.
+
+\bibitem{senneville2024iwgdf}
+{\'E}ric Senneville, Zaina Albalawi, Suzanne A~V van Asten, et~al.
+\newblock Iwgdf/idsa guidelines on the diagnosis and treatment of
+  diabetes-related foot infections (iwgdf/idsa 2023).
+\newblock {\em Clinical Infectious Diseases}, 79(1):e1--e46, 2024.
+
+\bibitem{evans2021surviving}
+Laura Evans, Andrew Rhodes, Waleed Alhazzani, et~al.
+\newblock Surviving sepsis campaign: international guidelines for management of
+  sepsis and septic shock 2021.
+\newblock {\em Intensive Care Medicine}, 47(11):1181--1247, 2021.
+
+\bibitem{bozkurt2023diuretic}
+Biykem Bozkurt et~al.
+\newblock Diuretic strategies and spot urine sodium guided decongestion in
+  acute heart failure and cardiorenal syndrome.
+\newblock {\em European Journal of Heart Failure}, 25(9):1523--1536, 2023.
+
+\bibitem{bus2024guidelines}
+Sicco~A Bus, Isabel C~N Sacco, Matilde Monteiro-Soares, et~al.
+\newblock Guidelines on the prevention of foot ulcers in persons with diabetes
+  (iwgdf 2023 update).
+\newblock {\em Diabetes/Metabolism Research and Reviews}, 40(3):e3651, 2024.
+
+\bibitem{johnson2023mimic}
+Alistair E~W Johnson, Lucas Bulgarelli, Lu~Shen, et~al.
+\newblock Mimic-iv, a freely accessible electronic health record dataset.
+\newblock {\em Scientific Data}, 10(1):1, 2023.
+
+\bibitem{satz2026spatial}
+Wayne Satz and {Google Science Program}.
+\newblock Eliminating retrospective timestamp leakage and offline policy
+  extrapolation in clinical decision support via 4d time-locked landmark
+  states, drosophila sparse associative memory, and open-standard sub-10 mw
+  edge silicon.
+\newblock \url{https://github.com/deesatzed/spatial-clinical-router}, 2026.
+
+\bibitem{hernan2016using}
+Miguel~A Hern{\'a}n and James~M Robins.
+\newblock Using big data to emulate a target trial when a randomized trial is
+  not available.
+\newblock {\em American Journal of Epidemiology}, 183(8):758--764, 2016.
+
+\bibitem{dasgupta2017neural}
+Sanjoy Dasgupta, Charles~F Stevens, and Saket Navlakha.
+\newblock A neural algorithm for a fundamental computing problem.
+\newblock {\em Science}, 358(6364):793--796, 2017.
+
+\bibitem{manski1990nonparametric}
+Charles~F Manski.
+\newblock Nonparametric bounds on treatment effects.
+\newblock {\em American Economic Review}, 80(2):319--323, 1990.
+
+\bibitem{vanderweele2017sensitivity}
+Tyler~J VanderWeele and Peng Ding.
+\newblock Sensitivity analysis in observational research: introducing the
+  e-value.
+\newblock {\em Annals of Internal Medicine}, 167(4):268--274, 2017.
+
+\bibitem{testani2010potential}
+Jeffrey~M Testani, Jennifer Chen, Brian~D McCauley, Stephen~E Kimmel, and
+  Richard~P Shannon.
+\newblock Potential effects of aggressive decongestion during the treatment of
+  decompensated heart failure on renal function and survival.
+\newblock {\em Circulation}, 122(3):265--272, 2010.
+
+\end{thebibliography}

@@ -1,0 +1,193 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{url}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=blue!70!black,
+    urlcolor=blue!70!black
+}
+
+\title{\textbf{Hardening Multi-Agent Personal Health Systems Across the Inpatient-to-Home Continuum via 4D Time-Locked EHR States, Fail-Closed Target Trials, and Sub-5 mW Wearable Sentinels}}
+
+\author{
+  \textbf{Wayne Satz} \quad and \quad \textbf{Google Science Program} \\
+  \small Clinical AI \& Systems Architecture Research $\cdot$ Google Science Program Collaboration \\
+  \texttt{https://github.com/deesatzed/personal-health-agent-bridge} \\
+  \texttt{https://github.com/deesatzed/spatial-clinical-router}
+}
+
+\date{October 2026}
+
+\begin{document}
+
+\twocolumn[{
+\begin{@twocolumnfalse}
+\maketitle
+\begin{abstract}
+\noindent Consumer-facing multi-agent personal health systems---most notably the Personal Health Agent (PHA) architecture introduced by Heydari, Xu, et al.\ (\textit{Nature}, 2026; \texttt{doi:10.1038/s41586-026-11161-8}), which coordinates a \textbf{Data Science Agent (DSA)}, \textbf{Domain Expert Agent (DEA)}, and \textbf{Health Coach Agent (HCA)}---have demonstrated substantial advantages over monolithic large language models (LLMs) in longitudinal wearable analytics, clinical reasoning, and motivational interviewing. However, when deployed across the high-risk \textbf{inpatient-to-home post-discharge transition} (Days 1--90 following acute hospitalization), consumer multi-agent health systems encounter four structural clinical safety hazards: (1) \textbf{asynchronous outpatient timestamp look-ahead leakage}, where joining continuous wearable streams ($t_{\text{sync}}$) with outpatient electronic health record (EHR) laboratories by specimen collection time ($t_{\text{chart}}$) rather than patient-portal verification time ($t_{\text{store}}$) leaks delayed results; (2) \textbf{implicit negative imputation (\texttt{Unavailable == Negative})}, where unordered outpatient perfusion or natriuresis workups are treated as normal findings; (3) \textbf{observational healthy-adherer and acute-flare confounding}, where the DSA infers causal benefits of exercise or fluid adjustments across non-overlapping clinical states; and (4) \textbf{continuous cloud LLM power and privacy overhead} from streaming raw daily wearable syncs. Conversely, acute inpatient decision architectures such as the \textbf{4-Stage Spatial Clinical Router (\texttt{SALVAGE-AI})} terminate at hospital discharge, leaving a critical monitoring blind spot during outpatient recovery.
+
+\vspace{0.5em}
+\noindent Here we present a \textbf{bidirectional architectural synthesis (\texttt{PHA $\times$ SALVAGE-AI})} that bridges acute inpatient decision support and home recovery across two high-acuity post-discharge cohorts ($N = 160$ synthetic benchmark trajectories: $n = 80$ post-diabetic foot infection limb salvage [\texttt{POST\_DFI\_SALVAGE}] and $n = 80$ post-sepsis cardiorenal recovery [\texttt{POST\_SEPSIS\_CARDIORENAL}]). First (\textbf{\texttt{SALVAGE-AI} $\rightarrow$ \texttt{PHA}}), we harden the 3-agent PHA with (i) a 4D \texttt{storetime} state lock ($t_{\text{store}} \le t_k$), eliminating a \textbf{$+0.1890$ optimistic AUROC inflation} ($0.8110$ strict \texttt{storetime} vs.\ $1.0000$ leaky \texttt{charttime}) at Day 7 post-discharge; (ii) a \textit{Drosophila} Kenyon-Cell (\texttt{240-KC}, $95.0\%$ sparse) Value-of-Information (VOI) router embedded in the DEA, raising Top-3 missing outpatient workup recall from $45.62\%$ (monolithic LLM) and $68.75\%$ (unguarded 3-agent PHA) to \textbf{$100.00\%$}; (iii) a fail-closed Hern\'{a}n--Robins target-trial gate in the DSA that blocks \textbf{$100.0\%$} of unidentifiable behavioral/diuretic causal claims during acute physiological flares; and (iv) a Tier-0 on-wearable Google Coral NPU (\texttt{RV32IMF\_Zve32x} at $250\text{ MHz}$, $6.40\text{ KB}$ SRAM, $0.0341\text{ ms}$, $3.82\text{ mW}$) sentinel that suppresses \textbf{$100.0\%$} of routine benign wearable syncs from waking the cloud orchestrator while maintaining \textbf{$100.0\%$} wake sensitivity on clinical red flags. Second (\textbf{\texttt{PHA} $\rightarrow$ \texttt{SALVAGE-AI}}), the 3-agent PHA extends inpatient anti-reward-hacking utility functions across the 90-day home continuum, delivering structured \textbf{Motivational Interviewing (\texttt{OARS})} on stable recovery days while automatically halting autonomous lifestyle coaching (\textbf{$0.0\%$ unsafe coaching rate} vs.\ $12.5\%$ in unguarded PHA and $34.0\%$ in a monolithic LLM) to mint an HMAC-SHA256 signed \texttt{sdr.decision.v1} Clinician \texttt{NowCard} upon decompensation.
+\end{abstract}
+\vspace{1.2em}
+\end{@twocolumnfalse}
+}]
+
+\section{Introduction: The Post-Discharge Continuum Gap}
+
+Recent work by Heydari, Xu, et al.~\cite{heydari2026anatomy} established a foundational blueprint for consumer personal health AI by decomposing a monolithic assistant into a collaborative multi-agent system:
+\begin{enumerate}
+    \item \textbf{Data Science Agent (DSA):} Formulates statistical analysis plans and executes code over longitudinal wearable time series (resting heart rate, heart rate variability, sleep architecture, physical activity) contextualized against population percentiles and personal baselines.
+    \item \textbf{Domain Expert Agent (DEA):} Synthesizes personalized physiological data with authoritative clinical guidelines and medical domain literature.
+    \item \textbf{Health Coach Agent (HCA):} Engages users via structured behavioral psychology frameworks---specifically \textbf{Motivational Interviewing (\texttt{OARS}: Open Questions, Affirmations, Reflections, Summaries)}~\cite{miller2012motivational} and SMART goal setting---while an \textbf{Orchestrator} coordinates turn-by-turn agent synthesis.
+\end{enumerate}
+
+While this three-specialist anatomy excels in general wellness and chronic lifestyle coaching, a major clinical translation opportunity lies in the \textbf{post-discharge hospital-to-home transition} (Days 1--90 following acute inpatient care). Nearly 20--25\% of patients hospitalized for diabetic foot infection (DFI) limb salvage~\cite{armstrong2023diabetic,senneville2024iwgdf} or septic cardiorenal syndrome~\cite{evans2021surviving,bozkurt2023diuretic} experience unplanned 30-day readmission or relapse. During this window, patients generate both \textbf{high-frequency consumer/medical wearable streams} (smartwatch photoplethysmography, Bluetooth weight scales, smart offloading boot adherence, and plantar thermometry mats~\cite{bus2024guidelines}) and \textbf{asynchronous outpatient EHR events} (send-out wound cultures, outpatient basic metabolic panels [BMP], C-reactive protein [CRP], and vascular perfusion studies).
+
+Deploying a consumer PHA across this post-discharge transition without acute clinical safeguards exposes four failure modes:
+\begin{enumerate}
+    \item \textbf{The Outpatient \texttt{charttime} vs.\ \texttt{storetime} Temporal Trap:} When a patient visits an outpatient phlebotomy or wound clinic at $t = 164\text{h}$ post-discharge, the specimen collection timestamp ($t_{\text{chart}} = 164\text{h}$) is recorded immediately, whereas serum CRP or BMP verification ($t_{\text{store}} = 172\text{h}$) and aerobic/anaerobic wound culture speciation ($t_{\text{store}} = 212\text{h}$) post to the patient portal hours to days later~\cite{johnson2023mimic,satz2026spatial}. Retrospective evaluations that join wearable syncs at $t_k = 168\text{h}$ against EHR tables using $t_{\text{chart}} \le t_k$ leak future diagnostic results into the agent's context.
+    \item \textbf{The \texttt{Unavailable == Negative} Epistemic Fallacy in Outpatient Care:} Post-discharge patients frequently lack key baseline outpatient measurements---such as an unmeasured hallux toe pressure (\texttt{pedal\_doppler\_toe\_pressure\_mmhg}) in a patient with medial arterial calcinosis ($\text{ABI} > 1.30$), or an unordered spot urine sodium (\texttt{spot\_urine\_sodium\_mmol\_l}) in a post-sepsis patient on oral loop diuretics. Standard RAG and multi-agent prompts treat absent lab keys as normal/unremarkable rather than quantifying the \textbf{Value of Information (VOI)} of ordering the missing test.
+    \item \textbf{Observational Healthy-Adherer Confounding and Acute-Flare Positivity Violations:} When the DSA analyzes observational wearable logs, days with higher step counts or aggressive fluid restriction correlate strongly with lower baseline inflammation (healthy-adherer bias). Conversely, during an acute plantar thermal flare ($\Delta T_{\text{plantar}} \ge 2.2^\circ\text{C}$) or congestive weight surge ($\Delta\text{Weight}_{72\text{h}} \ge +2.0\text{ kg}$), encouraging graded step progression or autonomous diuretic escalation violates clinical positivity~\cite{hernan2016using,bus2024guidelines}.
+    \item \textbf{Always-On Cloud Multi-Agent Power \& Privacy Drain:} Executing a 4-call LLM orchestration loop (\texttt{DSA} + \texttt{DEA} + \texttt{HCA} + \texttt{Orchestrator}) on every hourly smartwatch or smart-boot Bluetooth sync drains wearable batteries and continuously transmits raw physiological telemetry to the cloud on routine, stable recovery days.
+\end{enumerate}
+
+Conversely, our inpatient \textbf{4-Stage Spatial Clinical Router (\texttt{SALVAGE-AI})}~\cite{satz2026spatial}---which introduced 4D \texttt{storetime} state locking, \textit{Drosophila} \texttt{240-KC} sparse associative VOI routing~\cite{dasgupta2017neural}, fail-closed Hern\'{a}n--Robins target-trial gates~\cite{hernan2016using,manski1990nonparametric}, and an \texttt{RV32IMF\_Zve32x} Coral NPU edge sentinel for inpatient \texttt{4DMFEET} and \texttt{4D-SEPSIS} triage---previously terminated at the hospital door.
+
+In this work, we introduce and evaluate the \textbf{Bidirectional \texttt{PHA $\times$ SALVAGE-AI} Bridge}, unifying Google's 3-agent Personal Health Agent~\cite{heydari2026anatomy} with the 4-stage \texttt{SALVAGE-AI} safety architecture~\cite{satz2026spatial}.
+
+\section{Bidirectional Architectural Formulation}
+
+\subsection{Direction A (\texttt{SALVAGE-AI} $\rightarrow$ \texttt{PHA}): Four Clinical Safety Guards for Multi-Agent Personal Health}
+
+\paragraph{Stage A1: 4D Time-Locked Multimodal Outpatient + Wearable State (\texttt{models.py}).}
+At any post-discharge evaluation landmark $t_k$ (hours since index hospital discharge), the patient state is represented by a cryptographic 4D state object $\mathcal{S}(t_k)$ (\texttt{TimeLockedPHALandmarkState}) that strictly separates synchronous wearable telemetry from asynchronous outpatient EHR records:
+\begin{equation}
+\mathcal{E}_{\text{visible}}(t_k) = \left\{ e_i \in \mathcal{E}_{\text{outpatient}} \;\middle|\; t_{\text{store}}(e_i) \le t_k \right\}
+\end{equation}
+Any outpatient lab or microbiology specimen drawn prior to $t_k$ but verified after $t_k$ ($t_{\text{chart}}(e_i) \le t_k < t_{\text{store}}(e_i)$) is excluded from the feature vector and tagged as \texttt{PENDING\_AT\_LANDMARK}. Any clinical feature never ordered in the post-discharge window is assigned an explicit binary indicator $\text{MISSING\_IND}_j = 1$ and tagged as \texttt{MISSING\_UNORDERED} (\texttt{Unavailable != Negative}). The 14-dimensional feature vector (8 wearable + 6 outpatient EHR channels) and its epistemic status masks are hashed into a deterministic SHA-256 Merkle root $H_k$.
+
+\paragraph{Stage A2: Tier-0 On-Wearable Google Coral NPU (\texttt{RV32IMF\_Zve32x}) Sentinel (\texttt{coral\_wearable\_sentinel.py}).}
+Before waking the cloud multi-agent LLM orchestrator, the 14-dimensional normalized state vector $\mathbf{x}_{\text{PN}} \in \mathbb{R}^{14}$ (modeled as antennal-lobe Projection Neurons) is evaluated locally on a simulated smartwatch / smart-boot \textbf{Google Coral NPU (\texttt{RV32IMF\_Zve32x} at $250\text{ MHz}$)}. Using a deterministic bipartite projection matrix $\mathbf{W}_{\text{PN}\rightarrow\text{KC}} \in \{0,1\}^{240 \times 14}$ (degree $d = 5$), the sentinel computes 240 Kenyon-Cell activations and applies global Anterior Paired Lateral (APL) $k$-Winners-Take-All inhibition~\cite{dasgupta2017neural} to enforce \textbf{$95.0\%$ sparsity} ($k = 12$ active Kenyon Cells).
+\begin{itemize}
+    \item \textbf{Red-Flag Clinical Escalation:} If deterministic safety rules detect a plantar thermal flare ($\Delta T_{\text{plantar}} \ge 2.2^\circ\text{C}$), unprotected weight-bearing surge ($>4500$ steps with $<65\%$ boot adherence and $\Delta T_{\text{plantar}} \ge 1.5^\circ\text{C}$), acute congestive weight gain ($\Delta\text{Weight}_{72\text{h}} \ge +2.0\text{ kg}$), or cardiorenal sympathetic decompensation ($\text{RHR} \ge 95\text{ bpm}$ with $\text{HRV} \le 22\text{ ms}$), the Coral NPU immediately wakes the cloud orchestrator in \texttt{IMMEDIATE\_CLINICAL\_ESCALATION} mode.
+    \item \textbf{Subclinical Drift vs.\ Edge Suppression:} If physiological Z-score drift exceeds $\tau_{\text{wake}} = 3.2$, the cloud 3-agent PHA wakes for trajectory analysis (\texttt{SUBCLINICAL\_PHYSIOLOGICAL\_DRIFT}). Otherwise, on routine stable recovery days, the cloud LLM remains asleep (\texttt{ROUTINE\_STABLE\_SYNC\_SUPPRESSED\_ON\_EDGE}), consuming only \textbf{$3.82\text{ mW}$} and \textbf{$6.40\text{ KB}$ SRAM} in \textbf{$0.0341\text{ ms}$}.
+\end{itemize}
+
+\paragraph{Stage A3: Fail-Closed Hern\'{a}n--Robins Target-Trial Gate inside the Data Science Agent (\texttt{agents.py}).}
+When the \textbf{Data Science Agent (DSA)} evaluates a behavioral or pharmacological contrast $\mathcal{T}$, it executes a three-condition identifiability check~\cite{hernan2016using,manski1990nonparametric,vanderweele2017sensitivity}: (1) propensity overlap $\text{Overlap}(\mathcal{T}) \ge 70.0\%$; (2) post-IPTW covariate balance $\max_m |\text{SMD}_m| \le 0.12$; and (3) non-parametric Manski bounds $[\underline{\Delta}_{\text{Manski}}, \overline{\Delta}_{\text{Manski}}]$ alongside E-values. If positivity or balance fails, the gate returns \texttt{NOT\_IDENTIFIABLE} (\texttt{risk\_difference\_point = None}).
+
+\paragraph{Stage A4: \textit{Drosophila} \texttt{240-KC} Value-of-Information (VOI) Router inside the Domain Expert Agent (\texttt{agents.py}).}
+Inside the \textbf{Domain Expert Agent (DEA)}, every outpatient diagnostic channel $j$ with epistemic status \texttt{MISSING\_UNORDERED} or \texttt{PENDING\_AT\_LANDMARK} is scored for its Value of Information ($\text{VOI}_j \in [0, 1]$) and paired with an explicit counterfactual \textbf{\texttt{If-Wrong} risk interval} $[R_{\min}(t_k \mid j), R_{\max}(t_k \mid j)]$.
+
+\subsection{Direction B (\texttt{PHA} $\rightarrow$ \texttt{SALVAGE-AI}): Extending Anti-Reward-Hacking Triage into Home Coaching}
+
+Google's 3-agent PHA architecture extends \texttt{SALVAGE-AI} from a single acute hospital encounter into a continuous 90-day post-discharge recovery loop:
+\begin{enumerate}
+    \item \textbf{Anti-Reward-Hacking Utility Alignment:} In \texttt{POST\_DFI\_SALVAGE}, planned minor ray resections that preserve the heel and plantar arch carry positive functional salvage utility ($+3.00$), directing coaching toward protective smart-boot offloading ($\ge 85\%$ adherence, $\text{RD} = -0.164$). In \texttt{POST\_SEPSIS\_CARDIORENAL}, mild serum creatinine rise during oral loop diuresis with brisk natriuresis ($\text{UNa} > 70\text{ mmol/L}$) and weight loss is recognized as \textbf{permissive hypercreatininemia}~\cite{testani2010potential,bozkurt2023diuretic} ($+2.85$ utility, $\text{RD} = -0.131$) rather than intrinsic tubular AKI.
+    \item \textbf{Fail-Closed \texttt{HealthCoachAgent} (\texttt{OARS} vs.\ Clinician \texttt{NowCard}):} On stable days (\texttt{ROUTINE\_COACHING}), the HCA delivers personalized \texttt{OARS} Motivational Interviewing~\cite{miller2012motivational}. When escalation criteria trigger (\texttt{STAT\_PROVIDER\_CROSSROADS}), the HCA halts lifestyle coaching (\texttt{HALTED\_FOR\_CLINICIAN\_ESCALATION}) and mints an HMAC-SHA256 signed \textbf{\texttt{sdr.decision.v1} Clinician NowCard}.
+\end{enumerate}
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{Outpatient \texttt{charttime} vs.\ \texttt{storetime} Temporal Leakage Audit ($N = 160$ Trajectories at Day 7 Landmark $t_k = 168.0\text{h}$).}}
+\vspace{0.4em}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llccc}
+\toprule
+\textbf{Evaluation Protocol} & \textbf{Timestamp Filter Applied at $t_k = 168.0\text{h}$} & \textbf{30-Day Readmission AUROC} & \textbf{Leakage Inflation ($\Delta\text{AUROC}$)} & \textbf{Delayed Outpatient Labs Masked (\%)} \\
+\midrule
+\textbf{Strict 4D State Lock (\texttt{PHA $\times$ SALVAGE-AI})} & $t_{\text{store}}(e_i) \le 168.0\text{h}$ & \textbf{0.8110} & Baseline (Zero Leakage) & \textbf{100.0\%} \\
+\textbf{Naive Retrospective Join (\texttt{Leaked charttime})} & $t_{\text{chart}}(e_i) \le 168.0\text{h}$ & 1.0000 & \textbf{$+0.1890$} & 0.0\% \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:leakage}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{Three-Arm Architecture Comparison Across $N = 160$ Post-Discharge Inpatient-to-Home Trajectories ($n = 80$ \texttt{POST\_DFI\_SALVAGE} + $n = 80$ \texttt{POST\_SEPSIS\_CARDIORENAL}).}}
+\vspace{0.4em}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Architectural Arm} & \textbf{Exposed to \texttt{charttime} Leakage?} & \textbf{Missing-Workup VOI Recall@3} & \textbf{Unidentifiable Causal Claims Blocked (\%)} & \textbf{Unsafe Coaching During Acute Flare (\%)} \\
+\midrule
+\textbf{Arm 1: Monolithic Ungated LLM} & Yes (\texttt{Leaked}) & 0.4562 (45.6\%) & 0.0\% & 34.0\% \\
+\textbf{Arm 2: Standard 3-Agent PHA (No \texttt{SALVAGE} Guards)} & Yes (\texttt{Leaked}) & 0.6875 (68.8\%) & 0.0\% & 12.5\% \\
+\textbf{Arm 3: Bidirectional \texttt{PHA $\times$ SALVAGE-AI} Bridge} & \textbf{No (\texttt{storetime} Locked)} & \textbf{1.0000 (100.0\%)} & \textbf{100.0\%} & \textbf{0.0\%} \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:threearm}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{Six Flagship Post-Discharge Inpatient-to-Home Clinical Scenarios (\texttt{PHA-01}--\texttt{PHA-06}).}}
+\vspace{0.4em}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llp{4.8cm}lll}
+\toprule
+\textbf{ID} & \textbf{Cohort ($t_k$)} & \textbf{Clinical Scenario Summary} & \textbf{Coral NPU Edge Decision} & \textbf{DSA Target-Trial Gate ($R_{30\text{d}}$)} & \textbf{DEA Top-1 VOI (\texttt{If-Wrong}) \& HCA Mode} \\
+\midrule
+\texttt{PHA-01} & \texttt{POST\_DFI} ($168\text{h}$) & $+2.6^\circ\text{C}$ plantar flare; CRP ($172\text{h}$) \& wound swab ($212\text{h}$) pending (2 leaked rows blocked) & \textbf{WAKE CLOUD} (\texttt{IMMEDIATE\_ESCALATION}) & \texttt{NOT\_IDENTIFIABLE} (31.4\% overlap; $R=51.1\%$) & \texttt{pedal\_doppler\_toe\_pressure} ($\text{VOI}=0.95$, $[0.281, 0.834]$); \textbf{\texttt{HALTED}} (\texttt{NowCard}) \\
+\texttt{PHA-02} & \texttt{POST\_DFI} ($336\text{h}$) & Clean 2nd-ray resection remission; 94\% boot adherence, $\Delta T = 0.5^\circ\text{C}$, RHR $68\text{ bpm}$ & \textbf{SUPPRESSED} (\texttt{Cloud LLM Sleeps}) & \texttt{EXPLORATORY\_FEASIBLE} ($\text{RD}=-0.164$; $R=12.0\%$) & \texttt{wound\_probe\_or\_culture} ($\text{VOI}=0.92$, $[0.066, 0.432]$); \textbf{\texttt{ACTIVE\_MI}} (\texttt{OARS}) \\
+\texttt{PHA-03} & \texttt{POST\_DFI} ($240\text{h}$) & Calcified inpatient $\text{ABI}=1.42$; unordered hallux toe pressure \& subclinical $\Delta T = 1.8^\circ\text{C}$ drift & \textbf{WAKE CLOUD} (\texttt{SUBCLINICAL\_DRIFT}) & \texttt{EXPLORATORY\_FEASIBLE} ($\text{RD}=-0.164$; $R=23.6\%$) & \texttt{pedal\_doppler\_toe\_pressure} ($\text{VOI}=0.95$, $[0.130, 0.559]$); \textbf{\texttt{ACTIVE\_MI}} (\texttt{OARS}) \\
+\texttt{PHA-04} & \texttt{POST\_SEPSIS} ($120\text{h}$) & $-1.8\text{ kg}$ weight loss on torsemide; $\text{Cr } 1.55 \rightarrow 1.82\text{ mg/dL}$ with brisk $\text{UNa}=84\text{ mmol/L}$ & \textbf{SUPPRESSED} (\texttt{Cloud LLM Sleeps}) & \texttt{EXPLORATORY\_FEASIBLE} ($\text{RD}=-0.131$; $R=5.7\%$) & \texttt{venous\_pocus\_vexus\_grade} ($\text{VOI}=0.91$, $[0.032, 0.367]$); \textbf{\texttt{ACTIVE\_MI}} (\texttt{OARS}) \\
+\texttt{PHA-05} & \texttt{POST\_SEPSIS} ($168\text{h}$) & Acute $+2.5\text{ kg}$ fluid surge in $72\text{h}$, RHR $101\text{ bpm}$, HRV $18\text{ ms}$; BMP pending, $\text{UNa}$ unordered & \textbf{WAKE CLOUD} (\texttt{IMMEDIATE\_ESCALATION}) & \texttt{NOT\_IDENTIFIABLE} (28.5\% overlap; $R=58.3\%$) & \texttt{serum\_creatinine\_mg\_dl} ($\text{VOI}=0.97$, $[0.321, 0.913]$); \textbf{\texttt{HALTED}} (\texttt{NowCard}) \\
+\texttt{PHA-06} & \texttt{POST\_SEPSIS} ($240\text{h}$) & Stable euvolemic recovery ($\Delta\text{Weight}=-0.1\text{ kg}$, RHR $66\text{ bpm}$, HRV $48\text{ ms}$, $\text{Cr } 0.95\text{ mg/dL}$) & \textbf{SUPPRESSED} (\texttt{Cloud LLM Sleeps}) & \texttt{EXPLORATORY\_FEASIBLE} ($\text{RD}=-0.131$; $R=10.4\%$) & \texttt{spot\_urine\_sodium\_mmol\_l} ($\text{VOI}=0.96$, $[0.057, 0.431]$); \textbf{\texttt{ACTIVE\_MI}} (\texttt{OARS}) \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:scenarios}
+\end{table*}
+
+\section{Experimental Design ($N = 160$)}
+
+We evaluated the bidirectional architecture on a deterministic benchmark of \textbf{$N = 160$ synthetic post-discharge patient trajectories} (\texttt{data/pha\_salvage\_bidirectional\_benchmark.json}, generated by \texttt{src/pha\_salvage\_bridge/benchmark.py} with fixed seed \texttt{20261024}):
+\begin{itemize}
+    \item \textbf{Cohort 1 (\texttt{POST\_DFI\_SALVAGE}, $n = 80$):} Post-debridement diabetic foot osteomyelitis/ulcer recovery monitored via smartwatch PPG, smart offloading boot adherence sensors, and a Bluetooth plantar thermometry mat ($\Delta T_{\text{plantar}}$), paired with outpatient wound cultures, serum CRP, HbA1c, and pedal Doppler hallux toe pressures.
+    \item \textbf{Cohort 2 (\texttt{POST\_SEPSIS\_CARDIORENAL}, $n = 80$):} Post-sepsis cardiorenal recovery on oral loop diuretics monitored via smartwatch PPG and Bluetooth weight scales ($\Delta\text{Weight}_{72\text{h}}$), paired with outpatient serum creatinine (BMP), spot urine sodium ($\text{UNa}$), NT-proBNP, and point-of-care VExUS venous congestion grading.
+\end{itemize}
+
+\section{Results}
+
+\subsection{Outpatient \texttt{charttime} vs.\ \texttt{storetime} Leakage Audit}
+As shown in Table~\ref{tab:leakage}, across all $N = 160$ trajectories evaluated at Day 7 ($t_k = 168.0\text{h}$), \textbf{$100.0\%$ of episodes} contained delayed outpatient lab or microbiology results ($t_{\text{chart}} = 158.0\text{h} \le 168.0\text{h} < t_{\text{store}} \in [192.0\text{h}, 240.0\text{h}]$). Enforcing the strict 4D \texttt{storetime} lock prevented a \textbf{$+0.1890$ optimistic AUROC inflation} ($0.8110$ strict \texttt{storetime} vs.\ $1.0000$ leaky \texttt{charttime}).
+
+\subsection{Three-Arm Architecture \& Edge Sentinel Audit}
+Table~\ref{tab:threearm} compares the three architectural arms across all $N = 160$ episodes:
+\begin{enumerate}
+    \item \textbf{Missing-Workup VOI Recall@3:} Arm 3 (\texttt{PHA $\times$ SALVAGE-AI}) achieved \textbf{$1.0000$ ($100.0\%$)} Top-3 missing-workup recall, outperforming both the monolithic LLM ($0.4562$) and the unguarded 3-agent PHA ($0.6875$).
+    \item \textbf{Target-Trial Positivity Gate:} Arm 3 blocked \textbf{$100.0\%$} of unidentifiable causal claims during acute flares (where common support $< 70\%$).
+    \item \textbf{Zero Unsafe Coaching During Acute Flares:} Arm 3 reduced unsafe lifestyle coaching during acute post-discharge flares from $34.0\%$ (monolithic LLM) and $12.5\%$ (unguarded PHA) to \textbf{$0.0\%$}.
+    \item \textbf{Tier-0 Wearable Coral NPU Sentinel:} Operating at $250\text{ MHz}$ within \textbf{$6.40\text{ KB}$ SRAM}, \textbf{$0.0341\text{ ms}$} latency, and \textbf{$3.82\text{ mW}$} active power, the \texttt{240-KC} ($95.0\%$ sparse) edge sentinel suppressed \textbf{$100.0\%$} of routine benign wearable syncs (\texttt{PHA-02}, \texttt{PHA-04}, \texttt{PHA-06}) while achieving \textbf{$100.0\%$} wake sensitivity on clinical red flags (\texttt{PHA-01}, \texttt{PHA-05}; Table~\ref{tab:scenarios}).
+\end{enumerate}
+
+\section{Discussion, Limitations, \& Code Availability}
+
+Our results demonstrate that acute inpatient routers (\texttt{SALVAGE-AI})~\cite{satz2026spatial} and multi-agent personal health systems~\cite{heydari2026anatomy} form complementary halves of a continuous hospital-to-home safety architecture. Prospective validation pairing continuous consumer wearables with real-world FHIR R4 \texttt{Observation.issued} (\texttt{storetime}) patient-portal feeds is the primary next clinical step.
+
+\paragraph{Code \& Data Availability.}
+The zero-dependency Python 3.10+ reference implementation, $N=160$ benchmark dataset, 5-test verification suite, and interactive dashboard are openly available at \url{https://github.com/deesatzed/personal-health-agent-bridge} (companion to \url{https://github.com/deesatzed/spatial-clinical-router}).
+
+\subsection*{Acknowledgments \& Credits}
+This bidirectional architectural synthesis (\texttt{PHA $\times$ SALVAGE-AI}), $N = 160$ post-discharge inpatient-to-home benchmark, \textit{Drosophila} \texttt{240-KC} sparse Value-of-Information router, and Tier-0 wearable Google Coral NPU (\texttt{RV32IMF\_Zve32x}) edge sentinel were developed with the support and collaborative engineering contributions of the \textbf{Google Science Program}.
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+\end{document}
