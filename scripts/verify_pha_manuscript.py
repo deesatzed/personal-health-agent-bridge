@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 Automated Benchmark-to-Manuscript Consistency Auditor for personal-health-agent-bridge.
-Verifies that all quantitative metrics and Google Science Program credits in
-PAPER/MANUSCRIPT_PHA_SALVAGE_BRIDGE.md, PAPER/arxiv_submission/main.tex,
-PAPER/arxiv_submission/ARXIV_METADATA.txt, and README.md match
-data/pha_salvage_bidirectional_benchmark.json.
+Verifies that all quantitative metrics, Apple Vision Pro Spatial Crossroads Gate parameters,
+and Google Science Program credits in PAPER/MANUSCRIPT_PHA_SALVAGE_BRIDGE.md,
+PAPER/arxiv_submission/main.tex, PAPER/arxiv_submission/ARXIV_METADATA.txt, and README.md
+match data/pha_salvage_bidirectional_benchmark.json, with zero legacy Coral NPU references.
 """
 
 from __future__ import annotations
@@ -29,18 +29,20 @@ def main() -> int:
     readme_text = README_MD.read_text(encoding="utf-8")
 
     leakage = data["outpatient_timestamp_leakage_audit"]
-    coral = data["coral_npu_wearable_sentinel_audit"]
+    spatial_gate = data["vision_pro_spatial_gate_audit"]
     arms = data["three_arm_architecture_comparison"]
 
     required_token_groups = [
         ["Google Science Program"],
         ["10.1038/s41586-026-11161-8"],
+        ["visionOS 27.0"],
         [f"{leakage['strict_storetime_auroc']:.4f}"],
         [f"{leakage['naive_charttime_leaked_auroc']:.4f}"],
         [f"{leakage['auroc_inflation_delta']:.4f}"],
-        [f"{coral['simulated_latency_ms']:.4f}"],
-        [f"{coral['simulated_power_mw']:.2f}"],
-        [f"{coral['sram_footprint_kb']:.2f}"],
+        [f"{spatial_gate['frame_budget_hz']:.1f}", "90 Hz"],
+        [f"{spatial_gate['inference_latency_ms']:.2f}"],
+        [f"{spatial_gate['autonomy_safety_cap_pct']}%"],
+        [f"{spatial_gate['deference_safety_floor_pct']}%"],
         [
             f"{arms['Arm_1_Monolithic_Ungated_LLM']['missing_workup_voi_recall_at_3']:.4f}",
             f"{arms['Arm_1_Monolithic_Ungated_LLM']['missing_workup_voi_recall_at_3'] * 100:.2f}%",
@@ -59,12 +61,18 @@ def main() -> int:
         [f"{arms['Arm_3_Bidirectional_PHA_x_SALVAGE_AI_Bridge']['unsafe_coaching_during_acute_flare_pct']:.1f}%"],
     ]
 
+    forbidden_tokens = ["Coral NPU", "RV32IMF_Zve32x", "coral_wearable_sentinel"]
+
     for doc_name, doc_text in [
         ("MANUSCRIPT_PHA_SALVAGE_BRIDGE.md", md_text),
         ("main.tex", tex_text),
         ("ARXIV_METADATA.txt", meta_text),
         ("README.md", readme_text),
     ]:
+        for forbidden in forbidden_tokens:
+            if forbidden in doc_text:
+                print(f"[VERIFY FAIL] Forbidden legacy token '{forbidden}' found in {doc_name}", file=sys.stderr)
+                return 1
         for group in required_token_groups:
             matched = False
             for tok in group:
@@ -76,7 +84,7 @@ def main() -> int:
                 print(f"[VERIFY FAIL] Missing token group {group} in {doc_name}", file=sys.stderr)
                 return 1
 
-    print("[VERIFY PASS] All PHA x SALVAGE-AI benchmark metrics and Google Science Program credits verified across Markdown, LaTeX, Metadata, and README.")
+    print("[VERIFY PASS] All PHA x SALVAGE-AI benchmark metrics, Apple Vision Pro Spatial Crossroads Gate parameters, and Google Science Program credits verified across Markdown, LaTeX, Metadata, and README.")
     return 0
 
 

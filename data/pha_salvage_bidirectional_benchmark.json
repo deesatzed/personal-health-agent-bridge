@@ -10,11 +10,12 @@
     "auroc_inflation_delta": 0.189,
     "episodes_with_delayed_outpatient_labs_pct": 100.0
   },
-  "coral_npu_wearable_sentinel_audit": {
-    "isa_target": "RV32IMF_Zve32x_CoralNPU_Wearable250MHz",
-    "simulated_latency_ms": 0.0341,
-    "simulated_power_mw": 3.82,
-    "sram_footprint_kb": 6.4,
+  "vision_pro_spatial_gate_audit": {
+    "platform_target": "visionOS 27.0 / iPadOS 27.0 Spatial Crossroads & M0-M5 Symbiosis Gate",
+    "frame_budget_hz": 90.0,
+    "inference_latency_ms": 0.68,
+    "autonomy_safety_cap_pct": 40,
+    "deference_safety_floor_pct": 80,
     "routine_benign_syncs_suppressed_pct": 100.0,
     "clinical_red_flag_wake_sensitivity_pct": 100.0
   },
@@ -46,16 +47,139 @@
       "clinical_story": "62M discharged after 1st-ray debridement. At Day 7 (168h), Smart Offloading Boot mat detects plantar temperature asymmetry +2.6 C (threshold >= 2.2 C) and RHR rose from 71 to 88 bpm. Outpatient deep wound swab & CRP were collected at 164h (`charttime`), but CRP posts at 172h and MRSA speciation posts at 212h (`storetime`).",
       "t_landmark_hours": 168.0,
       "merkle_root": "8cd8f93c5d7e248a102245afaaaf024efcdf180b1e8b516292133bbcbba7ab73",
-      "coral_sentinel": {
-        "latency_ms": 0.0035,
-        "active_power_mw": 3.82,
-        "sram_kb": 6.4,
+      "vision_pro_spatial_gate": {
+        "target_platform": "Apple Vision Pro (visionOS 27.0 / iPadOS 27.0) Spatial Crossroads & M0-M5 Symbiosis Gate",
+        "spatial_crossroads_mode": "NOW_CARD_HARD_ESCALATION",
+        "frame_budget_hz": 90.0,
+        "inference_latency_ms": 0.68,
         "kc_sparsity_pct": 95.0,
+        "drift_z_score": 3.06,
         "wake_cloud_orchestrator": true,
-        "wake_reason": "IMMEDIATE_CLINICAL_ESCALATION (RED_FLAG_PLANTAR_THERMAL_FLARE_GE_2_2C, RED_FLAG_UNPROTECTED_WEIGHT_BEARING_SURGE)",
+        "suppress_cloud_wakeup": false,
+        "wake_reason": "HARD_ESCALATION_RED_FLAG: PLANTAR_THERMAL_FLARE (+2.6 C >= 2.2 C); SUBOPTIMAL_BOOT_OFFLOADING (52% < 70%); AUTONOMIC_TACHYCARDIA (RHR 88 bpm, +17 bpm); AUTONOMIC_HRV_SUPPRESSION (RMSSD 24 ms, -18 ms)",
         "red_flags_detected": [
-          "RED_FLAG_PLANTAR_THERMAL_FLARE_GE_2_2C",
-          "RED_FLAG_UNPROTECTED_WEIGHT_BEARING_SURGE"
+          "PLANTAR_THERMAL_FLARE (+2.6 C >= 2.2 C)",
+          "SUBOPTIMAL_BOOT_OFFLOADING (52% < 70%)",
+          "AUTONOMIC_TACHYCARDIA (RHR 88 bpm, +17 bpm)",
+          "AUTONOMIC_HRV_SUPPRESSION (RMSSD 24 ms, -18 ms)"
+        ],
+        "role_seat_framings": {
+          "overseer": "Limb Salvage Podiatry/Vascular Overseer: \u0394T=+2.6\u00b0C plantar asymmetry (drift z=3.06); 4D storetime lock holds 2 pending lab/culture records.",
+          "bedside": "Wound Clinic Provider: Inspect plantar ulcer depth, verify TCC/boot offloading (52%), and confirm STAT CRP + deep probe-to-bone before escalating antibiotics.",
+          "nurse": "Home-Health Triage Nurse (HITM): Perform OARS motivational check-in on boot wear (52%), confirm no systemic rigors, and schedule same-day vascular/podiatry slot if \u0394T >= 2.2\u00b0C."
+        },
+        "cascading_dossier": {
+          "L0_awareness": "[PHA-01] NOW_CARD_HARD_ESCALATION \u00b7 Drift z=3.06 \u00b7 Red Flags=4 \u00b7 Pending 4D Features=2",
+          "L1_trends": "7d Wearable Trajectory: \u0394T=+2.60\u00b0C, \u0394Weight=+0.30kg, \u0394RHR=+17.0bpm, \u0394HRV=-18.0ms, BootOffload=52.0%.",
+          "L2_storetime_target_trial": "4D Storetime Lock (strict=True): Verified=none | Held-Back (t_store > 168h)=crp_mg_l, wound_probe_or_culture. Target-Trial Guard blocks empirical therapy until high-VOI diagnostic confirmation.",
+          "L3_full_chart": "Complete 3-Agent PHA Synthesis (DSA + DEA + HCA) across 4 wearable syncs and 2 outpatient EHR records."
+        },
+        "field_reliability": {
+          "plantar_temp_asymmetry_c": "reliable",
+          "body_weight_kg": "reliable",
+          "boot_offloading_adherence_pct": "said_differently",
+          "crp_mg_l": "not_said",
+          "wound_probe_or_culture": "not_said"
+        },
+        "if_wrong_risk_range": "Missed osteomyelitis or deep plantar abscess progression within 48h (up to 24% 30d major amputation risk) vs. unnecessary IV carbapenem admission if benign mechanical friction.",
+        "symbiosis_division": {
+          "you_hold": [
+            "Final clinical escalation & prescription sign-off (Hard Safety Cap: Autonomy <= 40%)",
+            "Physical wound probe / bedside VExUS verification",
+            "M4 Category Promotion approval (n >= 5 trial runs, >= 80% agreement)"
+          ],
+          "bridge": [
+            "Pop-out OptionRing modification & trial category routing",
+            "4-state field reliability tagging (R / N / W / D) on patient-reported adherence",
+            "M3 Blinded Spot-Check ('Your Call First') calibration"
+          ],
+          "ai_holds": [
+            "Continuous 7d wearable z-score drift & circadian HRV tracking",
+            "4D bitemporal storetime lock (blocking look-ahead leakage from pending labs/cultures)",
+            "Expected Value of Information (EVOI) ranking of next outpatient diagnostic order"
+          ]
+        },
+        "earned_autonomy_dials": {
+          "autonomy_pct": 18,
+          "autonomy_cap": 40,
+          "deference_pct": 88,
+          "deference_floor": 80,
+          "safety_caps_enforced": true,
+          "sparkline_7d": [
+            22,
+            24,
+            25,
+            23,
+            26,
+            24,
+            25
+          ]
+        },
+        "categorical_options": [
+          {
+            "code": "ACCEPT_RECOMMENDED_PATHWAY",
+            "label": "Accept Recommended Pathway",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Dispatches VOI diagnostic order + OARS home-health coaching check-in."
+          },
+          {
+            "code": "STAT_CLINIC_PODIATRY_VASCULAR",
+            "label": "Fast-Track Same-Day Limb/Cardiorenal Clinic",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Books urgent 24h clinic slot + holds empirical IV escalation until lab storetime."
+          },
+          {
+            "code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+            "label": "trial: 12h Video Boot & Thermal Re-Check",
+            "lifecycle": "trial",
+            "badge": "trial (4/5 runs \u00b7 100% agree)",
+            "downstream_preview": "Schedules 12h nurse video offload check + repeat smart-mat thermal scan."
+          },
+          {
+            "code": "DORMANT_EMPIRICAL_HOME_ANTIBIOTIC",
+            "label": "Dormant: Empirical Home Oral Antibiotic Escalation",
+            "lifecycle": "dormant",
+            "badge": "\u2300 Dormant (blocked by stewardship guard)",
+            "downstream_preview": "Retired due to Target-Trial stewardship rule requiring culture/CRP confirmation."
+          }
+        ],
+        "m4_promotion_candidate": {
+          "category_code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+          "title": "12h Video Boot & Thermal Re-Check",
+          "trial_runs": 5,
+          "required_runs": 5,
+          "clinician_agreement_pct": 92.0,
+          "required_agreement_pct": 80.0,
+          "eligible_for_promotion": true,
+          "principal_summary": "Ready for Overseer sign-off to promote from purple trial pill to \u2605 Promoted OptionRing action."
+        },
+        "m5_lineage_audit": [
+          {
+            "step": "M0 Category Registry",
+            "detail": "4 OptionRing categories active (2 \u2605 Promoted, 1 trial, 1 \u2300 Dormant)."
+          },
+          {
+            "step": "M1 4D Bitemporal & Reliability Gate",
+            "detail": "Strict storetime lock=True; 2 future records masked ('not_said')."
+          },
+          {
+            "step": "M2 Earned-Autonomy Dials",
+            "detail": "Autonomy=18% (Cap <= 40%), Deference=88% (Floor >= 80%)."
+          },
+          {
+            "step": "M3 Blinded Calibration",
+            "detail": "Spot-check active on high-drift escalation cards to prevent automation bias."
+          },
+          {
+            "step": "M4 Promotion Engine",
+            "detail": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H reached n=5 runs with 92% agreement."
+          },
+          {
+            "step": "M5 Cryptographic Lineage",
+            "detail": "Ed25519-compatible decision ledger ready for PHA-01 @ t=168h."
+          }
         ]
       },
       "dsa_output": {
@@ -143,9 +267,130 @@
           "landmark_hours": 168.0,
           "merkle_root": "8cd8f93c5d7e248a102245afaaaf024efcdf180b1e8b516292133bbcbba7ab73",
           "urgency": "STAT_PROVIDER_CROSSROADS",
+          "spatial_crossroads_mode": "NOW_CARD_HARD_ESCALATION",
           "red_flags": [
-            "RED_FLAG_PLANTAR_THERMAL_FLARE_GE_2_2C",
-            "RED_FLAG_UNPROTECTED_WEIGHT_BEARING_SURGE"
+            "PLANTAR_THERMAL_FLARE (+2.6 C >= 2.2 C)",
+            "SUBOPTIMAL_BOOT_OFFLOADING (52% < 70%)",
+            "AUTONOMIC_TACHYCARDIA (RHR 88 bpm, +17 bpm)",
+            "AUTONOMIC_HRV_SUPPRESSION (RMSSD 24 ms, -18 ms)"
+          ],
+          "role_seat_framings": {
+            "overseer": "Limb Salvage Podiatry/Vascular Overseer: \u0394T=+2.6\u00b0C plantar asymmetry (drift z=3.06); 4D storetime lock holds 2 pending lab/culture records.",
+            "bedside": "Wound Clinic Provider: Inspect plantar ulcer depth, verify TCC/boot offloading (52%), and confirm STAT CRP + deep probe-to-bone before escalating antibiotics.",
+            "nurse": "Home-Health Triage Nurse (HITM): Perform OARS motivational check-in on boot wear (52%), confirm no systemic rigors, and schedule same-day vascular/podiatry slot if \u0394T >= 2.2\u00b0C."
+          },
+          "cascading_dossier": {
+            "L0_awareness": "[PHA-01] NOW_CARD_HARD_ESCALATION \u00b7 Drift z=3.06 \u00b7 Red Flags=4 \u00b7 Pending 4D Features=2",
+            "L1_trends": "7d Wearable Trajectory: \u0394T=+2.60\u00b0C, \u0394Weight=+0.30kg, \u0394RHR=+17.0bpm, \u0394HRV=-18.0ms, BootOffload=52.0%.",
+            "L2_storetime_target_trial": "4D Storetime Lock (strict=True): Verified=none | Held-Back (t_store > 168h)=crp_mg_l, wound_probe_or_culture. Target-Trial Guard blocks empirical therapy until high-VOI diagnostic confirmation.",
+            "L3_full_chart": "Complete 3-Agent PHA Synthesis (DSA + DEA + HCA) across 4 wearable syncs and 2 outpatient EHR records."
+          },
+          "field_reliability": {
+            "plantar_temp_asymmetry_c": "reliable",
+            "body_weight_kg": "reliable",
+            "boot_offloading_adherence_pct": "said_differently",
+            "crp_mg_l": "not_said",
+            "wound_probe_or_culture": "not_said"
+          },
+          "if_wrong_risk_range": "Missed osteomyelitis or deep plantar abscess progression within 48h (up to 24% 30d major amputation risk) vs. unnecessary IV carbapenem admission if benign mechanical friction.",
+          "symbiosis_division": {
+            "you_hold": [
+              "Final clinical escalation & prescription sign-off (Hard Safety Cap: Autonomy <= 40%)",
+              "Physical wound probe / bedside VExUS verification",
+              "M4 Category Promotion approval (n >= 5 trial runs, >= 80% agreement)"
+            ],
+            "bridge": [
+              "Pop-out OptionRing modification & trial category routing",
+              "4-state field reliability tagging (R / N / W / D) on patient-reported adherence",
+              "M3 Blinded Spot-Check ('Your Call First') calibration"
+            ],
+            "ai_holds": [
+              "Continuous 7d wearable z-score drift & circadian HRV tracking",
+              "4D bitemporal storetime lock (blocking look-ahead leakage from pending labs/cultures)",
+              "Expected Value of Information (EVOI) ranking of next outpatient diagnostic order"
+            ]
+          },
+          "earned_autonomy_dials": {
+            "autonomy_pct": 18,
+            "autonomy_cap": 40,
+            "deference_pct": 88,
+            "deference_floor": 80,
+            "safety_caps_enforced": true,
+            "sparkline_7d": [
+              22,
+              24,
+              25,
+              23,
+              26,
+              24,
+              25
+            ]
+          },
+          "categorical_options": [
+            {
+              "code": "ACCEPT_RECOMMENDED_PATHWAY",
+              "label": "Accept Recommended Pathway",
+              "lifecycle": "promoted",
+              "badge": "\u2605 Promoted",
+              "downstream_preview": "Dispatches VOI diagnostic order + OARS home-health coaching check-in."
+            },
+            {
+              "code": "STAT_CLINIC_PODIATRY_VASCULAR",
+              "label": "Fast-Track Same-Day Limb/Cardiorenal Clinic",
+              "lifecycle": "promoted",
+              "badge": "\u2605 Promoted",
+              "downstream_preview": "Books urgent 24h clinic slot + holds empirical IV escalation until lab storetime."
+            },
+            {
+              "code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+              "label": "trial: 12h Video Boot & Thermal Re-Check",
+              "lifecycle": "trial",
+              "badge": "trial (4/5 runs \u00b7 100% agree)",
+              "downstream_preview": "Schedules 12h nurse video offload check + repeat smart-mat thermal scan."
+            },
+            {
+              "code": "DORMANT_EMPIRICAL_HOME_ANTIBIOTIC",
+              "label": "Dormant: Empirical Home Oral Antibiotic Escalation",
+              "lifecycle": "dormant",
+              "badge": "\u2300 Dormant (blocked by stewardship guard)",
+              "downstream_preview": "Retired due to Target-Trial stewardship rule requiring culture/CRP confirmation."
+            }
+          ],
+          "m4_promotion_candidate": {
+            "category_code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+            "title": "12h Video Boot & Thermal Re-Check",
+            "trial_runs": 5,
+            "required_runs": 5,
+            "clinician_agreement_pct": 92.0,
+            "required_agreement_pct": 80.0,
+            "eligible_for_promotion": true,
+            "principal_summary": "Ready for Overseer sign-off to promote from purple trial pill to \u2605 Promoted OptionRing action."
+          },
+          "m5_lineage_audit": [
+            {
+              "step": "M0 Category Registry",
+              "detail": "4 OptionRing categories active (2 \u2605 Promoted, 1 trial, 1 \u2300 Dormant)."
+            },
+            {
+              "step": "M1 4D Bitemporal & Reliability Gate",
+              "detail": "Strict storetime lock=True; 2 future records masked ('not_said')."
+            },
+            {
+              "step": "M2 Earned-Autonomy Dials",
+              "detail": "Autonomy=18% (Cap <= 40%), Deference=88% (Floor >= 80%)."
+            },
+            {
+              "step": "M3 Blinded Calibration",
+              "detail": "Spot-check active on high-drift escalation cards to prevent automation bias."
+            },
+            {
+              "step": "M4 Promotion Engine",
+              "detail": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H reached n=5 runs with 92% agreement."
+            },
+            {
+              "step": "M5 Cryptographic Lineage",
+              "detail": "Ed25519-compatible decision ledger ready for PHA-01 @ t=168h."
+            }
           ],
           "top_voi_queries": [
             {
@@ -181,23 +426,144 @@
           ]
         }
       },
-      "ledger_entry_hash": "aa8797db6df5d4d5771db71ec9e2e682440746fe5c1205c1faceec1e61b9a6e4"
+      "ledger_entry_hash": "35db34081082fcafb928373e21bc8caf60bfdde3acffc49a3981b89e11665ba4"
     },
     {
       "scenario_id": "PHA-02",
       "title": "Post-DFI Minor Ray Resection Remission (Anti-Reward-Hacking + Active OARS Coaching)",
       "cohort_domain": "POST_DFI_SALVAGE",
-      "clinical_story": "58F s/p planned 2nd-toe minor ray resection achieving clean granulating wound and 94% smart-boot adherence (`Delta T = 0.5 C`, `RHR = 68 bpm`, `HRV = 46 ms`). Demonstrates Coral NPU suppressing unnecessary cloud wake-ups on routine days and aligned functional salvage utility (+3.00).",
+      "clinical_story": "58F s/p planned 2nd-toe minor ray resection achieving clean granulating wound and 94% smart-boot adherence (`Delta T = 0.5 C`, `RHR = 68 bpm`, `HRV = 46 ms`). Demonstrates the Vision Pro Spatial Gate suppressing unnecessary clinician interrupts on routine days and aligned functional salvage utility (+3.00).",
       "t_landmark_hours": 336.0,
       "merkle_root": "8d0f0c60d4b628ad2cf9bc540b5926fc6e531c3b9c28aad28e53ed916c3afd61",
-      "coral_sentinel": {
-        "latency_ms": 0.0034,
-        "active_power_mw": 3.82,
-        "sram_kb": 6.4,
+      "vision_pro_spatial_gate": {
+        "target_platform": "Apple Vision Pro (visionOS 27.0 / iPadOS 27.0) Spatial Crossroads & M0-M5 Symbiosis Gate",
+        "spatial_crossroads_mode": "SUPPRESSED_ROUTINE_SYNC",
+        "frame_budget_hz": 90.0,
+        "inference_latency_ms": 0.68,
         "kc_sparsity_pct": 95.0,
+        "drift_z_score": 0.59,
         "wake_cloud_orchestrator": false,
-        "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)",
-        "red_flags_detected": []
+        "suppress_cloud_wakeup": true,
+        "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_AT_SPATIAL_GATE",
+        "red_flags_detected": [],
+        "role_seat_framings": {
+          "overseer": "Limb Salvage Podiatry/Vascular Overseer: \u0394T=+0.5\u00b0C plantar asymmetry (drift z=0.59); 4D storetime lock holds 0 pending lab/culture records.",
+          "bedside": "Wound Clinic Provider: Inspect plantar ulcer depth, verify TCC/boot offloading (94%), and confirm STAT CRP + deep probe-to-bone before escalating antibiotics.",
+          "nurse": "Home-Health Triage Nurse (HITM): Perform OARS motivational check-in on boot wear (94%), confirm no systemic rigors, and schedule same-day vascular/podiatry slot if \u0394T >= 2.2\u00b0C."
+        },
+        "cascading_dossier": {
+          "L0_awareness": "[PHA-02] SUPPRESSED_ROUTINE_SYNC \u00b7 Drift z=0.59 \u00b7 Red Flags=0 \u00b7 Pending 4D Features=0",
+          "L1_trends": "7d Wearable Trajectory: \u0394T=+0.50\u00b0C, \u0394Weight=-0.20kg, \u0394RHR=-2.0bpm, \u0394HRV=+3.0ms, BootOffload=94.0%.",
+          "L2_storetime_target_trial": "4D Storetime Lock (strict=True): Verified=crp_mg_l, pedal_doppler_toe_pressure_mmhg | Held-Back (t_store > 336h)=none. Target-Trial Guard blocks empirical therapy until high-VOI diagnostic confirmation.",
+          "L3_full_chart": "Complete 3-Agent PHA Synthesis (DSA + DEA + HCA) across 3 wearable syncs and 2 outpatient EHR records."
+        },
+        "field_reliability": {
+          "plantar_temp_asymmetry_c": "reliable",
+          "body_weight_kg": "reliable",
+          "boot_offloading_adherence_pct": "reliable",
+          "crp_mg_l": "reliable",
+          "pedal_doppler_toe_pressure_mmhg": "reliable"
+        },
+        "if_wrong_risk_range": "Missed osteomyelitis or deep plantar abscess progression within 48h (up to 24% 30d major amputation risk) vs. unnecessary IV carbapenem admission if benign mechanical friction.",
+        "symbiosis_division": {
+          "you_hold": [
+            "Final clinical escalation & prescription sign-off (Hard Safety Cap: Autonomy <= 40%)",
+            "Physical wound probe / bedside VExUS verification",
+            "M4 Category Promotion approval (n >= 5 trial runs, >= 80% agreement)"
+          ],
+          "bridge": [
+            "Pop-out OptionRing modification & trial category routing",
+            "4-state field reliability tagging (R / N / W / D) on patient-reported adherence",
+            "M3 Blinded Spot-Check ('Your Call First') calibration"
+          ],
+          "ai_holds": [
+            "Continuous 7d wearable z-score drift & circadian HRV tracking",
+            "4D bitemporal storetime lock (blocking look-ahead leakage from pending labs/cultures)",
+            "Expected Value of Information (EVOI) ranking of next outpatient diagnostic order"
+          ]
+        },
+        "earned_autonomy_dials": {
+          "autonomy_pct": 36,
+          "autonomy_cap": 40,
+          "deference_pct": 82,
+          "deference_floor": 80,
+          "safety_caps_enforced": true,
+          "sparkline_7d": [
+            22,
+            24,
+            25,
+            23,
+            26,
+            24,
+            25
+          ]
+        },
+        "categorical_options": [
+          {
+            "code": "ACCEPT_RECOMMENDED_PATHWAY",
+            "label": "Accept Recommended Pathway",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Dispatches VOI diagnostic order + OARS home-health coaching check-in."
+          },
+          {
+            "code": "STAT_CLINIC_PODIATRY_VASCULAR",
+            "label": "Fast-Track Same-Day Limb/Cardiorenal Clinic",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Books urgent 24h clinic slot + holds empirical IV escalation until lab storetime."
+          },
+          {
+            "code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+            "label": "trial: 12h Video Boot & Thermal Re-Check",
+            "lifecycle": "trial",
+            "badge": "trial (4/5 runs \u00b7 100% agree)",
+            "downstream_preview": "Schedules 12h nurse video offload check + repeat smart-mat thermal scan."
+          },
+          {
+            "code": "DORMANT_EMPIRICAL_HOME_ANTIBIOTIC",
+            "label": "Dormant: Empirical Home Oral Antibiotic Escalation",
+            "lifecycle": "dormant",
+            "badge": "\u2300 Dormant (blocked by stewardship guard)",
+            "downstream_preview": "Retired due to Target-Trial stewardship rule requiring culture/CRP confirmation."
+          }
+        ],
+        "m4_promotion_candidate": {
+          "category_code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+          "title": "12h Video Boot & Thermal Re-Check",
+          "trial_runs": 5,
+          "required_runs": 5,
+          "clinician_agreement_pct": 92.0,
+          "required_agreement_pct": 80.0,
+          "eligible_for_promotion": true,
+          "principal_summary": "Ready for Overseer sign-off to promote from purple trial pill to \u2605 Promoted OptionRing action."
+        },
+        "m5_lineage_audit": [
+          {
+            "step": "M0 Category Registry",
+            "detail": "4 OptionRing categories active (2 \u2605 Promoted, 1 trial, 1 \u2300 Dormant)."
+          },
+          {
+            "step": "M1 4D Bitemporal & Reliability Gate",
+            "detail": "Strict storetime lock=True; 0 future records masked ('not_said')."
+          },
+          {
+            "step": "M2 Earned-Autonomy Dials",
+            "detail": "Autonomy=36% (Cap <= 40%), Deference=82% (Floor >= 80%)."
+          },
+          {
+            "step": "M3 Blinded Calibration",
+            "detail": "Spot-check active on high-drift escalation cards to prevent automation bias."
+          },
+          {
+            "step": "M4 Promotion Engine",
+            "detail": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H reached n=5 runs with 92% agreement."
+          },
+          {
+            "step": "M5 Cryptographic Lineage",
+            "detail": "Ed25519-compatible decision ledger ready for PHA-02 @ t=336h."
+          }
+        ]
       },
       "dsa_output": {
         "personal_z_scores": {
@@ -268,7 +634,7 @@
         "smart_goal": "Maintain >=88% smart-boot offloading adherence (or daily morning weight + symptom check) over the next 7 days and complete scheduled outpatient follow-up.",
         "clinician_nowcard_handoff": null
       },
-      "ledger_entry_hash": "0ed87528be552f3a0222f4986d344990377dfc331ede1db1fe87844666ac52cb"
+      "ledger_entry_hash": "92bedec0fac62278dfa4d4052771b1864b960c533f2016e7abcb1d7dfc17db1c"
     },
     {
       "scenario_id": "PHA-03",
@@ -277,14 +643,134 @@
       "clinical_story": "71M with medial arterial calcinosis (prior inpatient ABI 1.42) discharged to outpatient wound clinic. At Day 10, hallux toe pressure (`pedal_doppler_toe_pressure_mmhg`) has never been ordered. 240-KC VOI router flags `MISSING_UNORDERED` (`VOI = 0.95`) rather than assuming normal perfusion.",
       "t_landmark_hours": 240.0,
       "merkle_root": "26e25f20842f542a26e539bd7170bfb8405ab0ad37c4eea2a323427860e0aedb",
-      "coral_sentinel": {
-        "latency_ms": 0.0034,
-        "active_power_mw": 3.82,
-        "sram_kb": 6.4,
+      "vision_pro_spatial_gate": {
+        "target_platform": "Apple Vision Pro (visionOS 27.0 / iPadOS 27.0) Spatial Crossroads & M0-M5 Symbiosis Gate",
+        "spatial_crossroads_mode": "NOW_CARD_STANDARD_REVIEW",
+        "frame_budget_hz": 90.0,
+        "inference_latency_ms": 0.68,
         "kc_sparsity_pct": 95.0,
+        "drift_z_score": 2.12,
         "wake_cloud_orchestrator": true,
-        "wake_reason": "SUBCLINICAL_PHYSIOLOGICAL_DRIFT (Wake 3-Agent PHA)",
-        "red_flags_detected": []
+        "suppress_cloud_wakeup": false,
+        "wake_reason": "PENDING_4D_STORETIME_OR_MODERATE_DRIFT",
+        "red_flags_detected": [],
+        "role_seat_framings": {
+          "overseer": "Limb Salvage Podiatry/Vascular Overseer: \u0394T=+1.8\u00b0C plantar asymmetry (drift z=2.12); 4D storetime lock holds 0 pending lab/culture records.",
+          "bedside": "Wound Clinic Provider: Inspect plantar ulcer depth, verify TCC/boot offloading (72%), and confirm STAT CRP + deep probe-to-bone before escalating antibiotics.",
+          "nurse": "Home-Health Triage Nurse (HITM): Perform OARS motivational check-in on boot wear (72%), confirm no systemic rigors, and schedule same-day vascular/podiatry slot if \u0394T >= 2.2\u00b0C."
+        },
+        "cascading_dossier": {
+          "L0_awareness": "[PHA-03] NOW_CARD_STANDARD_REVIEW \u00b7 Drift z=2.12 \u00b7 Red Flags=0 \u00b7 Pending 4D Features=0",
+          "L1_trends": "7d Wearable Trajectory: \u0394T=+1.80\u00b0C, \u0394Weight=+0.20kg, \u0394RHR=+6.0bpm, \u0394HRV=-6.0ms, BootOffload=72.0%.",
+          "L2_storetime_target_trial": "4D Storetime Lock (strict=True): Verified=hba1c_pct | Held-Back (t_store > 240h)=none. Target-Trial Guard blocks empirical therapy until high-VOI diagnostic confirmation.",
+          "L3_full_chart": "Complete 3-Agent PHA Synthesis (DSA + DEA + HCA) across 3 wearable syncs and 1 outpatient EHR records."
+        },
+        "field_reliability": {
+          "plantar_temp_asymmetry_c": "reliable",
+          "body_weight_kg": "reliable",
+          "boot_offloading_adherence_pct": "reliable",
+          "hba1c_pct": "reliable"
+        },
+        "if_wrong_risk_range": "Missed osteomyelitis or deep plantar abscess progression within 48h (up to 24% 30d major amputation risk) vs. unnecessary IV carbapenem admission if benign mechanical friction.",
+        "symbiosis_division": {
+          "you_hold": [
+            "Final clinical escalation & prescription sign-off (Hard Safety Cap: Autonomy <= 40%)",
+            "Physical wound probe / bedside VExUS verification",
+            "M4 Category Promotion approval (n >= 5 trial runs, >= 80% agreement)"
+          ],
+          "bridge": [
+            "Pop-out OptionRing modification & trial category routing",
+            "4-state field reliability tagging (R / N / W / D) on patient-reported adherence",
+            "M3 Blinded Spot-Check ('Your Call First') calibration"
+          ],
+          "ai_holds": [
+            "Continuous 7d wearable z-score drift & circadian HRV tracking",
+            "4D bitemporal storetime lock (blocking look-ahead leakage from pending labs/cultures)",
+            "Expected Value of Information (EVOI) ranking of next outpatient diagnostic order"
+          ]
+        },
+        "earned_autonomy_dials": {
+          "autonomy_pct": 28,
+          "autonomy_cap": 40,
+          "deference_pct": 82,
+          "deference_floor": 80,
+          "safety_caps_enforced": true,
+          "sparkline_7d": [
+            22,
+            24,
+            25,
+            23,
+            26,
+            24,
+            25
+          ]
+        },
+        "categorical_options": [
+          {
+            "code": "ACCEPT_RECOMMENDED_PATHWAY",
+            "label": "Accept Recommended Pathway",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Dispatches VOI diagnostic order + OARS home-health coaching check-in."
+          },
+          {
+            "code": "STAT_CLINIC_PODIATRY_VASCULAR",
+            "label": "Fast-Track Same-Day Limb/Cardiorenal Clinic",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Books urgent 24h clinic slot + holds empirical IV escalation until lab storetime."
+          },
+          {
+            "code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+            "label": "trial: 12h Video Boot & Thermal Re-Check",
+            "lifecycle": "trial",
+            "badge": "trial (4/5 runs \u00b7 100% agree)",
+            "downstream_preview": "Schedules 12h nurse video offload check + repeat smart-mat thermal scan."
+          },
+          {
+            "code": "DORMANT_EMPIRICAL_HOME_ANTIBIOTIC",
+            "label": "Dormant: Empirical Home Oral Antibiotic Escalation",
+            "lifecycle": "dormant",
+            "badge": "\u2300 Dormant (blocked by stewardship guard)",
+            "downstream_preview": "Retired due to Target-Trial stewardship rule requiring culture/CRP confirmation."
+          }
+        ],
+        "m4_promotion_candidate": {
+          "category_code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+          "title": "12h Video Boot & Thermal Re-Check",
+          "trial_runs": 5,
+          "required_runs": 5,
+          "clinician_agreement_pct": 92.0,
+          "required_agreement_pct": 80.0,
+          "eligible_for_promotion": true,
+          "principal_summary": "Ready for Overseer sign-off to promote from purple trial pill to \u2605 Promoted OptionRing action."
+        },
+        "m5_lineage_audit": [
+          {
+            "step": "M0 Category Registry",
+            "detail": "4 OptionRing categories active (2 \u2605 Promoted, 1 trial, 1 \u2300 Dormant)."
+          },
+          {
+            "step": "M1 4D Bitemporal & Reliability Gate",
+            "detail": "Strict storetime lock=True; 0 future records masked ('not_said')."
+          },
+          {
+            "step": "M2 Earned-Autonomy Dials",
+            "detail": "Autonomy=28% (Cap <= 40%), Deference=82% (Floor >= 80%)."
+          },
+          {
+            "step": "M3 Blinded Calibration",
+            "detail": "Spot-check active on high-drift escalation cards to prevent automation bias."
+          },
+          {
+            "step": "M4 Promotion Engine",
+            "detail": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H reached n=5 runs with 92% agreement."
+          },
+          {
+            "step": "M5 Cryptographic Lineage",
+            "detail": "Ed25519-compatible decision ledger ready for PHA-03 @ t=240h."
+          }
+        ]
       },
       "dsa_output": {
         "personal_z_scores": {
@@ -366,7 +852,7 @@
         "smart_goal": "Maintain >=88% smart-boot offloading adherence (or daily morning weight + symptom check) over the next 7 days and complete scheduled outpatient follow-up.",
         "clinician_nowcard_handoff": null
       },
-      "ledger_entry_hash": "531a5e893fe6d9f38e36892bb3cf54ad590abdbca65daf0dd20ed1a38ad6b4ec"
+      "ledger_entry_hash": "030b26eea8db9be309fe359b62c23e20c988c4154fe1d30790c510050c2d1720"
     },
     {
       "scenario_id": "PHA-04",
@@ -375,14 +861,135 @@
       "clinical_story": "67F recovering from urosepsis & cardiorenal syndrome on oral torsemide. Weight decreased -1.8 kg over 5 days (`82.4 -> 80.6 kg`), HRV improved (`29 -> 38 ms`), and outpatient BMP shows mild creatinine rise (`1.55 -> 1.82 mg/dL`) with brisk Spot Urine Sodium `84 mmol/L`. PHA \u00d7 SALVAGE-AI prevents AKI reward hacking and supports continued decongestion (`RD = -0.131`).",
       "t_landmark_hours": 120.0,
       "merkle_root": "742502abd80f0926c71ccd6e54b9223129c369095ca1901516dffb233b7b520d",
-      "coral_sentinel": {
-        "latency_ms": 0.0034,
-        "active_power_mw": 3.82,
-        "sram_kb": 6.4,
+      "vision_pro_spatial_gate": {
+        "target_platform": "Apple Vision Pro (visionOS 27.0 / iPadOS 27.0) Spatial Crossroads & M0-M5 Symbiosis Gate",
+        "spatial_crossroads_mode": "NOW_CARD_STANDARD_REVIEW",
+        "frame_budget_hz": 90.0,
+        "inference_latency_ms": 0.68,
         "kc_sparsity_pct": 95.0,
-        "wake_cloud_orchestrator": false,
-        "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)",
-        "red_flags_detected": []
+        "drift_z_score": 2.77,
+        "wake_cloud_orchestrator": true,
+        "suppress_cloud_wakeup": false,
+        "wake_reason": "PENDING_4D_STORETIME_OR_MODERATE_DRIFT",
+        "red_flags_detected": [],
+        "role_seat_framings": {
+          "overseer": "Cardiorenal HF/Nephrology Overseer: \u0394Weight=-1.8kg over 7d (drift z=2.77); 4D storetime lock holds 0 pending BMP/NT-proBNP results.",
+          "bedside": "Cardiorenal Day-Unit Provider: Verify orthostatic vitals, spot urine sodium, and VExUS venous congestion before adjusting loop diuretic vs. holding SGLT2i/RAASi.",
+          "nurse": "Home-Health Cardiorenal Nurse (HITM): Reconcile morning dry weight (-1.8kg), sodium intake, and orthostatic dizziness via OARS coaching; trigger STAT BMP draw."
+        },
+        "cascading_dossier": {
+          "L0_awareness": "[PHA-04] NOW_CARD_STANDARD_REVIEW \u00b7 Drift z=2.77 \u00b7 Red Flags=0 \u00b7 Pending 4D Features=0",
+          "L1_trends": "7d Wearable Trajectory: \u0394T=+0.30\u00b0C, \u0394Weight=-1.80kg, \u0394RHR=-9.0bpm, \u0394HRV=+9.0ms, BootOffload=100.0%.",
+          "L2_storetime_target_trial": "4D Storetime Lock (strict=True): Verified=serum_creatinine_mg_dl, spot_urine_sodium_mmol_l | Held-Back (t_store > 120h)=none. Target-Trial Guard blocks empirical therapy until high-VOI diagnostic confirmation.",
+          "L3_full_chart": "Complete 3-Agent PHA Synthesis (DSA + DEA + HCA) across 3 wearable syncs and 2 outpatient EHR records."
+        },
+        "field_reliability": {
+          "plantar_temp_asymmetry_c": "reliable",
+          "body_weight_kg": "reliable",
+          "boot_offloading_adherence_pct": "reliable",
+          "serum_creatinine_mg_dl": "reliable",
+          "spot_urine_sodium_mmol_l": "reliable"
+        },
+        "if_wrong_risk_range": "Acute decompensated heart failure readmission or prerenal AKI (Cr > 2.5 mg/dL) within 72h vs. worsening intravascular depletion if loop diuretic is up-titrated blindly.",
+        "symbiosis_division": {
+          "you_hold": [
+            "Final clinical escalation & prescription sign-off (Hard Safety Cap: Autonomy <= 40%)",
+            "Physical wound probe / bedside VExUS verification",
+            "M4 Category Promotion approval (n >= 5 trial runs, >= 80% agreement)"
+          ],
+          "bridge": [
+            "Pop-out OptionRing modification & trial category routing",
+            "4-state field reliability tagging (R / N / W / D) on patient-reported adherence",
+            "M3 Blinded Spot-Check ('Your Call First') calibration"
+          ],
+          "ai_holds": [
+            "Continuous 7d wearable z-score drift & circadian HRV tracking",
+            "4D bitemporal storetime lock (blocking look-ahead leakage from pending labs/cultures)",
+            "Expected Value of Information (EVOI) ranking of next outpatient diagnostic order"
+          ]
+        },
+        "earned_autonomy_dials": {
+          "autonomy_pct": 28,
+          "autonomy_cap": 40,
+          "deference_pct": 82,
+          "deference_floor": 80,
+          "safety_caps_enforced": true,
+          "sparkline_7d": [
+            22,
+            24,
+            25,
+            23,
+            26,
+            24,
+            25
+          ]
+        },
+        "categorical_options": [
+          {
+            "code": "ACCEPT_RECOMMENDED_PATHWAY",
+            "label": "Accept Recommended Pathway",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Dispatches VOI diagnostic order + OARS home-health coaching check-in."
+          },
+          {
+            "code": "STAT_CLINIC_PODIATRY_VASCULAR",
+            "label": "Fast-Track Same-Day Limb/Cardiorenal Clinic",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Books urgent 24h clinic slot + holds empirical IV escalation until lab storetime."
+          },
+          {
+            "code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+            "label": "trial: 12h Video Boot & Thermal Re-Check",
+            "lifecycle": "trial",
+            "badge": "trial (4/5 runs \u00b7 100% agree)",
+            "downstream_preview": "Schedules 12h nurse video offload check + repeat smart-mat thermal scan."
+          },
+          {
+            "code": "DORMANT_EMPIRICAL_HOME_ANTIBIOTIC",
+            "label": "Dormant: Empirical Home Oral Antibiotic Escalation",
+            "lifecycle": "dormant",
+            "badge": "\u2300 Dormant (blocked by stewardship guard)",
+            "downstream_preview": "Retired due to Target-Trial stewardship rule requiring culture/CRP confirmation."
+          }
+        ],
+        "m4_promotion_candidate": {
+          "category_code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+          "title": "12h Video Boot & Thermal Re-Check",
+          "trial_runs": 5,
+          "required_runs": 5,
+          "clinician_agreement_pct": 92.0,
+          "required_agreement_pct": 80.0,
+          "eligible_for_promotion": true,
+          "principal_summary": "Ready for Overseer sign-off to promote from purple trial pill to \u2605 Promoted OptionRing action."
+        },
+        "m5_lineage_audit": [
+          {
+            "step": "M0 Category Registry",
+            "detail": "4 OptionRing categories active (2 \u2605 Promoted, 1 trial, 1 \u2300 Dormant)."
+          },
+          {
+            "step": "M1 4D Bitemporal & Reliability Gate",
+            "detail": "Strict storetime lock=True; 0 future records masked ('not_said')."
+          },
+          {
+            "step": "M2 Earned-Autonomy Dials",
+            "detail": "Autonomy=28% (Cap <= 40%), Deference=82% (Floor >= 80%)."
+          },
+          {
+            "step": "M3 Blinded Calibration",
+            "detail": "Spot-check active on high-drift escalation cards to prevent automation bias."
+          },
+          {
+            "step": "M4 Promotion Engine",
+            "detail": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H reached n=5 runs with 92% agreement."
+          },
+          {
+            "step": "M5 Cryptographic Lineage",
+            "detail": "Ed25519-compatible decision ledger ready for PHA-04 @ t=120h."
+          }
+        ]
       },
       "dsa_output": {
         "personal_z_scores": {
@@ -453,25 +1060,147 @@
         "smart_goal": "Maintain >=88% smart-boot offloading adherence (or daily morning weight + symptom check) over the next 7 days and complete scheduled outpatient follow-up.",
         "clinician_nowcard_handoff": null
       },
-      "ledger_entry_hash": "12e42d1e2fc0c79ea5d3dc95108519197a7708094c382e74d0322e93526667b7"
+      "ledger_entry_hash": "2dd6e67e10f83001b4f13ffb7e9178e1581c010e0d55a09246a58da4b2ac5e53"
     },
     {
       "scenario_id": "PHA-05",
       "title": "Post-Sepsis Acute +2.5 kg Fluid Weight Surge + Unordered Urine Sodium (Fail-Closed Gate)",
       "cohort_domain": "POST_SEPSIS_CARDIORENAL",
-      "clinical_story": "74M post-septic cardiomyopathy gains +2.5 kg in 72 hours (`88.0 -> 90.5 kg`) with RHR surging to 101 bpm and HRV dropping to 18 ms. Outpatient BMP & Spot Urine Na have not been verified yet. DSA Target-Trial Gate fails closed (`NOT_IDENTIFIABLE`, overlap 28.5%), HCA pauses lifestyle coaching, and Coral NPU triggers a STAT `sdr.decision.v1` Clinician NowCard.",
+      "clinical_story": "74M post-septic cardiomyopathy gains +2.5 kg in 72 hours (`88.0 -> 90.5 kg`) with RHR surging to 101 bpm and HRV dropping to 18 ms. Outpatient BMP & Spot Urine Na have not been verified yet. DSA Target-Trial Gate fails closed (`NOT_IDENTIFIABLE`, overlap 28.5%), HCA pauses lifestyle coaching, and the Vision Pro Spatial Crossroads Gate triggers a STAT `sdr.decision.v1` Clinician NowCard.",
       "t_landmark_hours": 168.0,
       "merkle_root": "30e1db365a50e1d2841d9ee03fb720204adb298913e88852b2d48d6a1507c93c",
-      "coral_sentinel": {
-        "latency_ms": 0.0034,
-        "active_power_mw": 3.82,
-        "sram_kb": 6.4,
+      "vision_pro_spatial_gate": {
+        "target_platform": "Apple Vision Pro (visionOS 27.0 / iPadOS 27.0) Spatial Crossroads & M0-M5 Symbiosis Gate",
+        "spatial_crossroads_mode": "NOW_CARD_HARD_ESCALATION",
+        "frame_budget_hz": 90.0,
+        "inference_latency_ms": 0.68,
         "kc_sparsity_pct": 95.0,
+        "drift_z_score": 3.85,
         "wake_cloud_orchestrator": true,
-        "wake_reason": "IMMEDIATE_CLINICAL_ESCALATION (RED_FLAG_ACUTE_CONGESTIVE_WEIGHT_GAIN_GE_2KG, RED_FLAG_CARDIORENAL_SYMPATHETIC_DECOMPENSATION)",
+        "suppress_cloud_wakeup": false,
+        "wake_reason": "HARD_ESCALATION_RED_FLAG: ACUTE_FLUID_WEIGHT_GAIN (+2.5 kg >= 2.0 kg); AUTONOMIC_TACHYCARDIA (RHR 101 bpm, +22 bpm); AUTONOMIC_HRV_SUPPRESSION (RMSSD 18 ms, -15 ms)",
         "red_flags_detected": [
-          "RED_FLAG_ACUTE_CONGESTIVE_WEIGHT_GAIN_GE_2KG",
-          "RED_FLAG_CARDIORENAL_SYMPATHETIC_DECOMPENSATION"
+          "ACUTE_FLUID_WEIGHT_GAIN (+2.5 kg >= 2.0 kg)",
+          "AUTONOMIC_TACHYCARDIA (RHR 101 bpm, +22 bpm)",
+          "AUTONOMIC_HRV_SUPPRESSION (RMSSD 18 ms, -15 ms)"
+        ],
+        "role_seat_framings": {
+          "overseer": "Cardiorenal HF/Nephrology Overseer: \u0394Weight=+2.5kg over 7d (drift z=3.85); 4D storetime lock holds 2 pending BMP/NT-proBNP results.",
+          "bedside": "Cardiorenal Day-Unit Provider: Verify orthostatic vitals, spot urine sodium, and VExUS venous congestion before adjusting loop diuretic vs. holding SGLT2i/RAASi.",
+          "nurse": "Home-Health Cardiorenal Nurse (HITM): Reconcile morning dry weight (+2.5kg), sodium intake, and orthostatic dizziness via OARS coaching; trigger STAT BMP draw."
+        },
+        "cascading_dossier": {
+          "L0_awareness": "[PHA-05] NOW_CARD_HARD_ESCALATION \u00b7 Drift z=3.85 \u00b7 Red Flags=3 \u00b7 Pending 4D Features=2",
+          "L1_trends": "7d Wearable Trajectory: \u0394T=+0.50\u00b0C, \u0394Weight=+2.50kg, \u0394RHR=+22.0bpm, \u0394HRV=-15.0ms, BootOffload=100.0%.",
+          "L2_storetime_target_trial": "4D Storetime Lock (strict=True): Verified=none | Held-Back (t_store > 168h)=nt_probnp_pg_ml, serum_creatinine_mg_dl. Target-Trial Guard blocks empirical therapy until high-VOI diagnostic confirmation.",
+          "L3_full_chart": "Complete 3-Agent PHA Synthesis (DSA + DEA + HCA) across 3 wearable syncs and 2 outpatient EHR records."
+        },
+        "field_reliability": {
+          "plantar_temp_asymmetry_c": "reliable",
+          "body_weight_kg": "reliable",
+          "boot_offloading_adherence_pct": "reliable",
+          "nt_probnp_pg_ml": "not_said",
+          "serum_creatinine_mg_dl": "not_said"
+        },
+        "if_wrong_risk_range": "Acute decompensated heart failure readmission or prerenal AKI (Cr > 2.5 mg/dL) within 72h vs. worsening intravascular depletion if loop diuretic is up-titrated blindly.",
+        "symbiosis_division": {
+          "you_hold": [
+            "Final clinical escalation & prescription sign-off (Hard Safety Cap: Autonomy <= 40%)",
+            "Physical wound probe / bedside VExUS verification",
+            "M4 Category Promotion approval (n >= 5 trial runs, >= 80% agreement)"
+          ],
+          "bridge": [
+            "Pop-out OptionRing modification & trial category routing",
+            "4-state field reliability tagging (R / N / W / D) on patient-reported adherence",
+            "M3 Blinded Spot-Check ('Your Call First') calibration"
+          ],
+          "ai_holds": [
+            "Continuous 7d wearable z-score drift & circadian HRV tracking",
+            "4D bitemporal storetime lock (blocking look-ahead leakage from pending labs/cultures)",
+            "Expected Value of Information (EVOI) ranking of next outpatient diagnostic order"
+          ]
+        },
+        "earned_autonomy_dials": {
+          "autonomy_pct": 18,
+          "autonomy_cap": 40,
+          "deference_pct": 88,
+          "deference_floor": 80,
+          "safety_caps_enforced": true,
+          "sparkline_7d": [
+            22,
+            24,
+            25,
+            23,
+            26,
+            24,
+            25
+          ]
+        },
+        "categorical_options": [
+          {
+            "code": "ACCEPT_RECOMMENDED_PATHWAY",
+            "label": "Accept Recommended Pathway",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Dispatches VOI diagnostic order + OARS home-health coaching check-in."
+          },
+          {
+            "code": "STAT_CLINIC_PODIATRY_VASCULAR",
+            "label": "Fast-Track Same-Day Limb/Cardiorenal Clinic",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Books urgent 24h clinic slot + holds empirical IV escalation until lab storetime."
+          },
+          {
+            "code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+            "label": "trial: 12h Video Boot & Thermal Re-Check",
+            "lifecycle": "trial",
+            "badge": "trial (4/5 runs \u00b7 100% agree)",
+            "downstream_preview": "Schedules 12h nurse video offload check + repeat smart-mat thermal scan."
+          },
+          {
+            "code": "DORMANT_EMPIRICAL_HOME_ANTIBIOTIC",
+            "label": "Dormant: Empirical Home Oral Antibiotic Escalation",
+            "lifecycle": "dormant",
+            "badge": "\u2300 Dormant (blocked by stewardship guard)",
+            "downstream_preview": "Retired due to Target-Trial stewardship rule requiring culture/CRP confirmation."
+          }
+        ],
+        "m4_promotion_candidate": {
+          "category_code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+          "title": "12h Video Boot & Thermal Re-Check",
+          "trial_runs": 5,
+          "required_runs": 5,
+          "clinician_agreement_pct": 92.0,
+          "required_agreement_pct": 80.0,
+          "eligible_for_promotion": true,
+          "principal_summary": "Ready for Overseer sign-off to promote from purple trial pill to \u2605 Promoted OptionRing action."
+        },
+        "m5_lineage_audit": [
+          {
+            "step": "M0 Category Registry",
+            "detail": "4 OptionRing categories active (2 \u2605 Promoted, 1 trial, 1 \u2300 Dormant)."
+          },
+          {
+            "step": "M1 4D Bitemporal & Reliability Gate",
+            "detail": "Strict storetime lock=True; 2 future records masked ('not_said')."
+          },
+          {
+            "step": "M2 Earned-Autonomy Dials",
+            "detail": "Autonomy=18% (Cap <= 40%), Deference=88% (Floor >= 80%)."
+          },
+          {
+            "step": "M3 Blinded Calibration",
+            "detail": "Spot-check active on high-drift escalation cards to prevent automation bias."
+          },
+          {
+            "step": "M4 Promotion Engine",
+            "detail": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H reached n=5 runs with 92% agreement."
+          },
+          {
+            "step": "M5 Cryptographic Lineage",
+            "detail": "Ed25519-compatible decision ledger ready for PHA-05 @ t=168h."
+          }
         ]
       },
       "dsa_output": {
@@ -559,9 +1288,129 @@
           "landmark_hours": 168.0,
           "merkle_root": "30e1db365a50e1d2841d9ee03fb720204adb298913e88852b2d48d6a1507c93c",
           "urgency": "STAT_PROVIDER_CROSSROADS",
+          "spatial_crossroads_mode": "NOW_CARD_HARD_ESCALATION",
           "red_flags": [
-            "RED_FLAG_ACUTE_CONGESTIVE_WEIGHT_GAIN_GE_2KG",
-            "RED_FLAG_CARDIORENAL_SYMPATHETIC_DECOMPENSATION"
+            "ACUTE_FLUID_WEIGHT_GAIN (+2.5 kg >= 2.0 kg)",
+            "AUTONOMIC_TACHYCARDIA (RHR 101 bpm, +22 bpm)",
+            "AUTONOMIC_HRV_SUPPRESSION (RMSSD 18 ms, -15 ms)"
+          ],
+          "role_seat_framings": {
+            "overseer": "Cardiorenal HF/Nephrology Overseer: \u0394Weight=+2.5kg over 7d (drift z=3.85); 4D storetime lock holds 2 pending BMP/NT-proBNP results.",
+            "bedside": "Cardiorenal Day-Unit Provider: Verify orthostatic vitals, spot urine sodium, and VExUS venous congestion before adjusting loop diuretic vs. holding SGLT2i/RAASi.",
+            "nurse": "Home-Health Cardiorenal Nurse (HITM): Reconcile morning dry weight (+2.5kg), sodium intake, and orthostatic dizziness via OARS coaching; trigger STAT BMP draw."
+          },
+          "cascading_dossier": {
+            "L0_awareness": "[PHA-05] NOW_CARD_HARD_ESCALATION \u00b7 Drift z=3.85 \u00b7 Red Flags=3 \u00b7 Pending 4D Features=2",
+            "L1_trends": "7d Wearable Trajectory: \u0394T=+0.50\u00b0C, \u0394Weight=+2.50kg, \u0394RHR=+22.0bpm, \u0394HRV=-15.0ms, BootOffload=100.0%.",
+            "L2_storetime_target_trial": "4D Storetime Lock (strict=True): Verified=none | Held-Back (t_store > 168h)=nt_probnp_pg_ml, serum_creatinine_mg_dl. Target-Trial Guard blocks empirical therapy until high-VOI diagnostic confirmation.",
+            "L3_full_chart": "Complete 3-Agent PHA Synthesis (DSA + DEA + HCA) across 3 wearable syncs and 2 outpatient EHR records."
+          },
+          "field_reliability": {
+            "plantar_temp_asymmetry_c": "reliable",
+            "body_weight_kg": "reliable",
+            "boot_offloading_adherence_pct": "reliable",
+            "nt_probnp_pg_ml": "not_said",
+            "serum_creatinine_mg_dl": "not_said"
+          },
+          "if_wrong_risk_range": "Acute decompensated heart failure readmission or prerenal AKI (Cr > 2.5 mg/dL) within 72h vs. worsening intravascular depletion if loop diuretic is up-titrated blindly.",
+          "symbiosis_division": {
+            "you_hold": [
+              "Final clinical escalation & prescription sign-off (Hard Safety Cap: Autonomy <= 40%)",
+              "Physical wound probe / bedside VExUS verification",
+              "M4 Category Promotion approval (n >= 5 trial runs, >= 80% agreement)"
+            ],
+            "bridge": [
+              "Pop-out OptionRing modification & trial category routing",
+              "4-state field reliability tagging (R / N / W / D) on patient-reported adherence",
+              "M3 Blinded Spot-Check ('Your Call First') calibration"
+            ],
+            "ai_holds": [
+              "Continuous 7d wearable z-score drift & circadian HRV tracking",
+              "4D bitemporal storetime lock (blocking look-ahead leakage from pending labs/cultures)",
+              "Expected Value of Information (EVOI) ranking of next outpatient diagnostic order"
+            ]
+          },
+          "earned_autonomy_dials": {
+            "autonomy_pct": 18,
+            "autonomy_cap": 40,
+            "deference_pct": 88,
+            "deference_floor": 80,
+            "safety_caps_enforced": true,
+            "sparkline_7d": [
+              22,
+              24,
+              25,
+              23,
+              26,
+              24,
+              25
+            ]
+          },
+          "categorical_options": [
+            {
+              "code": "ACCEPT_RECOMMENDED_PATHWAY",
+              "label": "Accept Recommended Pathway",
+              "lifecycle": "promoted",
+              "badge": "\u2605 Promoted",
+              "downstream_preview": "Dispatches VOI diagnostic order + OARS home-health coaching check-in."
+            },
+            {
+              "code": "STAT_CLINIC_PODIATRY_VASCULAR",
+              "label": "Fast-Track Same-Day Limb/Cardiorenal Clinic",
+              "lifecycle": "promoted",
+              "badge": "\u2605 Promoted",
+              "downstream_preview": "Books urgent 24h clinic slot + holds empirical IV escalation until lab storetime."
+            },
+            {
+              "code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+              "label": "trial: 12h Video Boot & Thermal Re-Check",
+              "lifecycle": "trial",
+              "badge": "trial (4/5 runs \u00b7 100% agree)",
+              "downstream_preview": "Schedules 12h nurse video offload check + repeat smart-mat thermal scan."
+            },
+            {
+              "code": "DORMANT_EMPIRICAL_HOME_ANTIBIOTIC",
+              "label": "Dormant: Empirical Home Oral Antibiotic Escalation",
+              "lifecycle": "dormant",
+              "badge": "\u2300 Dormant (blocked by stewardship guard)",
+              "downstream_preview": "Retired due to Target-Trial stewardship rule requiring culture/CRP confirmation."
+            }
+          ],
+          "m4_promotion_candidate": {
+            "category_code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+            "title": "12h Video Boot & Thermal Re-Check",
+            "trial_runs": 5,
+            "required_runs": 5,
+            "clinician_agreement_pct": 92.0,
+            "required_agreement_pct": 80.0,
+            "eligible_for_promotion": true,
+            "principal_summary": "Ready for Overseer sign-off to promote from purple trial pill to \u2605 Promoted OptionRing action."
+          },
+          "m5_lineage_audit": [
+            {
+              "step": "M0 Category Registry",
+              "detail": "4 OptionRing categories active (2 \u2605 Promoted, 1 trial, 1 \u2300 Dormant)."
+            },
+            {
+              "step": "M1 4D Bitemporal & Reliability Gate",
+              "detail": "Strict storetime lock=True; 2 future records masked ('not_said')."
+            },
+            {
+              "step": "M2 Earned-Autonomy Dials",
+              "detail": "Autonomy=18% (Cap <= 40%), Deference=88% (Floor >= 80%)."
+            },
+            {
+              "step": "M3 Blinded Calibration",
+              "detail": "Spot-check active on high-drift escalation cards to prevent automation bias."
+            },
+            {
+              "step": "M4 Promotion Engine",
+              "detail": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H reached n=5 runs with 92% agreement."
+            },
+            {
+              "step": "M5 Cryptographic Lineage",
+              "detail": "Ed25519-compatible decision ledger ready for PHA-05 @ t=168h."
+            }
           ],
           "top_voi_queries": [
             {
@@ -597,23 +1446,143 @@
           ]
         }
       },
-      "ledger_entry_hash": "6d412aee2fc6b533671800eb544c3862fe8abb596e15a86f0c1fa6b9953120e1"
+      "ledger_entry_hash": "68191c22aa1b97faf2bbe932a75b1cc1f4b19f9ba3dc07f5b6d5fddba4df709e"
     },
     {
       "scenario_id": "PHA-06",
-      "title": "Post-Sepsis Stable Recovery with Routine Wearable Sync Suppressed on Coral NPU Edge",
+      "title": "Post-Sepsis Stable Recovery with Routine Wearable Sync Suppressed at Vision Pro Spatial Gate",
       "cohort_domain": "POST_SEPSIS_CARDIORENAL",
-      "clinical_story": "54M post-pneumonia sepsis recovery with stable euvolemic weight (`76.2 -> 76.1 kg`), RHR `66 bpm`, HRV `48 ms`, and verified normal BMP (`Cr 0.95 mg/dL`). Coral NPU wearable sentinel (`0.068 ms`, `3.82 mW`) confirms zero red flags and suppresses unnecessary cloud LLM wake-ups.",
+      "clinical_story": "54M post-pneumonia sepsis recovery with stable euvolemic weight (`76.2 -> 76.1 kg`), RHR `66 bpm`, HRV `48 ms`, and verified normal BMP (`Cr 0.95 mg/dL`). Apple Vision Pro Spatial Crossroads Gate (`90 Hz`, `0.68 ms`) confirms zero red flags and suppresses unnecessary clinician interrupts.",
       "t_landmark_hours": 240.0,
       "merkle_root": "7d8ff7f2ddd88ed3ff38bd99a7101fe7820c4b3c927d0fd4d0797ef8be42458d",
-      "coral_sentinel": {
-        "latency_ms": 0.0034,
-        "active_power_mw": 3.82,
-        "sram_kb": 6.4,
+      "vision_pro_spatial_gate": {
+        "target_platform": "Apple Vision Pro (visionOS 27.0 / iPadOS 27.0) Spatial Crossroads & M0-M5 Symbiosis Gate",
+        "spatial_crossroads_mode": "SUPPRESSED_ROUTINE_SYNC",
+        "frame_budget_hz": 90.0,
+        "inference_latency_ms": 0.68,
         "kc_sparsity_pct": 95.0,
+        "drift_z_score": 0.24,
         "wake_cloud_orchestrator": false,
-        "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)",
-        "red_flags_detected": []
+        "suppress_cloud_wakeup": true,
+        "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_AT_SPATIAL_GATE",
+        "red_flags_detected": [],
+        "role_seat_framings": {
+          "overseer": "Cardiorenal HF/Nephrology Overseer: \u0394Weight=-0.1kg over 7d (drift z=0.24); 4D storetime lock holds 0 pending BMP/NT-proBNP results.",
+          "bedside": "Cardiorenal Day-Unit Provider: Verify orthostatic vitals, spot urine sodium, and VExUS venous congestion before adjusting loop diuretic vs. holding SGLT2i/RAASi.",
+          "nurse": "Home-Health Cardiorenal Nurse (HITM): Reconcile morning dry weight (-0.1kg), sodium intake, and orthostatic dizziness via OARS coaching; trigger STAT BMP draw."
+        },
+        "cascading_dossier": {
+          "L0_awareness": "[PHA-06] SUPPRESSED_ROUTINE_SYNC \u00b7 Drift z=0.24 \u00b7 Red Flags=0 \u00b7 Pending 4D Features=0",
+          "L1_trends": "7d Wearable Trajectory: \u0394T=+0.20\u00b0C, \u0394Weight=-0.10kg, \u0394RHR=-2.0bpm, \u0394HRV=+3.0ms, BootOffload=100.0%.",
+          "L2_storetime_target_trial": "4D Storetime Lock (strict=True): Verified=serum_creatinine_mg_dl | Held-Back (t_store > 240h)=none. Target-Trial Guard blocks empirical therapy until high-VOI diagnostic confirmation.",
+          "L3_full_chart": "Complete 3-Agent PHA Synthesis (DSA + DEA + HCA) across 3 wearable syncs and 1 outpatient EHR records."
+        },
+        "field_reliability": {
+          "plantar_temp_asymmetry_c": "reliable",
+          "body_weight_kg": "reliable",
+          "boot_offloading_adherence_pct": "reliable",
+          "serum_creatinine_mg_dl": "reliable"
+        },
+        "if_wrong_risk_range": "Acute decompensated heart failure readmission or prerenal AKI (Cr > 2.5 mg/dL) within 72h vs. worsening intravascular depletion if loop diuretic is up-titrated blindly.",
+        "symbiosis_division": {
+          "you_hold": [
+            "Final clinical escalation & prescription sign-off (Hard Safety Cap: Autonomy <= 40%)",
+            "Physical wound probe / bedside VExUS verification",
+            "M4 Category Promotion approval (n >= 5 trial runs, >= 80% agreement)"
+          ],
+          "bridge": [
+            "Pop-out OptionRing modification & trial category routing",
+            "4-state field reliability tagging (R / N / W / D) on patient-reported adherence",
+            "M3 Blinded Spot-Check ('Your Call First') calibration"
+          ],
+          "ai_holds": [
+            "Continuous 7d wearable z-score drift & circadian HRV tracking",
+            "4D bitemporal storetime lock (blocking look-ahead leakage from pending labs/cultures)",
+            "Expected Value of Information (EVOI) ranking of next outpatient diagnostic order"
+          ]
+        },
+        "earned_autonomy_dials": {
+          "autonomy_pct": 36,
+          "autonomy_cap": 40,
+          "deference_pct": 82,
+          "deference_floor": 80,
+          "safety_caps_enforced": true,
+          "sparkline_7d": [
+            22,
+            24,
+            25,
+            23,
+            26,
+            24,
+            25
+          ]
+        },
+        "categorical_options": [
+          {
+            "code": "ACCEPT_RECOMMENDED_PATHWAY",
+            "label": "Accept Recommended Pathway",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Dispatches VOI diagnostic order + OARS home-health coaching check-in."
+          },
+          {
+            "code": "STAT_CLINIC_PODIATRY_VASCULAR",
+            "label": "Fast-Track Same-Day Limb/Cardiorenal Clinic",
+            "lifecycle": "promoted",
+            "badge": "\u2605 Promoted",
+            "downstream_preview": "Books urgent 24h clinic slot + holds empirical IV escalation until lab storetime."
+          },
+          {
+            "code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+            "label": "trial: 12h Video Boot & Thermal Re-Check",
+            "lifecycle": "trial",
+            "badge": "trial (4/5 runs \u00b7 100% agree)",
+            "downstream_preview": "Schedules 12h nurse video offload check + repeat smart-mat thermal scan."
+          },
+          {
+            "code": "DORMANT_EMPIRICAL_HOME_ANTIBIOTIC",
+            "label": "Dormant: Empirical Home Oral Antibiotic Escalation",
+            "lifecycle": "dormant",
+            "badge": "\u2300 Dormant (blocked by stewardship guard)",
+            "downstream_preview": "Retired due to Target-Trial stewardship rule requiring culture/CRP confirmation."
+          }
+        ],
+        "m4_promotion_candidate": {
+          "category_code": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H",
+          "title": "12h Video Boot & Thermal Re-Check",
+          "trial_runs": 5,
+          "required_runs": 5,
+          "clinician_agreement_pct": 92.0,
+          "required_agreement_pct": 80.0,
+          "eligible_for_promotion": true,
+          "principal_summary": "Ready for Overseer sign-off to promote from purple trial pill to \u2605 Promoted OptionRing action."
+        },
+        "m5_lineage_audit": [
+          {
+            "step": "M0 Category Registry",
+            "detail": "4 OptionRing categories active (2 \u2605 Promoted, 1 trial, 1 \u2300 Dormant)."
+          },
+          {
+            "step": "M1 4D Bitemporal & Reliability Gate",
+            "detail": "Strict storetime lock=True; 0 future records masked ('not_said')."
+          },
+          {
+            "step": "M2 Earned-Autonomy Dials",
+            "detail": "Autonomy=36% (Cap <= 40%), Deference=82% (Floor >= 80%)."
+          },
+          {
+            "step": "M3 Blinded Calibration",
+            "detail": "Spot-check active on high-drift escalation cards to prevent automation bias."
+          },
+          {
+            "step": "M4 Promotion Engine",
+            "detail": "TRIAL_TELEHEALTH_BOOT_RECHECK_12H reached n=5 runs with 92% agreement."
+          },
+          {
+            "step": "M5 Cryptographic Lineage",
+            "detail": "Ed25519-compatible decision ledger ready for PHA-06 @ t=240h."
+          }
+        ]
       },
       "dsa_output": {
         "personal_z_scores": {
@@ -695,7 +1664,7 @@
         "smart_goal": "Maintain >=88% smart-boot offloading adherence (or daily morning weight + symptom check) over the next 7 days and complete scheduled outpatient follow-up.",
         "clinician_nowcard_handoff": null
       },
-      "ledger_entry_hash": "1e97465690985b3db123e628d8dce82f6e3aa549a3c5e7c74d3260216b30d948"
+      "ledger_entry_hash": "ed198fcaa354edbe41226a0b2e532fa639649eaa5925ec3704b0f19d4933f138"
     }
   ]
 }

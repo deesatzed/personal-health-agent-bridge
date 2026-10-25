@@ -4,10 +4,10 @@ Standalone HTTP Server & Two-Tier Frontend (`/landing` + `/workspace`) for `PHA 
 Runs on port 8790 (`http://127.0.0.1:8790`) so it never conflicts with the
 `spatial-clinical-router` server on port 8780.
   - `/landing` -> 3D Showpiece Landing Page (`static/landing.html`)
-  - `/workspace` (and `/`) -> Live Interactive Clinical & Wearable Simulation Console (`static/workspace.html`)
+  - `/workspace` (and `/`) -> Apple Vision Pro (`visionOS 27.0`) Spatial Crossroads & M0–M5 Symbiosis Console (`static/workspace.html`)
   - `GET /api/benchmark` -> Full N=160 benchmark JSON
   - `GET /api/scenario/<id>` -> Single flagship scenario JSON
-  - `POST /api/simulate` -> Real-time 4D state + Coral NPU + 3-Agent PHA simulation
+  - `POST /api/simulate` -> Real-time 4D state + Vision Pro Spatial Gate + 3-Agent PHA simulation
 """
 
 from __future__ import annotations

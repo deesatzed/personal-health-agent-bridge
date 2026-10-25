@@ -15,8 +15,9 @@ Synthesizes:
       A1. Strict `storetime <= t_k` 4D Time-Lock (zero lookahead leakage).
       A2. Drosophila 240-KC `Unavailable != Negative` VOI Router inside DEA.
       A3. Fail-Closed Hernan-Robins Target-Trial Gate inside DSA.
-      A4. Coral NPU Wearable Sentinel + Signed `sdr.decision.v1` Clinician
-          Escalation NowCard when red flags or narrow safety margins occur.
+      A4. Apple Vision Pro (`visionOS 27.0` / `iPadOS 27.0`) Spatial Decision
+          Crossroads & `M0–M5` Symbiosis Decision-Model Gate (`VisionProSpatialGate`)
+          + Signed `sdr.decision.v1` Clinician Escalation NowCard.
 """
 
 from __future__ import annotations
@@ -28,9 +29,9 @@ import json
 import math
 from typing import Any, Dict, List, Optional
 
-from pha_salvage_bridge.coral_wearable_sentinel import (
-    CoralNPUWearableSentinel,
-    CoralWearableSentinelProfile,
+from pha_salvage_bridge.vision_pro_spatial_gate import (
+    VisionProSpatialGate,
+    VisionProSpatialGateProfile,
 )
 from pha_salvage_bridge.models import (
     EpistemicStatus,
@@ -98,7 +99,7 @@ class OrchestratedPHAResponse:
     cohort_domain: str
     t_landmark_hours: float
     merkle_root: str
-    coral_sentinel: CoralWearableSentinelProfile
+    vision_pro_gate: VisionProSpatialGateProfile
     dsa_output: DataScienceAgentOutput
     dea_output: DomainExpertAgentOutput
     hca_output: HealthCoachAgentOutput
@@ -115,7 +116,7 @@ class DataScienceAgent:
     def analyze(
         self,
         state: TimeLockedPHALandmarkState,
-        coral_profile: CoralWearableSentinelProfile,
+        spatial_gate_profile: VisionProSpatialGateProfile,
     ) -> DataScienceAgentOutput:
         history = state.admitted_wearable_history
         if not history:
@@ -271,7 +272,7 @@ class DomainExpertAgent:
         self,
         state: TimeLockedPHALandmarkState,
         dsa: DataScienceAgentOutput,
-        coral: CoralWearableSentinelProfile,
+        spatial_gate: VisionProSpatialGateProfile,
     ) -> DomainExpertAgentOutput:
         voi_list: List[VOIRecommendation] = []
         base_risk = dsa.predicted_30d_readmission_risk
@@ -333,8 +334,8 @@ class DomainExpertAgent:
                     "Cardiorenal Reward Guard Active: Distinguishes decongestive hemoconcentration from intrinsic tubular injury."
                 )
 
-        requires_escalation = bool(coral.red_flags_detected) or (dsa.predicted_30d_readmission_risk >= 0.45)
-        if coral.red_flags_detected:
+        requires_escalation = bool(spatial_gate.red_flags_detected) or (dsa.predicted_30d_readmission_risk >= 0.45)
+        if spatial_gate.red_flags_detected:
             urgency = "STAT_PROVIDER_CROSSROADS"
         elif requires_escalation or state.pending_ehr_records:
             urgency = "SAME_DAY_CLINIC_REVIEW"
@@ -369,7 +370,7 @@ class HealthCoachAgent:
         state: TimeLockedPHALandmarkState,
         dsa: DataScienceAgentOutput,
         dea: DomainExpertAgentOutput,
-        coral: CoralWearableSentinelProfile,
+        spatial_gate: VisionProSpatialGateProfile,
     ) -> HealthCoachAgentOutput:
         latest = state.admitted_wearable_history[-1]
         top_voi_labels = [v.label for v in dea.top_voi_missing_workup]
@@ -406,7 +407,17 @@ class HealthCoachAgent:
                 "landmark_hours": state.t_landmark_hours,
                 "merkle_root": state.merkle_root,
                 "urgency": dea.escalation_urgency,
-                "red_flags": coral.red_flags_detected,
+                "spatial_crossroads_mode": spatial_gate.spatial_crossroads_mode,
+                "red_flags": spatial_gate.red_flags_detected,
+                "role_seat_framings": spatial_gate.role_seat_framings,
+                "cascading_dossier": spatial_gate.cascading_dossier,
+                "field_reliability": spatial_gate.field_reliability,
+                "if_wrong_risk_range": spatial_gate.if_wrong_risk_range,
+                "symbiosis_division": spatial_gate.symbiosis_division,
+                "earned_autonomy_dials": spatial_gate.earned_autonomy_dials,
+                "categorical_options": spatial_gate.categorical_options,
+                "m4_promotion_candidate": spatial_gate.m4_promotion_candidate,
+                "m5_lineage_audit": spatial_gate.m5_lineage_audit,
                 "top_voi_queries": [
                     {"feature": v.feature_key, "voi": v.voi_score, "if_wrong": v.if_wrong_risk_interval}
                     for v in dea.top_voi_missing_workup
@@ -460,13 +471,14 @@ class HealthCoachAgent:
 
 class PersonalHealthOrchestrator:
     """
-    Top-level Orchestrator coordinating the Coral NPU Wearable Sentinel,
+    Top-level Orchestrator coordinating the Apple Vision Pro (`visionOS 27.0`)
+    Spatial Crossroads & M0-M5 Symbiosis Decision-Model Gate,
     Data Science Agent (DSA), Domain Expert Agent (DEA), Health Coach Agent (HCA),
     and HMAC-SHA256 Signed Decision Ledger.
     """
 
     def __init__(self, secret_key: str = "pha-salvage-bridge-secret-v1") -> None:
-        self.sentinel = CoralNPUWearableSentinel()
+        self.spatial_gate = VisionProSpatialGate()
         self.dsa = DataScienceAgent()
         self.dea = DomainExpertAgent()
         self.hca = HealthCoachAgent()
@@ -474,10 +486,10 @@ class PersonalHealthOrchestrator:
         self.ledger: List[Dict[str, Any]] = []
 
     def run_episode_landmark(self, state: TimeLockedPHALandmarkState) -> OrchestratedPHAResponse:
-        coral_profile = self.sentinel.evaluate_wearable_sync(state)
-        dsa_out = self.dsa.analyze(state, coral_profile)
-        dea_out = self.dea.interpret(state, dsa_out, coral_profile)
-        hca_out = self.hca.synthesize_and_coach(state, dsa_out, dea_out, coral_profile)
+        gate_profile = self.spatial_gate.evaluate_spatial_gate(state)
+        dsa_out = self.dsa.analyze(state, gate_profile)
+        dea_out = self.dea.interpret(state, dsa_out, gate_profile)
+        hca_out = self.hca.synthesize_and_coach(state, dsa_out, dea_out, gate_profile)
 
         prev_hash = self.ledger[-1]["entry_hash"] if self.ledger else "0" * 64
         entry_payload = {
@@ -485,7 +497,8 @@ class PersonalHealthOrchestrator:
             "episode_id": state.episode_id,
             "t_landmark_hours": state.t_landmark_hours,
             "merkle_root": state.merkle_root,
-            "coral_wake": coral_profile.wake_cloud_orchestrator,
+            "spatial_wake": gate_profile.wake_cloud_orchestrator,
+            "spatial_mode": gate_profile.spatial_crossroads_mode,
             "dsa_risk": dsa_out.predicted_30d_readmission_risk,
             "tt_gate": dsa_out.target_trial_contrast.gate_status,
             "dea_urgency": dea_out.escalation_urgency,
@@ -509,10 +522,16 @@ class PersonalHealthOrchestrator:
             cohort_domain=state.cohort_domain,
             t_landmark_hours=state.t_landmark_hours,
             merkle_root=state.merkle_root,
-            coral_sentinel=coral_profile,
+            vision_pro_gate=gate_profile,
             dsa_output=dsa_out,
             dea_output=dea_out,
             hca_output=hca_out,
             ledger_entry_hash=entry_hash,
             ledger_hmac_signature=sig,
         )
+
+
+DataScienceSubAgent = DataScienceAgent
+DomainExpertSubAgent = DomainExpertAgent
+HealthCoachSubAgent = HealthCoachAgent
+PHAConsolidatedResponse = OrchestratedPHAResponse

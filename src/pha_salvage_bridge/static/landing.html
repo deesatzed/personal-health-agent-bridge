@@ -3,1259 +3,280 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PHA × SALVAGE-AI Bridge · Hardening Multi-Agent Personal Health Systems (Nature s41586-026-11161-8 Synthesis)</title>
+  <title>PHA × SALVAGE-AI Bridge · Apple Vision Pro Spatial Crossroads & 3-Agent Personal Health Architecture</title>
   <style>
     :root {
-      --bg-deep: #030712;
-      --bg-surface: rgba(15, 23, 42, 0.78);
-      --bg-card: rgba(15, 23, 42, 0.92);
-      --border-subtle: rgba(56, 189, 248, 0.22);
-      --border-bright: rgba(34, 211, 238, 0.55);
+      --bg-void: #050811;
+      --bg-glass: rgba(15, 23, 42, 0.78);
+      --border-glass: rgba(148, 163, 184, 0.24);
       --text-main: #f8fafc;
-      --text-secondary: #cbd5e1;
       --text-muted: #94a3b8;
-      --cyan: #22d3ee;
-      --emerald: #10b981;
-      --amber: #f59e0b;
-      --crimson: #ef4444;
-      --violet: #a855f7;
-      --pink: #ec4899;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
-      --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+      --you-orange: #f7941d;
+      --bridge-pink: #ec4899;
+      --ai-blue: #4da6ff;
+      --pass-green: #10b981;
+      --trial-purple: #a855f7;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background-color: var(--bg-deep);
-      background-image:
-        radial-gradient(circle at 12% 18%, rgba(34, 211, 238, 0.09) 0%, transparent 38%),
-        radial-gradient(circle at 88% 14%, rgba(168, 85, 247, 0.09) 0%, transparent 38%),
-        radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.06) 0%, transparent 45%);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(77, 166, 255, 0.16), transparent 38%),
+        radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.14), transparent 38%),
+        radial-gradient(circle at 50% 85%, rgba(247, 148, 29, 0.12), transparent 45%),
+        var(--bg-void);
       color: var(--text-main);
-      font-family: var(--font-sans);
       line-height: 1.55;
-      overflow-x: hidden;
     }
 
-    /* Governance Ribbon */
-    .gov-ribbon {
-      background: rgba(2, 6, 23, 0.95);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 8px 28px;
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 11px;
-      font-family: var(--font-mono);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
+      padding: 14px 28px;
+      background: rgba(6, 10, 22, 0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-glass);
     }
 
-    .gov-tag {
+    .badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(34, 211, 238, 0.14);
-      color: #67e8f9;
-      border: 1px solid rgba(34, 211, 238, 0.45);
-      padding: 2px 9px;
+      padding: 4px 12px;
       border-radius: 999px;
+      font-size: 11.5px;
       font-weight: 700;
-      letter-spacing: 0.03em;
+      background: rgba(77, 166, 255, 0.18);
+      border: 1px solid rgba(77, 166, 255, 0.5);
+      color: #e0f2fe;
     }
 
-    .gov-telemetry {
-      display: flex;
-      gap: 16px;
-      color: var(--text-muted);
-      flex-wrap: wrap;
-    }
-
-    .gov-telemetry strong {
-      color: var(--cyan);
-    }
-
-    /* Navbar */
-    .navbar {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 18px 28px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-cube {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(34, 211, 238, 0.25), rgba(16, 185, 129, 0.35));
-      border: 1px solid rgba(34, 211, 238, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-weight: 800;
-      font-size: 13px;
-      color: #fff;
-      box-shadow: 0 0 24px rgba(34, 211, 238, 0.25);
-    }
-
-    .brand-text h1 {
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 0.03em;
-    }
-
-    .brand-text p {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover {
-      color: var(--cyan);
-    }
-
-    .btn {
+    .cta-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 9px 16px;
-      border-radius: 10px;
+      padding: 9px 18px;
+      border-radius: 999px;
       font-size: 13px;
       font-weight: 700;
       text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
+      background: linear-gradient(135deg, #4da6ff, #ec4899);
+      color: #fff;
+      box-shadow: 0 8px 25px rgba(77, 166, 255, 0.35);
     }
 
-    .btn-glow {
-      background: linear-gradient(135deg, #06b6d4, #10b981);
-      color: #020617 !important;
-      box-shadow: 0 0 20px rgba(34, 211, 238, 0.35);
-      border: none;
-    }
-
-    .btn-glow:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 28px rgba(34, 211, 238, 0.55);
-    }
-
-    .btn-outline {
-      background: rgba(15, 23, 42, 0.75);
-      color: var(--text-main) !important;
-      border: 1px solid var(--border-subtle);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--cyan);
-      color: var(--cyan) !important;
-    }
-
-    /* Hero Section */
-    .hero-section {
-      max-width: 1400px;
-      margin: 12px auto 36px;
-      padding: 0 28px;
+    .hero {
+      max-width: 1360px;
+      margin: 36px auto;
+      padding: 0 24px;
       display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 28px;
       align-items: center;
     }
 
-    .eyebrow {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--cyan);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; }
     }
 
-    .hero-title {
+    .hero h1 {
       font-size: 38px;
-      font-weight: 900;
-      line-height: 1.12;
-      letter-spacing: -0.025em;
-      margin-bottom: 14px;
-      background: linear-gradient(135deg, #ffffff 0%, #a5f3fc 55%, #6ee7b7 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-subtitle {
-      font-size: 15px;
-      color: var(--text-secondary);
-      margin-bottom: 20px;
-    }
-
-    .hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 22px;
-    }
-
-    .kpi-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .kpi-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 14px;
-    }
-
-    .kpi-val {
-      font-family: var(--font-mono);
-      font-size: 23px;
       font-weight: 800;
-      color: var(--cyan);
-    }
-
-    .kpi-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 4px;
-      line-height: 1.35;
-    }
-
-    /* 3D Canvas Stage */
-    .hero-3d-stage {
-      background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 0.98));
-      border: 1px solid var(--border-bright);
-      border-radius: 18px;
-      height: 440px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 40px rgba(34, 211, 238, 0.14);
-    }
-
-    #phaCanvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      cursor: grab;
-    }
-
-    #phaCanvas:active {
-      cursor: grabbing;
-    }
-
-    .stage-hud-top {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      right: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      pointer-events: none;
-    }
-
-    .stage-mode-tabs {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      pointer-events: auto;
-    }
-
-    .stage-tab {
-      background: rgba(2, 6, 23, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 5px 9px;
-      border-radius: 7px;
-      cursor: pointer;
-      transition: all 0.18s;
-    }
-
-    .stage-tab.active, .stage-tab:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
-      background: rgba(34, 211, 238, 0.14);
-    }
-
-    .stage-hud-bottom {
-      position: absolute;
-      bottom: 12px;
-      left: 14px;
-      right: 14px;
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      background: rgba(2, 6, 23, 0.82);
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      pointer-events: none;
-    }
-
-    /* Sections */
-    .section {
-      max-width: 1400px;
-      margin: 0 auto 48px;
-      padding: 0 28px;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-size: 25px;
-      font-weight: 800;
+      line-height: 1.15;
+      margin: 14px 0;
       letter-spacing: -0.02em;
     }
 
-    .section-desc {
-      font-size: 14px;
-      color: var(--text-secondary);
-      max-width: 820px;
-      margin-top: 4px;
+    .hero p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
     }
 
-    .badge {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 999px;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 700;
-    }
-
-    .b-cyan { background: rgba(34, 211, 238, 0.16); color: var(--cyan); border: 1px solid rgba(34, 211, 238, 0.45); }
-    .b-emerald { background: rgba(16, 185, 129, 0.16); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.45); }
-    .b-crimson { background: rgba(239, 68, 68, 0.18); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.5); }
-    .b-amber { background: rgba(245, 158, 11, 0.18); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.45); }
-    .b-violet { background: rgba(168, 85, 247, 0.18); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.45); }
-
-    /* Scenario Explorer Layout */
-    .explorer-grid {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 20px;
-    }
-
-    .sc-btn {
-      width: 100%;
-      text-align: left;
-      background: var(--bg-card);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      color: var(--text-main);
-      padding: 13px 14px;
-      border-radius: 12px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: all 0.18s;
-    }
-
-    .sc-btn:hover {
-      border-color: rgba(34, 211, 238, 0.5);
-      transform: translateX(2px);
-    }
-
-    .sc-btn.active {
-      border-color: var(--cyan);
-      background: linear-gradient(135deg, rgba(34, 211, 238, 0.14), rgba(15, 23, 42, 0.95));
-      box-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
-    }
-
-    .glass-panel {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 22px;
-    }
-
-    .agent-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .agent-card {
-      background: rgba(2, 6, 23, 0.72);
-      border: 1px solid rgba(56, 189, 248, 0.22);
-      border-radius: 12px;
+    .canvas-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 22px;
       padding: 16px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
     }
 
-    .agent-card h4 {
-      font-size: 13px;
-      margin: 8px 0 6px;
-      color: #fff;
-    }
-
-    .agent-card p {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
-    }
-
-    pre {
-      background: #020617;
-      padding: 10px 12px;
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      overflow-x: auto;
-      color: #cbd5e1;
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      margin-top: 8px;
-    }
-
-    /* Tables & Architecture Grid */
-    .arch-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-    }
-
-    .arch-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
+    canvas {
+      width: 100%;
+      height: 360px;
+      display: block;
       border-radius: 14px;
-      padding: 18px;
+      background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.9), rgba(5, 8, 17, 0.98));
     }
 
-    .arch-num {
-      font-family: var(--font-mono);
-      font-size: 11px;
+    .grid-section {
+      max-width: 1360px;
+      margin: 32px auto 60px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    @media (max-width: 960px) {
+      .grid-section { grid-template-columns: 1fr; }
+    }
+
+    .feature-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 16px;
       font-weight: 800;
-      color: var(--cyan);
-      margin-bottom: 6px;
-    }
-
-    .arch-card h3 {
-      font-size: 15px;
       margin-bottom: 8px;
     }
 
-    .arch-card p {
-      font-size: 12px;
+    .feature-card p {
+      font-size: 13.5px;
       color: var(--text-muted);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12.5px;
-      margin-top: 10px;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 11px 12px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
-    }
-
-    th {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      color: var(--cyan);
-      background: rgba(2, 6, 23, 0.65);
-    }
-
-    footer {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 28px;
-      border-top: 1px solid var(--border-subtle);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 12px;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
-
-    @media (max-width: 1024px) {
-      .hero-section, .explorer-grid, .agent-grid {
-        grid-template-columns: 1fr;
-      }
-      .kpi-strip, .arch-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
     }
   </style>
 </head>
 <body>
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="badge">visionOS 27.0 · Spatial Crossroads</span>
+      <strong>PHA × SALVAGE-AI Bidirectional Bridge</strong>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <a href="/workspace" class="cta-btn">Launch Spatial Crossroads Console →</a>
+    </div>
+  </header>
 
-  <!-- Persistent Governance Ribbon -->
-  <div class="gov-ribbon">
+  <section class="hero">
     <div>
-      <span class="gov-tag">GOOGLE SCIENCE PROGRAM · NATURE (s41586-026-11161-8) SYNTHESIS</span>
-      <span style="margin-left:10px; color:var(--text-secondary);">Wayne Satz &amp; Google Science Program · Bidirectional PHA × SALVAGE-AI Inpatient-to-Home Architecture</span>
-    </div>
-    <div class="gov-telemetry">
-      <span>Post-Discharge Cohort: <strong>N = 160 (80 DFI + 80 Sepsis)</strong></span>
-      <span>Outpatient Leakage Caught: <strong>+0.1890 AUROC</strong></span>
-      <span>Coral NPU Edge: <strong>3.82 mW · 6.40 KB SRAM</strong></span>
-      <span>Auditor: <strong>VERIFY PASS (5/5 Tests)</strong></span>
-    </div>
-  </div>
-
-  <!-- Navigation -->
-  <nav class="navbar">
-    <a href="#" class="brand">
-      <div class="brand-cube">PHA</div>
-      <div class="brand-text">
-        <h1>PHA × SALVAGE-AI BRIDGE · INPATIENT-TO-HOME CONTINUUM</h1>
-        <p>Wayne Satz &amp; Google Science Program · 3-Agent PHA (DSA + DEA + HCA) × 4D Spatial Clinical Router</p>
-      </div>
-    </a>
-    <div class="nav-links">
-      <a href="#scenario-explorer">🩺 6 Live Scenarios</a>
-      <a href="#bidirectional-architecture">🧬 Bidirectional Architecture</a>
-      <a href="#benchmarks">📊 N=160 Benchmarks</a>
-      <a href="#setup-guide">💻 Setup &amp; Run</a>
-      <a href="https://github.com/deesatzed/personal-health-agent-bridge/blob/main/PAPER/MANUSCRIPT_PHA_SALVAGE_BRIDGE.md" target="_blank" rel="noopener">📝 Preprint #2</a>
-      <a href="/workspace" class="btn btn-glow">Launch Live Simulation Workspace (`/workspace`) →</a>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div>
-      <div class="eyebrow">✦ GOOGLE SCIENCE PROGRAM COLLABORATION · BIDIRECTIONAL NATURE (2026) PHA SYNTHESIS</div>
-      <h2 class="hero-title">Hardening Multi-Agent Personal Health Systems Across the Hospital-to-Home Transition.</h2>
-      <p class="hero-subtitle">
-        Synthesizes Google Research's <strong>3-Agent Personal Health Agent (`DSA` + `DEA` + `HCA`; Heydari, Xu, et al., <em>Nature</em> 2026)</strong> with the <strong>4-Stage Safe Clinical Decision Architecture (`Spatial Clinical Router` / `SALVAGE-AI`)</strong> across <strong>$N = 160$ post-discharge trajectories</strong> (`POST_DFI_SALVAGE` &amp; `POST_SEPSIS_CARDIORENAL`)—eliminating outpatient `charttime` look-ahead leakage, `Unavailable == Negative` lab omissions, and unsafe lifestyle coaching during acute flares.
+      <span class="badge">Nature 2026 Personal Health Agent × 4D Spatial Clinical Router</span>
+      <h1>Closing the Inpatient-to-Home Clinical Loop on Apple Vision Pro (`visionOS 27.0`)</h1>
+      <p>
+        Synthesizes the 3-specialist Personal Health Agent architecture (<strong>Data Science Agent</strong>,
+        <strong>Domain Expert Agent</strong>, and <strong>Health Coach Agent</strong>) with strict 4D bitemporal
+        <code>storetime &lt;= t_k</code> locks, 240-KC <code>Unavailable != Negative</code> VOI routing,
+        fail-closed Target-Trial gates, and the <strong>Spatial Decision Crossroads &amp; M0–M5 Symbiosis Engine</strong>.
       </p>
-      <div class="hero-cta-row">
-        <a href="/workspace" class="btn btn-glow">Open Live Wearable &amp; Clinical Workspace (`/workspace`)</a>
-        <a href="#scenario-explorer" class="btn btn-outline">Explore 6 Flagship Scenarios (`PHA-01`–`PHA-06`)</a>
-        <a href="https://github.com/deesatzed/personal-health-agent-bridge/blob/main/PAPER/MANUSCRIPT_PHA_SALVAGE_BRIDGE.md" target="_blank" rel="noopener" class="btn btn-outline">📝 Read Preprint #2 (`MANUSCRIPT_PHA_SALVAGE_BRIDGE.md`)</a>
-        <a href="https://github.com/deesatzed/personal-health-agent-bridge/blob/main/PAPER/arxiv_submission/main.pdf" target="_blank" rel="noopener" class="btn btn-outline">📄 Download Compiled PDF (`main.pdf`)</a>
-      </div>
-
-      <div class="kpi-strip">
-        <div class="kpi-card">
-          <div class="kpi-val">+0.1890</div>
-          <div class="kpi-label">Outpatient `charttime` Leakage Caught (`0.8110` Strict vs `1.0000` Leaky)</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-val">100.0%</div>
-          <div class="kpi-label">Top-3 Missing-Workup VOI Recall@3 inside DEA (`vs 68.8% PHA`)</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-val">3.82 mW</div>
-          <div class="kpi-label">Tier-0 Wearable Coral NPU (`100%` Benign Syncs Suppressed)</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-val">0.0%</div>
-          <div class="kpi-label">Unsafe Coaching in Acute Flares (`100%` Signed NowCard Handoff)</div>
-        </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;">
+        <a href="/workspace" class="cta-btn">Open Live Spatial Crossroads Console (PHA-01..06) →</a>
       </div>
     </div>
 
-    <!-- Interactive 3D Canvas Stage -->
-    <div class="hero-3d-stage">
-      <canvas id="phaCanvas"></canvas>
-      <div class="stage-hud-top">
-        <div class="stage-mode-tabs">
-          <button class="stage-tab active" onclick="window.setStageMode('EDGE_SENTINEL', this)">1. ⚡ Coral NPU Edge (3.82 mW)</button>
-          <button class="stage-tab" onclick="window.setStageMode('STORETIME_LOCK', this)">2. 🔒 4D storetime Lock</button>
-          <button class="stage-tab" onclick="window.setStageMode('MULTI_AGENT', this)">3. 🤖 3-Agent PHA (DSA·DEA·HCA)</button>
-          <button class="stage-tab" onclick="window.setStageMode('NOWCARD_BRIDGE', this)">4. 🩺 sdr.decision.v1 NowCard</button>
-        </div>
-        <span class="badge b-cyan" id="activeScenarioBadge">ACTIVE: PHA-01 (FLARE)</span>
-      </div>
-      <div class="stage-hud-bottom">
-        <span id="stageTelemetryLeft" style="color:var(--cyan);">240-KC Sparse Edge Projection (95.0% Sparsity · 12 Active KCs)</span>
-        <span style="color:var(--text-muted);">Drag to Orbit 3D · Select Scenario Below</span>
+    <div class="canvas-card">
+      <canvas id="spatial-orbital-canvas" width="600" height="360"></canvas>
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);margin-top:10px;">
+        <span>● Center: <strong>NowCard Crossroads</strong></span>
+        <span style="color:var(--you-orange);">● YOU HOLD (≤40% AI Cap)</span>
+        <span style="color:var(--bridge-pink);">● BRIDGE (OptionRing)</span>
+        <span style="color:var(--ai-blue);">● AI HOLDS (DSA/DEA/HCA)</span>
       </div>
     </div>
   </section>
 
-  <!-- Section 1: Interactive 6-Scenario Explorer -->
-  <section class="section" id="scenario-explorer">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">🩺 LIVE MULTI-AGENT &amp; WEARABLE EDGE INSPECTOR · 6 FLAGSHIP POST-DISCHARGE SCENARIOS</div>
-        <h2 class="section-title">Inspect the Tier-0 Coral NPU Sentinel &amp; 3-Specialist PHA (`DSA` + `DEA` + `HCA`)</h2>
-        <p class="section-desc">
-          Select any flagship clinical scenario (`PHA-01` through `PHA-06`) to inspect how the on-wearable <strong>Google Coral NPU (`RV32IMF_Zve32x`)</strong> gates cloud wake-ups, how the <strong>Data Science Agent (`DSA`)</strong> enforces fail-closed target trials, how the <strong>Domain Expert Agent (`DEA`)</strong> ranks missing outpatient labs via the `240-KC` VOI router, and how the <strong>Health Coach Agent (`HCA`)</strong> switches between `OARS` Motivational Interviewing and a signed `sdr.decision.v1` Clinician `NowCard`.
-        </p>
-      </div>
+  <section class="grid-section">
+    <div class="feature-card" style="border-top:3px solid var(--you-orange);">
+      <h3 style="color:var(--you-orange);">1. Central NowCard &amp; 3-Seat Role Switcher</h3>
+      <p>
+        Switch dynamically between <strong>Overseer</strong>, <strong>Bedside Clinic</strong>, and
+        <strong>Home-Health Nurse HITM</strong> seats. Red-flag thermal or cardiorenal weight surges trigger
+        <code>NOW_CARD_HARD_ESCALATION</code> while routine euvolemic syncs are suppressed (100% specificity).
+      </p>
     </div>
 
-    <div class="explorer-grid">
-      <div id="scenarioList"></div>
-      <div class="glass-panel" id="scenarioDetail"></div>
-    </div>
-  </section>
-
-  <!-- Section 2: Bidirectional Architectural Synthesis -->
-  <section class="section" id="bidirectional-architecture">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">🧬 BIDIRECTIONAL ARCHITECTURAL SYNTHESIS · DIRECTIONS A &amp; B</div>
-        <h2 class="section-title">How `SALVAGE-AI` Hardens Google's PHA — and How PHA Extends `SALVAGE-AI` Home</h2>
-        <p class="section-desc">
-          Unifying acute inpatient decision support (`deesatzed/spatial-clinical-router`) with longitudinal consumer personal health coaching (`Heydari, Xu, et al., Nature 2026`).
-        </p>
-      </div>
+    <div class="feature-card" style="border-top:3px solid var(--bridge-pink);">
+      <h3 style="color:var(--bridge-pink);">2. Pop-Out Categorical OptionRing &amp; 4-Level Cascade</h3>
+      <p>
+        Progressive <code>L0 → L1 → L2 → L3</code> cascading disclosure with a one-section-at-a-time chart accordion,
+        4-state epistemic reliability chips (<code>R / N / W / D</code>), pink <code>IF WRONG</code> risk intervals,
+        and pop-out categorical routing (<code>Trial → Promoted ★ → Dormant ⌀</code>).
+      </p>
     </div>
 
-    <div class="arch-grid">
-      <div class="arch-card" style="border-color:rgba(34,211,238,0.45);">
-        <div class="arch-num">STAGE A1 · 4D STORETIME LOCK</div>
-        <h3>Outpatient Portal vs. Specimen Time</h3>
-        <p>Joins continuous wearable syncs (`t_sync_hours`) strictly with verified outpatient portal labs (`t_store_hours &lt;= t_k`), masking pending send-out wound cultures and preventing a <strong>`+0.1890` AUROC look-ahead inflation</strong> at Day 7 post-discharge.</p>
-      </div>
-      <div class="arch-card" style="border-color:rgba(16,185,129,0.45);">
-        <div class="arch-num" style="color:var(--emerald);">STAGE A2 · 240-KC VOI ROUTER IN DEA</div>
-        <h3>`Unavailable != Negative` Routing</h3>
-        <p>Embeds a 95%-sparse *Drosophila* Kenyon-Cell associative router inside the <strong>Domain Expert Agent (`DEA`)</strong>, raising Top-3 missing outpatient workup Recall@3 from `45.6%` (monolithic LLM) and `68.8%` (unguarded PHA) to <strong>`100.0%`</strong>.</p>
-      </div>
-      <div class="arch-card" style="border-color:rgba(245,158,11,0.45);">
-        <div class="arch-num" style="color:var(--amber);">STAGE A3 · FAIL-CLOSED TARGET TRIALS</div>
-        <h3>Positivity Gate inside DSA</h3>
-        <p>Embeds a Hernán–Robins target-trial gate (`Overlap &gt;= 70%`, `|SMD| &lt;= 0.12`, Manski bounds) inside the <strong>Data Science Agent (`DSA`)</strong>, blocking <strong>`100.0%`</strong> of confounded exercise or fluid claims during acute flares while preserving cardiorenal decongestion (`RD = -0.131`).</p>
-      </div>
-      <div class="arch-card" style="border-color:rgba(168,85,247,0.45);">
-        <div class="arch-num" style="color:var(--violet);">STAGE A4 &amp; B · CORAL NPU + HCA BRIDGE</div>
-        <h3>3.82 mW Edge Gate &amp; `OARS` / `NowCard`</h3>
-        <p>Tier-0 wearable Coral NPU (`RV32IMF_Zve32x`, `6.40 KB` SRAM, `0.0341 ms`) suppresses <strong>`100.0%`</strong> of benign cloud syncs. On flares, the <strong>Health Coach Agent (`HCA`)</strong> halts `OARS` coaching (`0.0%` unsafe rate) and mints a signed `sdr.decision.v1` Clinician `NowCard`.</p>
-      </div>
+    <div class="feature-card" style="border-top:3px solid var(--ai-blue);">
+      <h3 style="color:var(--ai-blue);">3. M0–M5 Symbiosis Decision-Model Gating</h3>
+      <p>
+        Enforces hard clinical safety caps on <strong>M2 Earned-Autonomy Dials</strong> (<code>Autonomy ≤ 40%</code>,
+        <code>Deference ≥ 80%</code>), <strong>M3 Blinded Spot-Checks ("Your Call First")</strong>,
+        <strong>M4 Promotion PrincipalCards</strong>, and <strong>M5 Cryptographic Lineage</strong>.
+      </p>
     </div>
   </section>
-
-  <!-- Section 3: Empirical Benchmark Tables -->
-  <section class="section" id="benchmarks">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">📊 DETERMINISTIC N = 160 POST-DISCHARGE BENCHMARK · SEED 20261024</div>
-        <h2 class="section-title">Three-Arm Architecture Comparison &amp; Outpatient Timestamp Leakage Audit</h2>
-      </div>
-    </div>
-
-    <div class="glass-panel" style="margin-bottom:18px;">
-      <h3 style="font-size:16px;margin-bottom:6px;">Table 1 · Three-Arm Architecture Comparison Across $N = 160$ Post-Discharge Trajectories ($80$ `POST_DFI_SALVAGE` + $80$ `POST_SEPSIS_CARDIORENAL`)</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Architectural Arm</th>
-            <th>Exposed to Outpatient `charttime` Leakage?</th>
-            <th>Missing-Workup Top-3 VOI Recall@3</th>
-            <th>Unidentifiable Causal Claims Blocked (%)</th>
-            <th>Unsafe Lifestyle Coaching During Acute Flare (%)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Arm 1: Monolithic Ungated LLM</strong></td>
-            <td><span class="badge b-crimson">Yes (Leaked)</span></td>
-            <td><code>0.4562 (45.6%)</code></td>
-            <td><code>0.0%</code></td>
-            <td><span style="color:var(--crimson);font-weight:700;">34.0%</span></td>
-          </tr>
-          <tr>
-            <td><strong>Arm 2: Standard 3-Agent PHA (No `SALVAGE` Guards)</strong></td>
-            <td><span class="badge b-amber">Yes (Leaked)</span></td>
-            <td><code>0.6875 (68.8%)</code></td>
-            <td><code>0.0%</code></td>
-            <td><span style="color:var(--amber);font-weight:700;">12.5%</span></td>
-          </tr>
-          <tr style="background:rgba(16,185,129,0.08);">
-            <td><strong>Arm 3: Bidirectional `PHA × SALVAGE-AI` Bridge (Ours)</strong></td>
-            <td><span class="badge b-emerald">No (storetime Locked)</span></td>
-            <td><strong style="color:var(--emerald);">1.0000 (100.0%)</strong></td>
-            <td><strong style="color:var(--emerald);">100.0%</strong></td>
-            <td><strong style="color:var(--emerald);">0.0%</strong></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- Section 4: Step-by-Step Setup & Run Guide -->
-  <section class="section" id="setup-guide">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">💻 ZERO-DEPENDENCY PYTHON 3.10+ REPRODUCIBILITY PROTOCOL</div>
-        <h2 class="section-title">How to Set Up, Verify, &amp; Run `personal-health-agent-bridge` in 60 Seconds</h2>
-      </div>
-    </div>
-
-    <div class="glass-panel">
-      <pre style="font-size:12.5px;line-height:1.65;color:#a5f3fc;"># 1. Clone the standalone repository (zero third-party packages required)
-git clone https://github.com/deesatzed/personal-health-agent-bridge.git
-cd personal-health-agent-bridge
-
-# 2. Run the 5-Test Automated Verification Suite &amp; Manuscript Consistency Auditor
-PYTHONPATH=src python3 tests/test_pha_salvage_bridge.py -v
-python3 scripts/verify_pha_manuscript.py
-
-# 3. Regenerate the N=160 Bidirectional Post-Discharge Benchmark (data/pha_salvage_bidirectional_benchmark.json)
-PYTHONPATH=src python3 src/pha_salvage_bridge/benchmark.py
-
-# 4. Launch the Standalone Interactive Web Server on Port 8790 (http://127.0.0.1:8790/landing)
-python3 src/pha_salvage_bridge/server.py</pre>
-    </div>
-  </section>
-
-  <footer>
-    <div>
-      <strong>PHA × SALVAGE-AI Bridge</strong> · Wayne Satz &amp; <strong>Google Science Program</strong> · Companion to <a href="https://github.com/deesatzed/spatial-clinical-router" style="color:var(--cyan);">deesatzed/spatial-clinical-router</a>
-    </div>
-    <div>
-      Zero-Dependency Python 3.10+ · Nature (s41586-026-11161-8) Bidirectional Synthesis
-    </div>
-  </footer>
 
   <script>
-    // Pre-bundled deterministic benchmark fallback so the page works 100% offline / on GitHub Pages
-    const FALLBACK_BENCHMARK = {
-      "outpatient_timestamp_leakage_audit": {
-        "strict_storetime_auroc": 0.811,
-        "naive_charttime_leaked_auroc": 1.0,
-        "auroc_inflation_delta": 0.189,
-        "episodes_with_delayed_outpatient_labs_pct": 100.0
-      },
-      "coral_npu_wearable_sentinel_audit": {
-        "isa_target": "RV32IMF_Zve32x_CoralNPU_Wearable250MHz",
-        "simulated_latency_ms": 0.0341,
-        "simulated_power_mw": 3.82,
-        "sram_footprint_kb": 6.4,
-        "routine_benign_syncs_suppressed_pct": 100.0,
-        "clinical_red_flag_wake_sensitivity_pct": 100.0
-      },
-      "three_arm_architecture_comparison": {
-        "Arm_3_Bidirectional_PHA_x_SALVAGE_AI_Bridge": {
-          "missing_workup_voi_recall_at_3": 1.0,
-          "unidentifiable_causal_claims_blocked_pct": 100.0,
-          "unsafe_coaching_during_acute_flare_pct": 0.0
-        }
-      },
-      "flagship_scenarios": [
-        {
-          "scenario_id": "PHA-01",
-          "title": "Post-DFI Plantar Thermal Flare (+2.6 C) + Pending Outpatient Wound Culture (`storetime` Trap)",
-          "cohort_domain": "POST_DFI_SALVAGE",
-          "clinical_story": "62M discharged after 1st-ray debridement. At Day 7 (168h), Smart Offloading Boot mat detects plantar temperature asymmetry +2.6 C (threshold >= 2.2 C) and RHR rose from 71 to 88 bpm. Outpatient deep wound swab & CRP were collected at 164h (`charttime`), but CRP posts at 172h and MRSA speciation posts at 212h (`storetime`).",
-          "t_landmark_hours": 168.0,
-          "merkle_root": "8cd8f93c5d7e248a102245afaaaf024efcdf180b1e8b516292133bbcbba7ab73",
-          "coral_sentinel": {
-            "latency_ms": 0.0035,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": true,
-            "wake_reason": "IMMEDIATE_CLINICAL_ESCALATION (RED_FLAG_PLANTAR_THERMAL_FLARE_GE_2_2C, RED_FLAG_UNPROTECTED_WEIGHT_BEARING_SURGE)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.5112,
-            "leakage_rows_blocked": 2,
-            "trajectory_trends_7d": {
-              "resting_heart_rate": "71.0 -> 88.0 bpm (Z=+2.11)",
-              "hrv_rmssd": "42.0 -> 24.0 ms (Z=-2.00)",
-              "plantar_thermal_asymmetry": "2.60 C (Boot adherence 52%)"
-            },
-            "target_trial_contrast": {
-              "trial_id": "PHA_TT1_STEP_GRADED_RELOADING_DURING_THERMAL_FLARE",
-              "gate_status": "NOT_IDENTIFIABLE",
-              "common_support_pct": 31.4,
-              "manski_bounds": [-0.48, 0.52],
-              "rationale": "FAIL-CLOSED POSITIVITY GATE: Common support is 31.4% (< 70%) because IWGDF 2023 guidelines mandate immediate 48-72h step reduction & offloading when plantar asymmetry >= 2.2 C."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "STAT_PROVIDER_CROSSROADS",
-            "reward_alignment_note": "Aligned Functional Salvage Utility (+3.00): Prior minor 1st-ray resection with intact heel/plantar arch is modeled as successful functional limb preservation.",
-            "top_voi_missing_workup": [
-              {"feature_key": "pedal_doppler_toe_pressure_mmhg", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.95, "if_wrong_risk_interval": [0.281, 0.834]},
-              {"feature_key": "wound_probe_or_culture", "epistemic_status": "PENDING_AT_LANDMARK", "voi_score": 0.95, "if_wrong_risk_interval": [0.281, 0.834]},
-              {"feature_key": "crp_mg_l", "epistemic_status": "PENDING_AT_LANDMARK", "voi_score": 0.92, "if_wrong_risk_interval": [0.281, 0.824]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "HALTED_FOR_CLINICIAN_ESCALATION",
-            "smart_goal": "PAUSE autonomous step/diuretic progression for 24h; rest/offload the limb, complete the ordered high-VOI workup, and await your provider's signed NowCard.",
-            "clinician_nowcard_handoff": {
-              "schema": "sdr.decision.v1",
-              "episode_id": "PHA-01",
-              "urgency": "STAT_PROVIDER_CROSSROADS",
-              "target_trial_gate": "NOT_IDENTIFIABLE",
-              "recommended_clinician_options": [
-                "Pass: Order Top-VOI Outpatient Panel & Same-Day Tele-Triage",
-                "Modify (OptionRing): Adjust Offloading / Diuretic Protocol with Safety Bounds",
-                "Escalate: Direct Urgent Limb-Salvage / Cardiorenal Clinic Admission"
-              ]
-            }
-          }
-        },
-        {
-          "scenario_id": "PHA-02",
-          "title": "Post-DFI Minor Ray Resection Remission (Anti-Reward-Hacking + Active OARS Coaching)",
-          "cohort_domain": "POST_DFI_SALVAGE",
-          "clinical_story": "58F s/p planned 2nd-toe minor ray resection achieving clean granulating wound and 94% smart-boot adherence (`Delta T = 0.5 C`, `RHR = 68 bpm`, `HRV = 46 ms`). Demonstrates Coral NPU suppressing unnecessary cloud wake-ups on routine days and aligned functional salvage utility (+3.00).",
-          "t_landmark_hours": 336.0,
-          "merkle_root": "8d0f0c60d4b628ad2cf9bc540b5926fc6e531c3b9c28aad28e53ed916c3afd61",
-          "coral_sentinel": {
-            "latency_ms": 0.0034,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": false,
-            "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.1195,
-            "leakage_rows_blocked": 0,
-            "target_trial_contrast": {
-              "trial_id": "PHA_TT2_HIGH_OFFLOADING_BOOT_ADHERENCE_GE_85PCT",
-              "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
-              "common_support_pct": 94.2,
-              "risk_difference_point": -0.164,
-              "rationale": "Propensity overlap 94.2% (>= 70%) and post-IPTW |SMD| = 0.052 (<= 0.12). Consistent >=85% boot adherence is associated with a -16.4% absolute reduction in 90-day re-ulceration (E-value 2.84)."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "ROUTINE_COACHING",
-            "reward_alignment_note": "Aligned Functional Salvage Utility (+3.00): Prior minor 1st-ray resection with intact heel/plantar arch is modeled as successful functional limb preservation.",
-            "top_voi_missing_workup": [
-              {"feature_key": "wound_probe_or_culture", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.92, "if_wrong_risk_interval": [0.066, 0.432]},
-              {"feature_key": "hba1c_pct", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.74, "if_wrong_risk_interval": [0.066, 0.371]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-            "smart_goal": "Maintain >=88% smart-boot offloading adherence over the next 7 days and complete scheduled outpatient follow-up.",
-            "mi_strategy_oars": {
-              "Open_Question": "Your recovery metrics look steady this week—what part of your daily offloading routine feels easiest to maintain right now?",
-              "Affirmation": "You maintained 94% smart-boot adherence and 7.9h of restorative sleep—that directly supports tissue recovery.",
-              "Reflection": "Aligned Functional Salvage Utility (+3.00): Prior minor ray resection with intact heel/arch is modeled as functional limb preservation.",
-              "Summary": "Let's keep building on this momentum while keeping an eye on any unmeasured follow-up labs."
-            }
-          }
-        },
-        {
-          "scenario_id": "PHA-03",
-          "title": "Post-DFI Unmeasured Outpatient Perfusion (`Unavailable != Negative` VOI Routing)",
-          "cohort_domain": "POST_DFI_SALVAGE",
-          "clinical_story": "71M with medial arterial calcinosis (prior inpatient ABI 1.42) discharged to outpatient wound clinic. At Day 10, hallux toe pressure (`pedal_doppler_toe_pressure_mmhg`) has never been ordered. 240-KC VOI router flags `MISSING_UNORDERED` (`VOI = 0.95`) rather than assuming normal perfusion.",
-          "t_landmark_hours": 240.0,
-          "merkle_root": "26e25f20842f542a26e539bd7170bfb8405ab0ad37c4eea2a323427860e0aedb",
-          "coral_sentinel": {
-            "latency_ms": 0.0034,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": true,
-            "wake_reason": "SUBCLINICAL_PHYSIOLOGICAL_DRIFT (Wake 3-Agent PHA)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.236,
-            "leakage_rows_blocked": 0,
-            "target_trial_contrast": {
-              "trial_id": "PHA_TT2_HIGH_OFFLOADING_BOOT_ADHERENCE_GE_85PCT",
-              "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
-              "common_support_pct": 94.2,
-              "risk_difference_point": -0.164,
-              "rationale": "Propensity overlap 94.2% (>= 70%) and post-IPTW |SMD| = 0.052 (<= 0.12)."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "ROUTINE_COACHING",
-            "reward_alignment_note": "Unmeasured hallux toe pressure masks critical ischemia or calcified ABI artifact (`Unavailable != Negative`).",
-            "top_voi_missing_workup": [
-              {"feature_key": "pedal_doppler_toe_pressure_mmhg", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.95, "if_wrong_risk_interval": [0.13, 0.559]},
-              {"feature_key": "wound_probe_or_culture", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.92, "if_wrong_risk_interval": [0.13, 0.549]},
-              {"feature_key": "crp_mg_l", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.89, "if_wrong_risk_interval": [0.13, 0.539]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-            "smart_goal": "Maintain >=88% smart-boot offloading adherence over the next 7 days and request outpatient Hallux Toe Pressure check.",
-            "mi_strategy_oars": {
-              "Open_Question": "What part of your offloading routine feels easiest to maintain right now?",
-              "Affirmation": "You maintained 72% smart-boot adherence and 6.2h of restorative sleep.",
-              "Summary": "Complete scheduled outpatient follow-up (Outpatient Hallux Toe Pressure / Perfusion Check)."
-            }
-          }
-        },
-        {
-          "scenario_id": "PHA-04",
-          "title": "Post-Sepsis Cardiorenal Decongestion with Permissive Hypercreatininemia (`UNa > 70`)",
-          "cohort_domain": "POST_SEPSIS_CARDIORENAL",
-          "clinical_story": "67F recovering from urosepsis & cardiorenal syndrome on oral torsemide. Weight decreased -1.8 kg over 5 days (`82.4 -> 80.6 kg`), HRV improved (`29 -> 38 ms`), and outpatient BMP shows mild creatinine rise (`1.55 -> 1.82 mg/dL`) with brisk Spot Urine Sodium `84 mmol/L`. PHA × SALVAGE-AI prevents AKI reward hacking and supports continued decongestion (`RD = -0.131`).",
-          "t_landmark_hours": 120.0,
-          "merkle_root": "742502abd80f0926c71ccd6e54b9223129c369095ca1901516dffb233b7b520d",
-          "coral_sentinel": {
-            "latency_ms": 0.0034,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": false,
-            "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.0573,
-            "leakage_rows_blocked": 0,
-            "target_trial_contrast": {
-              "trial_id": "PHA_SEPSIS_TT2_DECONGESTIVE_MAINTENANCE_PERMISSIVE_CR",
-              "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
-              "common_support_pct": 96.0,
-              "risk_difference_point": -0.131,
-              "rationale": "Propensity overlap 96.0%, max |SMD| = 0.038. Preserving decongestive diuresis during benign hemoconcentration reduces 30-day readmission by -13.1%."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "ROUTINE_COACHING",
-            "reward_alignment_note": "Aligned Cardiorenal Utility (+2.85): Mild creatinine rise (Cr 1.82 mg/dL) with brisk natriuresis (Spot UNa 84 mmol/L) and negative fluid balance represents permissive hypercreatininemia, NOT tubular AKI.",
-            "top_voi_missing_workup": [
-              {"feature_key": "venous_pocus_vexus_grade", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.91, "if_wrong_risk_interval": [0.032, 0.367]},
-              {"feature_key": "nt_probnp_pg_ml", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.86, "if_wrong_risk_interval": [0.032, 0.35]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-            "smart_goal": "Continue daily morning weight + symptom check over the next 7 days on prescribed decongestive protocol.",
-            "mi_strategy_oars": {
-              "Affirmation": "Your -1.8 kg fluid weight reduction and improved HRV (38 ms) show strong cardiorenal recovery.",
-              "Reflection": "Aligned Cardiorenal Utility (+2.85): Mild creatinine bump with Spot UNa 84 mmol/L reflects effective hemoconcentration, not kidney injury."
-            }
-          }
-        },
-        {
-          "scenario_id": "PHA-05",
-          "title": "Post-Sepsis Acute +2.5 kg Fluid Weight Surge + Unordered Urine Sodium (Fail-Closed Gate)",
-          "cohort_domain": "POST_SEPSIS_CARDIORENAL",
-          "clinical_story": "74M post-septic cardiomyopathy gains +2.5 kg in 72 hours (`88.0 -> 90.5 kg`) with RHR surging to 101 bpm and HRV dropping to 18 ms. Outpatient BMP & Spot Urine Na have not been verified yet. DSA Target-Trial Gate fails closed (`NOT_IDENTIFIABLE`, overlap 28.5%), HCA pauses lifestyle coaching, and Coral NPU triggers a STAT `sdr.decision.v1` Clinician NowCard.",
-          "t_landmark_hours": 168.0,
-          "merkle_root": "30e1db365a50e1d2841d9ee03fb720204adb298913e88852b2d48d6a1507c93c",
-          "coral_sentinel": {
-            "latency_ms": 0.0034,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": true,
-            "wake_reason": "IMMEDIATE_CLINICAL_ESCALATION (RED_FLAG_ACUTE_CONGESTIVE_WEIGHT_GAIN_GE_2KG, RED_FLAG_CARDIORENAL_SYMPATHETIC_DECOMPENSATION)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.583,
-            "leakage_rows_blocked": 2,
-            "target_trial_contrast": {
-              "trial_id": "PHA_SEPSIS_TT1_AUTONOMOUS_FLUID_RESTRICTION_WITHOUT_LABS",
-              "gate_status": "NOT_IDENTIFIABLE",
-              "common_support_pct": 28.5,
-              "rationale": "FAIL-CLOSED POSITIVITY GATE: Common support 28.5% (< 70%). Autonomous diuretic/fluid dosing without verified serum creatinine/potassium and spot urine sodium violates positivity."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "STAT_PROVIDER_CROSSROADS",
-            "reward_alignment_note": "Cardiorenal Reward Guard Active: Distinguishes decongestive hemoconcentration from intrinsic tubular injury.",
-            "top_voi_missing_workup": [
-              {"feature_key": "serum_creatinine_mg_dl", "epistemic_status": "PENDING_AT_LANDMARK", "voi_score": 0.97, "if_wrong_risk_interval": [0.321, 0.913]},
-              {"feature_key": "spot_urine_sodium_mmol_l", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.96, "if_wrong_risk_interval": [0.321, 0.909]},
-              {"feature_key": "venous_pocus_vexus_grade", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.91, "if_wrong_risk_interval": [0.321, 0.892]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "HALTED_FOR_CLINICIAN_ESCALATION",
-            "smart_goal": "PAUSE autonomous diuretic/fluid changes; complete STAT BMP & Spot Urine Sodium and await your provider's signed NowCard.",
-            "clinician_nowcard_handoff": {
-              "schema": "sdr.decision.v1",
-              "episode_id": "PHA-05",
-              "urgency": "STAT_PROVIDER_CROSSROADS",
-              "target_trial_gate": "NOT_IDENTIFIABLE",
-              "recommended_clinician_options": [
-                "Pass: Order Top-VOI Outpatient Panel & Same-Day Tele-Triage",
-                "Modify (OptionRing): Adjust Offloading / Diuretic Protocol with Safety Bounds",
-                "Escalate: Direct Urgent Limb-Salvage / Cardiorenal Clinic Admission"
-              ]
-            }
-          }
-        },
-        {
-          "scenario_id": "PHA-06",
-          "title": "Post-Sepsis Stable Recovery with Routine Wearable Sync Suppressed on Coral NPU Edge",
-          "cohort_domain": "POST_SEPSIS_CARDIORENAL",
-          "clinical_story": "54M post-pneumonia sepsis recovery with stable euvolemic weight (`76.2 -> 76.1 kg`), RHR `66 bpm`, HRV `48 ms`, and verified normal BMP (`Cr 0.95 mg/dL`). Coral NPU wearable sentinel (`0.0341 ms`, `3.82 mW`) confirms zero red flags and suppresses unnecessary cloud LLM wake-ups.",
-          "t_landmark_hours": 240.0,
-          "merkle_root": "7d8ff7f2ddd88ed3ff38bd99a7101fe7820c4b3c927d0fd4d0797ef8be42458d",
-          "coral_sentinel": {
-            "latency_ms": 0.0034,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": false,
-            "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.1043,
-            "leakage_rows_blocked": 0,
-            "target_trial_contrast": {
-              "trial_id": "PHA_SEPSIS_TT2_DECONGESTIVE_MAINTENANCE_PERMISSIVE_CR",
-              "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
-              "common_support_pct": 96.0,
-              "risk_difference_point": -0.131,
-              "rationale": "Propensity overlap 96.0%, max |SMD| = 0.038."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "ROUTINE_COACHING",
-            "reward_alignment_note": "Cardiorenal Reward Guard Active: Stable euvolemic trajectory confirmed.",
-            "top_voi_missing_workup": [
-              {"feature_key": "spot_urine_sodium_mmol_l", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.96, "if_wrong_risk_interval": [0.057, 0.431]},
-              {"feature_key": "venous_pocus_vexus_grade", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.91, "if_wrong_risk_interval": [0.057, 0.414]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-            "smart_goal": "Maintain daily morning weight check and 8.0h restorative sleep routine over the next 7 days.",
-            "mi_strategy_oars": {
-              "Affirmation": "Stable euvolemic weight (76.1 kg) and restorative sleep (8.0h)—Coral NPU kept your daily sync 100% local on-device.",
-              "Summary": "Continue routine home recovery and scheduled outpatient check-in."
-            }
-          }
-        }
-      ]
-    };
+    const canvas = document.getElementById("spatial-orbital-canvas");
+    const ctx = canvas.getContext("2d");
+    let t = 0;
 
-    let BENCH = FALLBACK_BENCHMARK;
-    let ACTIVE_SCENARIO_IDX = 0;
-    let STAGE_MODE = 'EDGE_SENTINEL';
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
 
-    function renderScenario(idx) {
-      ACTIVE_SCENARIO_IDX = idx;
-      const sc = BENCH.flagship_scenarios[idx];
-      document.querySelectorAll('.sc-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-      const c = sc.coral_sentinel;
-      const dsa = sc.dsa_output;
-      const dea = sc.dea_output;
-      const hca = sc.hca_output;
-
-      const badge = document.getElementById('activeScenarioBadge');
-      badge.textContent = `ACTIVE: ${sc.scenario_id} (${c.wake_cloud_orchestrator ? 'CLOUD WAKE' : 'EDGE SLEEP'})`;
-      badge.className = 'badge ' + (c.wake_cloud_orchestrator ? 'b-crimson' : 'b-emerald');
-
-      document.getElementById('scenarioDetail').innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
-          <div>
-            <span class="badge b-cyan">${sc.scenario_id} · ${sc.cohort_domain}</span>
-            <span class="badge b-violet" style="margin-left:6px;">Landmark +${sc.t_landmark_hours}h Post-Discharge</span>
-          </div>
-          <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">4D Merkle Root: <code>${sc.merkle_root.slice(0, 24)}...</code></span>
-        </div>
-        <h3 style="font-size:19px;margin-bottom:8px;">${sc.title}</h3>
-        <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:14px;">${sc.clinical_story}</p>
-
-        <div class="agent-grid">
-          <div class="agent-card">
-            <span class="badge ${c.wake_cloud_orchestrator ? 'b-crimson' : 'b-emerald'}">TIER-0 · GOOGLE CORAL NPU WEARABLE SENTINEL</span>
-            <h4>${c.wake_cloud_orchestrator ? '🚨 Cloud 3-Agent PHA Woken' : '🛌 Suppressed on Edge (Cloud LLM Sleeps)'}</h4>
-            <p><strong>Silicon Profile:</strong> <code>${c.latency_ms} ms</code> · <code>${c.active_power_mw} mW</code> · <code>${c.sram_kb} KB SRAM</code> (${c.kc_sparsity_pct}% KC Sparsity)</p>
-            <p style="color:var(--text-muted);">${c.wake_reason}</p>
-          </div>
-
-          <div class="agent-card">
-            <span class="badge b-cyan">AGENT 1 · DATA SCIENCE AGENT (DSA) + TARGET-TRIAL GATE</span>
-            <h4>30-Day Readmission Risk: ${(dsa.predicted_30d_readmission_risk * 100).toFixed(1)}% (${dsa.leakage_rows_blocked} Future Rows Masked)</h4>
-            <p><strong>Target Trial (<code>${dsa.target_trial_contrast.trial_id}</code>):</strong> <span class="badge ${dsa.target_trial_contrast.gate_status === 'NOT_IDENTIFIABLE' ? 'b-crimson' : 'b-emerald'}">${dsa.target_trial_contrast.gate_status}</span> (Overlap ${dsa.target_trial_contrast.common_support_pct}%)</p>
-            <p style="color:var(--text-muted);">${dsa.target_trial_contrast.rationale}</p>
-          </div>
-
-          <div class="agent-card">
-            <span class="badge b-emerald">AGENT 2 · DOMAIN EXPERT AGENT (DEA) + 240-KC VOI ROUTER</span>
-            <h4>Escalation Urgency: <code>${dea.escalation_urgency}</code></h4>
-            <p>${dea.reward_alignment_note}</p>
-            <pre>${JSON.stringify(dea.top_voi_missing_workup, null, 2)}</pre>
-          </div>
-
-          <div class="agent-card">
-            <span class="badge ${hca.coaching_mode.includes('HALTED') ? 'b-crimson' : 'b-emerald'}">AGENT 3 · HEALTH COACH AGENT (HCA) + SDR NOWCARD BRIDGE</span>
-            <h4>Mode: <code>${hca.coaching_mode}</code></h4>
-            <p><strong>SMART Goal:</strong> ${hca.smart_goal}</p>
-            <pre>${JSON.stringify(hca.clinician_nowcard_handoff || hca.mi_strategy_oars, null, 2)}</pre>
-          </div>
-        </div>
-      `;
-    }
-
-    function initExplorer(data) {
-      BENCH = data;
-      document.getElementById('scenarioList').innerHTML = data.flagship_scenarios.map((s, i) => `
-        <button class="sc-btn ${i === 0 ? 'active' : ''}" onclick="renderScenario(${i})">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:11px;color:var(--cyan);font-weight:700;">${s.scenario_id} · ${s.cohort_domain}</span>
-            <span class="badge ${s.coral_sentinel.wake_cloud_orchestrator ? 'b-crimson' : 'b-emerald'}">${s.coral_sentinel.wake_cloud_orchestrator ? 'WAKE' : 'SLEEP'}</span>
-          </div>
-          <div style="font-size:13px;font-weight:700;margin-top:5px;line-height:1.35;">${s.title}</div>
-        </button>
-      `).join('');
-      renderScenario(0);
-    }
-
-    initExplorer(FALLBACK_BENCHMARK);
-    fetch('/api/benchmark').then(r => r.ok ? r.json() : null).then(d => { if (d && d.flagship_scenarios) initExplorer(d); }).catch(() => {});
-
-    // Interactive 3D Canvas Renderer
-    const canvas = document.getElementById('phaCanvas');
-    const ctx = canvas.getContext('2d');
-    let rotY = 0.4, rotX = 0.25, dragging = false, lastX = 0, lastY = 0, tick = 0;
-
-    function resizeCanvas() {
-      const rect = canvas.parentElement.getBoundingClientRect();
-      canvas.width = rect.width * window.devicePixelRatio;
-      canvas.height = rect.height * window.devicePixelRatio;
-      ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    canvas.addEventListener('mousedown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
-    window.addEventListener('mouseup', () => dragging = false);
-    window.addEventListener('mousemove', e => {
-      if (!dragging) return;
-      rotY += (e.clientX - lastX) * 0.008;
-      rotX = Math.max(-0.8, Math.min(0.8, rotX + (e.clientY - lastY) * 0.008));
-      lastX = e.clientX;
-      lastY = e.clientY;
-    });
-
-    window.setStageMode = function(mode, btn) {
-      STAGE_MODE = mode;
-      document.querySelectorAll('.stage-tab').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-      const labels = {
-        EDGE_SENTINEL: '240-KC Sparse Edge Projection (95.0% Sparsity · 3.82 mW · 6.40 KB SRAM)',
-        STORETIME_LOCK: '4D Time-Locked State: Wearable t_sync Joined with Verified Portal storetime <= t_k',
-        MULTI_AGENT: '3-Specialist PHA (DSA Target-Trial Gate + DEA 240-KC VOI + HCA OARS Coaching)',
-        NOWCARD_BRIDGE: 'Fail-Closed sdr.decision.v1 Clinician NowCard & HMAC-SHA256 Merkle Provenance'
-      };
-      document.getElementById('stageTelemetryLeft').textContent = labels[mode] || '';
-    };
-
-    function project3D(x, y, z, w, h) {
-      const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
-      const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
-      const x1 = x * cosY - z * sinY;
-      const z1 = z * cosY + x * sinY;
-      const y2 = y * cosX - z1 * sinX;
-      const z2 = z1 * cosX + y * sinX;
-      const scale = 320 / (420 + z2);
-      return { sx: w / 2 + x1 * scale, sy: h / 2 + y2 * scale, scale, z2 };
-    }
-
-    function animate() {
-      tick += 0.02;
-      if (!dragging) rotY += 0.0035;
-      const w = canvas.width / window.devicePixelRatio;
-      const h = canvas.height / window.devicePixelRatio;
-      ctx.clearRect(0, 0, w, h);
-
-      const sc = BENCH.flagship_scenarios[ACTIVE_SCENARIO_IDX] || BENCH.flagship_scenarios[0];
-      const isWake = sc.coral_sentinel.wake_cloud_orchestrator;
-
-      // Draw 3D ring of 48 representative Kenyon Cells + 4 core architectural nodes
-      const coreNodes = [
-        { x: -115, y: -45, z: 0, label: 'Wearable + EHR', color: '#22d3ee' },
-        { x: -35, y: 45, z: 30, label: 'Coral NPU (3.82mW)', color: isWake ? '#ef4444' : '#10b981' },
-        { x: 45, y: -40, z: -25, label: 'DSA · DEA · HCA', color: '#a855f7' },
-        { x: 120, y: 35, z: 10, label: isWake ? 'sdr.decision.v1 NowCard' : 'OARS Home Coaching', color: isWake ? '#f59e0b' : '#10b981' }
-      ];
-
-      // Outer 240-KC sparse halo
-      for (let i = 0; i < 48; i++) {
-        const angle = (i / 48) * Math.PI * 2 + tick * 0.25;
-        const radius = 145 + Math.sin(i * 1.7 + tick) * 14;
-        const py = Math.cos(i * 0.9 + tick * 0.6) * 55;
-        const p = project3D(Math.cos(angle) * radius, py, Math.sin(angle) * radius, w, h);
-        const activeKC = (i % 8 === 0);
+      // Orbit rings
+      [75, 130].forEach((r, idx) => {
         ctx.beginPath();
-        ctx.arc(p.sx, p.sy, activeKC ? 3.8 * p.scale : 1.8 * p.scale, 0, Math.PI * 2);
-        ctx.fillStyle = activeKC ? (isWake ? '#ef4444' : '#22d3ee') : 'rgba(148, 163, 184, 0.25)';
-        ctx.fill();
-      }
-
-      // Connect core architectural pipeline nodes
-      const projectedCores = coreNodes.map(n => ({ ...n, ...project3D(n.x, n.y, n.z, w, h) }));
-      for (let i = 0; i < projectedCores.length - 1; i++) {
-        const a = projectedCores[i], b = projectedCores[i + 1];
-        ctx.beginPath();
-        ctx.moveTo(a.sx, a.sy);
-        ctx.lineTo(b.sx, b.sy);
-        ctx.strokeStyle = isWake ? 'rgba(239, 68, 68, 0.55)' : 'rgba(34, 211, 238, 0.55)';
-        ctx.lineWidth = 2.2;
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.strokeStyle = idx === 0 ? "rgba(236, 72, 153, 0.35)" : "rgba(77, 166, 255, 0.28)";
+        ctx.lineWidth = 1.5;
         ctx.stroke();
-      }
-
-      projectedCores.forEach(n => {
-        ctx.beginPath();
-        ctx.arc(n.sx, n.sy, 11 * n.scale, 0, Math.PI * 2);
-        ctx.fillStyle = n.color;
-        ctx.shadowColor = n.color;
-        ctx.shadowBlur = 16;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-
-        ctx.fillStyle = '#f8fafc';
-        ctx.font = '700 11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(n.label, n.sx, n.sy - 16 * n.scale);
       });
 
-      requestAnimationFrame(animate);
+      // Central NowCard node
+      ctx.beginPath();
+      ctx.roundRect(cx - 58, cy - 28, 116, 56, 12);
+      ctx.fillStyle = "rgba(247, 148, 29, 0.22)";
+      ctx.fill();
+      ctx.strokeStyle = "#f7941d";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = "#fff";
+      ctx.font = "bold 12px -apple-system, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("NOW CARD", cx, cy - 4);
+      ctx.font = "10px -apple-system, sans-serif";
+      ctx.fillStyle = "#ffedd5";
+      ctx.fillText("M0–M5 Crossroads", cx, cy + 12);
+
+      // 3 Specialist Agent nodes
+      const agents = [
+        { label: "DSA · 4D Storetime", color: "#4da6ff", angle: t + 0 },
+        { label: "DEA · 240-KC VOI", color: "#ec4899", angle: t + (Math.PI * 2) / 3 },
+        { label: "HCA · OARS Coach", color: "#10b981", angle: t + (Math.PI * 4) / 3 }
+      ];
+
+      agents.forEach(a => {
+        const x = cx + Math.cos(a.angle) * 130;
+        const y = cy + Math.sin(a.angle) * 130;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.25)";
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(x, y, 18, 0, Math.PI * 2);
+        ctx.fillStyle = a.color;
+        ctx.fill();
+        ctx.fillStyle = "#f8fafc";
+        ctx.font = "bold 11px -apple-system, sans-serif";
+        ctx.fillText(a.label, x, y + 32);
+      });
+
+      t += 0.008;
+      requestAnimationFrame(draw);
     }
-    animate();
+    draw();
   </script>
 </body>
 </html>

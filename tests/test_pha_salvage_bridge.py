@@ -88,26 +88,33 @@ class TestPHASalvageBridge(unittest.TestCase):
         self.assertLess(r4.dsa_output.target_trial_contrast.risk_difference_point, 0.0)
         self.assertIn("permissive hypercreatininemia", r4.dea_output.reward_alignment_note)
 
-    def test_direction_a4_and_b_coral_wearable_sentinel_and_hca_escalation_bridge(self) -> None:
-        """Verify Coral NPU suppresses cloud wake on stable days (PHA-02, PHA-06) and HCA mints `sdr.decision.v1` NowCard on flares (PHA-01, PHA-05)."""
-        # Stable day (PHA-06) -> Cloud LLM sleeps, active motivational interviewing
+    def test_direction_a4_and_b_vision_pro_spatial_gate_and_hca_escalation_bridge(self) -> None:
+        """Verify Vision Pro Spatial Gate suppresses interrupts on stable days (PHA-02, PHA-06) and HCA mints `sdr.decision.v1` NowCard on flares (PHA-01, PHA-05)."""
+        # Stable day (PHA-06) -> Routine sync suppressed at Spatial Gate, active motivational interviewing
         sc6 = self.scenarios["PHA-06"]
         st6 = build_time_locked_pha_state(
             sc6["scenario_id"], sc6["patient_id"], sc6["cohort_domain"], sc6["t_landmark_hours"], sc6["wearable_stream"], sc6["ehr_records"]
         )
         r6 = self.orchestrator.run_episode_landmark(st6)
-        self.assertFalse(r6.coral_sentinel.wake_cloud_orchestrator)
-        self.assertEqual(r6.coral_sentinel.kc_sparsity_pct, 95.0)
+        self.assertFalse(r6.vision_pro_gate.wake_cloud_orchestrator)
+        self.assertTrue(r6.vision_pro_gate.suppress_cloud_wakeup)
+        self.assertEqual(r6.vision_pro_gate.spatial_crossroads_mode, "SUPPRESSED_ROUTINE_SYNC")
+        self.assertEqual(r6.vision_pro_gate.kc_sparsity_pct, 95.0)
         self.assertEqual(r6.hca_output.coaching_mode, "ACTIVE_MOTIVATIONAL_INTERVIEWING")
         self.assertIsNone(r6.hca_output.clinician_nowcard_handoff)
 
-        # Acute congestive weight surge (PHA-05) -> Coral NPU wakes cloud, HCA halts coaching & mints signed NowCard
+        # Acute congestive weight surge (PHA-05) -> Vision Pro Spatial Gate triggers NOW_CARD_HARD_ESCALATION, HCA halts coaching & mints signed NowCard
         sc5 = self.scenarios["PHA-05"]
         st5 = build_time_locked_pha_state(
             sc5["scenario_id"], sc5["patient_id"], sc5["cohort_domain"], sc5["t_landmark_hours"], sc5["wearable_stream"], sc5["ehr_records"]
         )
         r5 = self.orchestrator.run_episode_landmark(st5)
-        self.assertTrue(r5.coral_sentinel.wake_cloud_orchestrator)
+        self.assertTrue(r5.vision_pro_gate.wake_cloud_orchestrator)
+        self.assertEqual(r5.vision_pro_gate.spatial_crossroads_mode, "NOW_CARD_HARD_ESCALATION")
+        self.assertLessEqual(r5.vision_pro_gate.earned_autonomy_dials["autonomy_pct"], 40)
+        self.assertGreaterEqual(r5.vision_pro_gate.earned_autonomy_dials["deference_pct"], 80)
+        self.assertIn("overseer", r5.vision_pro_gate.role_seat_framings)
+        self.assertIn("L2_storetime_target_trial", r5.vision_pro_gate.cascading_dossier)
         self.assertEqual(r5.hca_output.coaching_mode, "HALTED_FOR_CLINICIAN_ESCALATION")
         self.assertIsNotNone(r5.hca_output.clinician_nowcard_handoff)
         self.assertEqual(r5.hca_output.clinician_nowcard_handoff["schema"], "sdr.decision.v1")
@@ -117,8 +124,8 @@ class TestPHASalvageBridge(unittest.TestCase):
         res = run_bidirectional_pha_benchmark(seed=20261023)
         self.assertEqual(res["total_episodes_n"], 160)
         self.assertGreater(res["outpatient_timestamp_leakage_audit"]["auroc_inflation_delta"], 0.05)
-        self.assertEqual(res["coral_npu_wearable_sentinel_audit"]["clinical_red_flag_wake_sensitivity_pct"], 100.0)
-        self.assertGreater(res["coral_npu_wearable_sentinel_audit"]["routine_benign_syncs_suppressed_pct"], 80.0)
+        self.assertEqual(res["vision_pro_spatial_gate_audit"]["clinical_red_flag_wake_sensitivity_pct"], 100.0)
+        self.assertGreater(res["vision_pro_spatial_gate_audit"]["routine_benign_syncs_suppressed_pct"], 80.0)
         self.assertEqual(
             res["three_arm_architecture_comparison"]["Arm_3_Bidirectional_PHA_x_SALVAGE_AI_Bridge"]["missing_workup_voi_recall_at_3"],
             1.0,
@@ -145,7 +152,7 @@ class TestPHASalvageBridge(unittest.TestCase):
                 "verified_outpatient_keys": [],
             }
         )
-        self.assertTrue(sim_flare["coral_sentinel"]["wake_cloud_orchestrator"])
+        self.assertTrue(sim_flare["vision_pro_gate"]["wake_cloud_orchestrator"])
         self.assertEqual(sim_flare["dsa_output"]["leakage_rows_blocked"], 3)
         self.assertEqual(sim_flare["hca_output"]["coaching_mode"], "HALTED_FOR_CLINICIAN_ESCALATION")
         self.assertIsNotNone(sim_flare["hca_output"]["clinician_nowcard_handoff"])

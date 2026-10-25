@@ -1,14 +1,47 @@
 """
-PHA × SALVAGE-AI Bidirectional Bridge (`pha_salvage_bridge`).
+`pha_salvage_bridge`: Bidirectional Inpatient-to-Home Personal Health Agent (`PHA`)
+and 4D Spatio-Temporal Clinical Router (`SALVAGE-AI`) Integration Package.
 
-Standalone research prototype synthesizing:
-  - Google Research's Personal Health Agent architecture (Heydari, Xu, et al.,
-    Nature 2026, doi:10.1038/s41586-026-11161-8: Orchestrator + Data Science Agent
-    + Domain Expert Agent + Health Coach Agent)
-  - Spatial Clinical Router (`SALVAGE-AI`) 4-Stage Guardrails (4D `storetime`
-    Temporal State Lock, Drosophila 240-KC Sparse `Unavailable != Negative` VOI
-    Router, Fail-Closed Hernan-Robins Target-Trial Gate, and Sub-5 mW Google
-    Coral NPU `RV32IMF_Zve32x` On-Wearable Sentinel).
+Combines the 3-specialist Personal Health Agent architecture (`DS` Data Science,
+`DE` Domain Expert, `HC` Health Coach) with:
+  1. Strict 4D Bitemporal Continuity (`t_event <= t_sync <= t_landmark` for wearables
+     and `t_chart <= t_store <= t_landmark` for outpatient labs/cultures).
+  2. Bidirectional Inpatient -> Home Discharge Handoff & Home -> Clinic VOI Escalation.
+  3. Target-Trial Counterfactual Guardrails for Outpatient Prescription & Stewardship.
+  4. Apple Vision Pro (`visionOS 27.0` / `iPadOS 27.0`) Spatial Decision Crossroads &
+     `M0–M5` Symbiosis Decision-Model Gate (`VisionProSpatialGate`).
 """
 
-__version__ = "1.0.0"
+from pha_salvage_bridge.models import (
+    WearableStreamSample,
+    OutpatientEHRRecord,
+    TimeLockedPHALandmarkState,
+    build_time_locked_pha_state,
+)
+from pha_salvage_bridge.agents import (
+    DataScienceSubAgent,
+    DomainExpertSubAgent,
+    HealthCoachSubAgent,
+    PersonalHealthOrchestrator,
+    PHAConsolidatedResponse,
+)
+from pha_salvage_bridge.vision_pro_spatial_gate import (
+    VisionProSpatialGate,
+    VisionProSpatialGateProfile,
+)
+from pha_salvage_bridge.benchmark import run_bidirectional_pha_benchmark
+
+__all__ = [
+    "WearableStreamSample",
+    "OutpatientEHRRecord",
+    "TimeLockedPHALandmarkState",
+    "build_time_locked_pha_state",
+    "DataScienceSubAgent",
+    "DomainExpertSubAgent",
+    "HealthCoachSubAgent",
+    "PersonalHealthOrchestrator",
+    "PHAConsolidatedResponse",
+    "VisionProSpatialGate",
+    "VisionProSpatialGateProfile",
+    "run_bidirectional_pha_benchmark",
+]

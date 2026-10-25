@@ -3,25 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PHA × SALVAGE-AI Bridge · Hardening Multi-Agent Personal Health Systems (Nature s41586-026-11161-8 Synthesis)</title>
+  <title>PHA × SALVAGE-AI · Apple Vision Pro Spatial Crossroads & M0–M5 Symbiosis Console</title>
   <style>
     :root {
-      --bg-deep: #030712;
-      --bg-surface: rgba(15, 23, 42, 0.78);
-      --bg-card: rgba(15, 23, 42, 0.92);
-      --border-subtle: rgba(56, 189, 248, 0.22);
-      --border-bright: rgba(34, 211, 238, 0.55);
+      --bg-void: #060913;
+      --bg-glass: rgba(15, 23, 42, 0.78);
+      --bg-glass-strong: rgba(11, 18, 34, 0.92);
+      --bg-card: rgba(20, 30, 55, 0.72);
+      --border-glass: rgba(148, 163, 184, 0.22);
+      --border-highlight: rgba(56, 189, 248, 0.48);
       --text-main: #f8fafc;
-      --text-secondary: #cbd5e1;
       --text-muted: #94a3b8;
-      --cyan: #22d3ee;
-      --emerald: #10b981;
-      --amber: #f59e0b;
-      --crimson: #ef4444;
-      --violet: #a855f7;
-      --pink: #ec4899;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
-      --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+      --text-dim: #64748b;
+      --you-orange: #f7941d;
+      --bridge-pink: #ec4899;
+      --ai-blue: #4da6ff;
+      --pass-green: #10b981;
+      --warn-amber: #f59e0b;
+      --alert-red: #ef4444;
+      --trial-purple: #a855f7;
+      --dormant-gray: #64748b;
+      --paper-bg: #f6f1e7;
+      --paper-ink: #1e293b;
+      --radius-lg: 20px;
+      --radius-md: 13px;
+      --radius-sm: 8px;
     }
 
     * {
@@ -31,1231 +37,1934 @@
     }
 
     body {
-      background-color: var(--bg-deep);
-      background-image:
-        radial-gradient(circle at 12% 18%, rgba(34, 211, 238, 0.09) 0%, transparent 38%),
-        radial-gradient(circle at 88% 14%, rgba(168, 85, 247, 0.09) 0%, transparent 38%),
-        radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.06) 0%, transparent 45%);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(77, 166, 255, 0.16), transparent 36%),
+        radial-gradient(circle at 82% 18%, rgba(236, 72, 153, 0.14), transparent 38%),
+        radial-gradient(circle at 50% 85%, rgba(247, 148, 29, 0.12), transparent 45%),
+        var(--bg-void);
       color: var(--text-main);
-      font-family: var(--font-sans);
-      line-height: 1.55;
+      min-height: 100vh;
       overflow-x: hidden;
+      line-height: 1.45;
     }
 
-    /* Governance Ribbon */
-    .gov-ribbon {
-      background: rgba(2, 6, 23, 0.95);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 8px 28px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 11px;
-      font-family: var(--font-mono);
+    /* Top Spatial Ornament Bar */
+    .crossroads-topbar {
       position: sticky;
       top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
-    }
-
-    .gov-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(34, 211, 238, 0.14);
-      color: #67e8f9;
-      border: 1px solid rgba(34, 211, 238, 0.45);
-      padding: 2px 9px;
-      border-radius: 999px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
-
-    .gov-telemetry {
+      z-index: 60;
       display: flex;
-      gap: 16px;
-      color: var(--text-muted);
       flex-wrap: wrap;
-    }
-
-    .gov-telemetry strong {
-      color: var(--cyan);
-    }
-
-    /* Navbar */
-    .navbar {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 18px 28px;
-      display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-cube {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(34, 211, 238, 0.25), rgba(16, 185, 129, 0.35));
-      border: 1px solid rgba(34, 211, 238, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-weight: 800;
-      font-size: 13px;
-      color: #fff;
-      box-shadow: 0 0 24px rgba(34, 211, 238, 0.25);
-    }
-
-    .brand-text h1 {
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 0.03em;
-    }
-
-    .brand-text p {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover {
-      color: var(--cyan);
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 16px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-glow {
-      background: linear-gradient(135deg, #06b6d4, #10b981);
-      color: #020617 !important;
-      box-shadow: 0 0 20px rgba(34, 211, 238, 0.35);
-      border: none;
-    }
-
-    .btn-glow:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 28px rgba(34, 211, 238, 0.55);
-    }
-
-    .btn-outline {
-      background: rgba(15, 23, 42, 0.75);
-      color: var(--text-main) !important;
-      border: 1px solid var(--border-subtle);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--cyan);
-      color: var(--cyan) !important;
-    }
-
-    /* Hero Section */
-    .hero-section {
-      max-width: 1400px;
-      margin: 12px auto 36px;
-      padding: 0 28px;
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 28px;
-      align-items: center;
-    }
-
-    .eyebrow {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--cyan);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .hero-title {
-      font-size: 38px;
-      font-weight: 900;
-      line-height: 1.12;
-      letter-spacing: -0.025em;
-      margin-bottom: 14px;
-      background: linear-gradient(135deg, #ffffff 0%, #a5f3fc 55%, #6ee7b7 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-subtitle {
-      font-size: 15px;
-      color: var(--text-secondary);
-      margin-bottom: 20px;
-    }
-
-    .hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 22px;
+      padding: 12px 20px;
+      background: rgba(8, 13, 26, 0.88);
+      backdrop-filter: blur(22px);
+      border-bottom: 1px solid var(--border-glass);
     }
 
-    .kpi-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+    .brand-cluster {
+      display: flex;
+      align-items: center;
       gap: 12px;
     }
 
-    .kpi-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 14px;
-    }
-
-    .kpi-val {
-      font-family: var(--font-mono);
-      font-size: 23px;
-      font-weight: 800;
-      color: var(--cyan);
-    }
-
-    .kpi-label {
+    .vision-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
       font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, rgba(77, 166, 255, 0.24), rgba(168, 85, 247, 0.24));
+      border: 1px solid rgba(77, 166, 255, 0.45);
+      color: #e0f2fe;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-sub {
+      font-size: 11.5px;
       color: var(--text-muted);
-      margin-top: 4px;
-      line-height: 1.35;
     }
 
-    /* 3D Canvas Stage */
-    .hero-3d-stage {
-      background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 0.98));
-      border: 1px solid var(--border-bright);
-      border-radius: 18px;
-      height: 440px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 40px rgba(34, 211, 238, 0.14);
+    .top-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
     }
 
-    #phaCanvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      cursor: grab;
+    .pill-group {
+      display: inline-flex;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border-glass);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 3px;
     }
 
-    #phaCanvas:active {
-      cursor: grabbing;
+    .pill-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.16s ease;
     }
 
-    .stage-hud-top {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      right: 12px;
+    .pill-btn:hover {
+      color: var(--text-main);
+    }
+
+    .pill-btn.active {
+      background: rgba(77, 166, 255, 0.24);
+      color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(77, 166, 255, 0.55);
+    }
+
+    .pill-btn.role-overseer.active {
+      background: rgba(247, 148, 29, 0.25);
+      box-shadow: inset 0 0 0 1px var(--you-orange);
+      color: #ffedd5;
+    }
+
+    .pill-btn.role-bedside.active {
+      background: rgba(77, 166, 255, 0.25);
+      box-shadow: inset 0 0 0 1px var(--ai-blue);
+      color: #e0f2fe;
+    }
+
+    .pill-btn.role-nurse.active {
+      background: rgba(236, 72, 153, 0.25);
+      box-shadow: inset 0 0 0 1px var(--bridge-pink);
+      color: #fce7f3;
+    }
+
+    .toggle-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border-glass);
+      background: rgba(15, 23, 42, 0.78);
+      color: var(--text-main);
+      text-decoration: none;
+      transition: all 0.16s ease;
+    }
+
+    .toggle-chip.active-guard {
+      border-color: rgba(16, 185, 129, 0.55);
+      background: rgba(16, 185, 129, 0.16);
+      color: #d1fae5;
+    }
+
+    .toggle-chip.active-spot {
+      border-color: rgba(247, 148, 29, 0.65);
+      background: rgba(247, 148, 29, 0.2);
+      color: #ffedd5;
+    }
+
+    /* Overhead BoardView + CategoriesStrip */
+    .overhead-shelf {
+      max-width: 1640px;
+      margin: 12px auto 0;
+      padding: 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .board-view {
+      background: var(--bg-glass);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      transition: all 0.22s ease;
+    }
+
+    .board-view.enlarged {
+      padding: 18px 20px;
+      border-color: var(--border-highlight);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.55);
+    }
+
+    .board-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .board-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .board-lanes {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .board-lane {
+      background: rgba(10, 16, 30, 0.65);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+    }
+
+    .lane-head {
       display: flex;
       justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .lane-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .lane-card-pill {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    .lane-card-pill.escalated {
+      border-color: rgba(239, 68, 68, 0.6);
+      background: rgba(239, 68, 68, 0.16);
+      color: #fecaca;
+    }
+
+    .lane-card-pill.suppressed {
+      border-color: rgba(16, 185, 129, 0.5);
+      background: rgba(16, 185, 129, 0.14);
+      color: #bbf7d0;
+    }
+
+    /* CategoriesStrip */
+    .categories-strip {
+      display: flex;
       align-items: center;
       flex-wrap: wrap;
       gap: 8px;
-      pointer-events: none;
+      padding: 8px 14px;
+      background: rgba(12, 19, 36, 0.78);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
     }
 
-    .stage-mode-tabs {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      pointer-events: auto;
-    }
-
-    .stage-tab {
-      background: rgba(2, 6, 23, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 5px 9px;
-      border-radius: 7px;
-      cursor: pointer;
-      transition: all 0.18s;
-    }
-
-    .stage-tab.active, .stage-tab:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
-      background: rgba(34, 211, 238, 0.14);
-    }
-
-    .stage-hud-bottom {
-      position: absolute;
-      bottom: 12px;
-      left: 14px;
-      right: 14px;
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--font-mono);
+    .cat-strip-label {
       font-size: 11px;
-      background: rgba(2, 6, 23, 0.82);
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      pointer-events: none;
-    }
-
-    /* Sections */
-    .section {
-      max-width: 1400px;
-      margin: 0 auto 48px;
-      padding: 0 28px;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-size: 25px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .section-desc {
-      font-size: 14px;
-      color: var(--text-secondary);
-      max-width: 820px;
-      margin-top: 4px;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 999px;
-      font-family: var(--font-mono);
-      font-size: 10px;
       font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-right: 4px;
     }
 
-    .b-cyan { background: rgba(34, 211, 238, 0.16); color: var(--cyan); border: 1px solid rgba(34, 211, 238, 0.45); }
-    .b-emerald { background: rgba(16, 185, 129, 0.16); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.45); }
-    .b-crimson { background: rgba(239, 68, 68, 0.18); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.5); }
-    .b-amber { background: rgba(245, 158, 11, 0.18); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.45); }
-    .b-violet { background: rgba(168, 85, 247, 0.18); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.45); }
-
-    /* Scenario Explorer Layout */
-    .explorer-grid {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 20px;
-    }
-
-    .sc-btn {
-      width: 100%;
-      text-align: left;
-      background: var(--bg-card);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      color: var(--text-main);
-      padding: 13px 14px;
-      border-radius: 12px;
-      margin-bottom: 10px;
+    .cat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
       cursor: pointer;
-      transition: all 0.18s;
+      border: 1px solid transparent;
     }
 
-    .sc-btn:hover {
-      border-color: rgba(34, 211, 238, 0.5);
-      transform: translateX(2px);
+    .cat-pill.promoted {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.5);
+      color: #a7f3d0;
     }
 
-    .sc-btn.active {
-      border-color: var(--cyan);
-      background: linear-gradient(135deg, rgba(34, 211, 238, 0.14), rgba(15, 23, 42, 0.95));
-      box-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
+    .cat-pill.trial {
+      background: rgba(168, 85, 247, 0.18);
+      border-color: rgba(168, 85, 247, 0.55);
+      color: #e9d5ff;
     }
 
-    .glass-panel {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 22px;
+    .cat-pill.dormant {
+      background: rgba(100, 116, 139, 0.16);
+      border-color: rgba(100, 116, 139, 0.4);
+      color: #94a3b8;
+      text-decoration: line-through;
     }
 
-    .agent-grid {
+    /* Main 3-Wing Spatial Crossroads Stage */
+    .crossroads-stage {
+      max-width: 1640px;
+      margin: 14px auto 36px;
+      padding: 0 18px;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-top: 16px;
+      grid-template-columns: 360px minmax(0, 1fr) 330px;
+      gap: 16px;
+      align-items: start;
     }
 
-    .agent-card {
-      background: rgba(2, 6, 23, 0.72);
-      border: 1px solid rgba(56, 189, 248, 0.22);
-      border-radius: 12px;
-      padding: 16px;
+    .crossroads-stage.side-collapsed {
+      grid-template-columns: 52px minmax(0, 1fr) 330px;
     }
 
-    .agent-card h4 {
-      font-size: 13px;
-      margin: 8px 0 6px;
+    @media (max-width: 1260px) {
+      .crossroads-stage,
+      .crossroads-stage.side-collapsed {
+        grid-template-columns: 1fr;
+      }
+      .board-lanes {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Left Wing: SidePanel */
+    .side-panel {
+      background: var(--bg-glass-strong);
+      backdrop-filter: blur(22px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .side-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-glass);
+    }
+
+    .side-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-glass);
+      background: rgba(8, 12, 24, 0.6);
+    }
+
+    .side-tab-btn {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 8px;
+      border-radius: 7px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .side-tab-btn.active {
+      background: rgba(77, 166, 255, 0.2);
+      border-color: rgba(77, 166, 255, 0.5);
       color: #fff;
     }
 
-    .agent-card p {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
+    .side-body {
+      padding: 14px;
+      max-height: 760px;
+      overflow-y: auto;
     }
 
-    pre {
-      background: #020617;
-      padding: 10px 12px;
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      overflow-x: auto;
-      color: #cbd5e1;
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      margin-top: 8px;
-    }
-
-    /* Tables & Architecture Grid */
-    .arch-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+    /* Center Wing: NowCard + Pop-Out OptionRing */
+    .center-crossroads {
+      display: flex;
+      flex-direction: column;
       gap: 14px;
     }
 
-    .arch-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 18px;
+    .now-card {
+      background: var(--bg-glass-strong);
+      backdrop-filter: blur(26px);
+      border: 1.5px solid var(--border-highlight);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.6), 0 0 32px rgba(77, 166, 255, 0.1);
+      overflow: hidden;
     }
 
-    .arch-num {
-      font-family: var(--font-mono);
+    .now-card.hard-escalation {
+      border-color: rgba(239, 68, 68, 0.78);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.65), 0 0 36px rgba(239, 68, 68, 0.22);
+    }
+
+    .hard-escalation-banner {
+      background: linear-gradient(90deg, rgba(220, 38, 38, 0.92), rgba(185, 28, 28, 0.88));
+      color: #fff;
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .routine-suppressed-banner {
+      background: linear-gradient(90deg, rgba(5, 150, 105, 0.88), rgba(16, 185, 129, 0.82));
+      color: #fff;
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .now-body {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .now-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .now-episode-tag {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ai-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .now-title {
+      font-size: 19px;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    .role-framing-box {
+      padding: 10px 13px;
+      border-radius: var(--radius-sm);
+      background: rgba(247, 148, 29, 0.12);
+      border-left: 3px solid var(--you-orange);
+      font-size: 12.5px;
+      color: #ffedd5;
+    }
+
+    /* WHY QUEUED & 4-State Reliability Chips */
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .row-label {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+
+    .why-chip {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fecaca;
+    }
+
+    .why-chip.calm {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #a7f3d0;
+    }
+
+    .rel-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      border: 1px solid transparent;
+    }
+
+    .rel-chip.reliable {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.5);
+      color: #a7f3d0;
+    }
+
+    .rel-chip.not_said {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: rgba(245, 158, 11, 0.55);
+      color: #fde68a;
+    }
+
+    .rel-chip.said_wrong {
+      background: rgba(239, 68, 68, 0.18);
+      border-color: rgba(239, 68, 68, 0.55);
+      color: #fecaca;
+    }
+
+    .rel-chip.said_differently {
+      background: rgba(168, 85, 247, 0.18);
+      border-color: rgba(168, 85, 247, 0.55);
+      color: #e9d5ff;
+    }
+
+    .if-wrong-strip {
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      background: rgba(236, 72, 153, 0.13);
+      border: 1px solid rgba(236, 72, 153, 0.45);
+      color: #fbcfe8;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    /* 4-Level Cascading Dossier (L0 -> L1 -> L2 -> L3) */
+    .cascade-dossier {
+      background: rgba(9, 14, 28, 0.72);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cascade-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .level-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .level-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-glass);
+      background: rgba(30, 41, 59, 0.7);
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .level-pill.active {
+      background: rgba(77, 166, 255, 0.24);
+      border-color: var(--ai-blue);
+      color: #fff;
+    }
+
+    .cascade-layer {
+      padding: 9px 11px;
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.82);
+      border-left: 3px solid var(--ai-blue);
+      font-size: 12.5px;
+    }
+
+    .cascade-layer.l2 {
+      border-left-color: var(--bridge-pink);
+    }
+
+    .cascade-layer.l3 {
+      border-left-color: var(--you-orange);
+    }
+
+    /* One-Section-at-a-Time Accordion inside L3 */
+    .chart-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .acc-item {
+      border: 1px solid var(--border-glass);
+      border-radius: 8px;
+      background: rgba(12, 19, 36, 0.85);
+      overflow: hidden;
+    }
+
+    .acc-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .acc-header:hover {
+      background: rgba(77, 166, 255, 0.08);
+    }
+
+    .acc-content {
+      padding: 10px 12px;
+      border-top: 1px solid var(--border-glass);
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+
+    /* SymbiosisPanel 3-Column Division of Labor */
+    .symbiosis-panel {
+      background: rgba(10, 16, 31, 0.78);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+
+    .symbiosis-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .symbiosis-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .sym-col {
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 11.5px;
+    }
+
+    .sym-col.you-col {
+      background: rgba(247, 148, 29, 0.11);
+      border: 1px solid rgba(247, 148, 29, 0.42);
+    }
+
+    .sym-col.bridge-col {
+      background: rgba(236, 72, 153, 0.11);
+      border: 1px solid rgba(236, 72, 153, 0.42);
+    }
+
+    .sym-col.ai-col {
+      background: rgba(77, 166, 255, 0.11);
+      border: 1px solid rgba(77, 166, 255, 0.42);
+    }
+
+    .sym-col-title {
       font-size: 11px;
       font-weight: 800;
-      color: var(--cyan);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       margin-bottom: 6px;
     }
 
-    .arch-card h3 {
-      font-size: 15px;
+    .sym-col ul {
+      padding-left: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    /* M2 Earned-Autonomy Dials + Sparkline */
+    .dials-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 14px;
+      background: rgba(12, 20, 38, 0.78);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+    }
+
+    .dial-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dial-meta {
+      font-size: 11.5px;
+    }
+
+    .dial-meta strong {
+      display: block;
+      font-size: 12px;
+    }
+
+    /* M3 YourCallFirst Blinded Spot-Check */
+    .your-call-first {
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(247, 148, 29, 0.18), rgba(236, 72, 153, 0.15));
+      border: 1.5px solid var(--you-orange);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Primary Routing Action Bar + Pop-Out OptionRing */
+    .routing-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 6px;
+      border-top: 1px solid var(--border-glass);
+    }
+
+    .route-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .route-btn {
+      padding: 9px 15px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.16s ease;
+    }
+
+    .route-btn.pass {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: var(--pass-green);
+      color: #d1fae5;
+    }
+
+    .route-btn.modify {
+      background: rgba(236, 72, 153, 0.22);
+      border-color: var(--bridge-pink);
+      color: #fce7f3;
+    }
+
+    .route-btn.escalate {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: var(--alert-red);
+      color: #fee2e2;
+    }
+
+    .route-btn.defer {
+      background: rgba(148, 163, 184, 0.16);
+      border-color: var(--border-glass);
+      color: var(--text-muted);
+    }
+
+    /* Pop-Out Categorical OptionRing */
+    .option-ring-popout {
+      background: rgba(14, 21, 40, 0.95);
+      backdrop-filter: blur(24px);
+      border: 1.5px solid var(--bridge-pink);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-ring-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .ring-card {
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border-glass);
+      background: rgba(20, 30, 55, 0.8);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .ring-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--ai-blue);
+    }
+
+    .ring-card.trial {
+      border-color: rgba(168, 85, 247, 0.6);
+      background: rgba(168, 85, 247, 0.12);
+    }
+
+    .ring-card.dormant {
+      opacity: 0.6;
+      border-style: dashed;
+    }
+
+    /* Right Wing: UpNextStrip Queue */
+    .up-next-strip {
+      background: var(--bg-glass-strong);
+      backdrop-filter: blur(22px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .queue-card {
+      padding: 11px 12px;
+      border-radius: 11px;
+      background: rgba(18, 27, 49, 0.82);
+      border: 1px solid var(--border-glass);
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+
+    .queue-card:hover {
+      border-color: var(--ai-blue);
+      transform: translateX(-2px);
+    }
+
+    .queue-card.active-now {
+      border-color: var(--you-orange);
+      background: rgba(247, 148, 29, 0.13);
+    }
+
+    .queue-card.hard-esc {
+      border-left: 4px solid var(--alert-red);
+    }
+
+    .queue-card.suppressed-sync {
+      border-left: 4px solid var(--pass-green);
+    }
+
+    /* Paper/Ink M5 Lineage Card */
+    .paper-lineage-card {
+      background: var(--paper-bg);
+      color: var(--paper-ink);
+      border-radius: 10px;
+      padding: 12px;
+      font-family: "SF Mono", "Menlo", monospace;
+      font-size: 11.5px;
+      border: 1px solid #d6cbb5;
+    }
+
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
       margin-bottom: 8px;
     }
 
-    .arch-card p {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12.5px;
-      margin-top: 10px;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 11px 12px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
-    }
-
-    th {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      color: var(--cyan);
-      background: rgba(2, 6, 23, 0.65);
-    }
-
-    footer {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 28px;
-      border-top: 1px solid var(--border-subtle);
+    .slider-row label {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
-
-    @media (max-width: 1024px) {
-      .hero-section, .explorer-grid, .agent-grid {
-        grid-template-columns: 1fr;
-      }
-      .kpi-strip, .arch-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Persistent Governance Ribbon -->
-  <div class="gov-ribbon">
-    <div>
-      <span class="gov-tag">GOOGLE SCIENCE PROGRAM · NATURE (s41586-026-11161-8) SYNTHESIS</span>
-      <span style="margin-left:10px; color:var(--text-secondary);">Wayne Satz &amp; Google Science Program · Bidirectional PHA × SALVAGE-AI Inpatient-to-Home Architecture</span>
-    </div>
-    <div class="gov-telemetry">
-      <span>Post-Discharge Cohort: <strong>N = 160 (80 DFI + 80 Sepsis)</strong></span>
-      <span>Outpatient Leakage Caught: <strong>+0.1890 AUROC</strong></span>
-      <span>Coral NPU Edge: <strong>3.82 mW · 6.40 KB SRAM</strong></span>
-      <span>Auditor: <strong>VERIFY PASS (5/5 Tests)</strong></span>
-    </div>
-  </div>
-
-  <!-- Navigation -->
-  <nav class="navbar">
-    <a href="#" class="brand">
-      <div class="brand-cube">PHA</div>
-      <div class="brand-text">
-        <h1>PHA × SALVAGE-AI BRIDGE · INPATIENT-TO-HOME CONTINUUM</h1>
-        <p>Wayne Satz &amp; Google Science Program · 3-Agent PHA (DSA + DEA + HCA) × 4D Spatial Clinical Router</p>
+  <!-- Top Spatial Ornament Bar -->
+  <header class="crossroads-topbar">
+    <div class="brand-cluster">
+      <span class="vision-badge">visionOS 27.0 · Spatial Crossroads</span>
+      <div>
+        <div class="brand-title">PHA × SALVAGE-AI · Inpatient-to-Home Spatial Decision Router</div>
+        <div class="brand-sub">3-Agent Personal Health Agent (DSA + DEA + HCA) · 4D Storetime Lock · M0–M5 Symbiosis Gating</div>
       </div>
-    </a>
-    <div class="nav-links">
-      <a href="#scenario-explorer">🩺 6 Live Scenarios</a>
-      <a href="#bidirectional-architecture">🧬 Bidirectional Architecture</a>
-      <a href="#benchmarks">📊 N=160 Benchmarks</a>
-      <a href="#setup-guide">💻 Setup &amp; Run</a>
-      <a href="https://github.com/deesatzed/personal-health-agent-bridge/blob/main/PAPER/MANUSCRIPT_PHA_SALVAGE_BRIDGE.md" target="_blank" rel="noopener">📝 Preprint #2</a>
-      <a href="/workspace" class="btn btn-glow">Launch Live Simulation Workspace (`/workspace`) →</a>
     </div>
-  </nav>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div>
-      <div class="eyebrow">✦ GOOGLE SCIENCE PROGRAM COLLABORATION · BIDIRECTIONAL NATURE (2026) PHA SYNTHESIS</div>
-      <h2 class="hero-title">Hardening Multi-Agent Personal Health Systems Across the Hospital-to-Home Transition.</h2>
-      <p class="hero-subtitle">
-        Synthesizes Google Research's <strong>3-Agent Personal Health Agent (`DSA` + `DEA` + `HCA`; Heydari, Xu, et al., <em>Nature</em> 2026)</strong> with the <strong>4-Stage Safe Clinical Decision Architecture (`Spatial Clinical Router` / `SALVAGE-AI`)</strong> across <strong>$N = 160$ post-discharge trajectories</strong> (`POST_DFI_SALVAGE` &amp; `POST_SEPSIS_CARDIORENAL`)—eliminating outpatient `charttime` look-ahead leakage, `Unavailable == Negative` lab omissions, and unsafe lifestyle coaching during acute flares.
+    <div class="top-controls">
+      <!-- 3-Seat Role Switcher -->
+      <div class="pill-group" title="3-Seat Role Switcher">
+        <button class="pill-btn role-overseer active" onclick="setRole('overseer')" id="role-overseer">Overseer Seat</button>
+        <button class="pill-btn role-bedside" onclick="setRole('bedside')" id="role-bedside">Bedside Clinic</button>
+        <button class="pill-btn role-nurse" onclick="setRole('nurse')" id="role-nurse">Home-Health Nurse HITM</button>
+      </div>
+
+      <!-- Domain Filter -->
+      <div class="pill-group">
+        <button class="pill-btn active" onclick="setDomainFilter('ALL')" id="dom-ALL">All (6)</button>
+        <button class="pill-btn" onclick="setDomainFilter('POST_DFI_SALVAGE')" id="dom-POST_DFI_SALVAGE">4DMFEET Salvage</button>
+        <button class="pill-btn" onclick="setDomainFilter('POST_SEPSIS_CARDIORENAL')" id="dom-POST_SEPSIS_CARDIORENAL">4D-Sepsis Cardiorenal</button>
+      </div>
+
+      <!-- 4D Storetime Lock Toggle -->
+      <button class="toggle-chip active-guard" id="storetime-toggle" onclick="toggleStoretimeLock()">
+        🔒 4D Storetime Lock: ON
+      </button>
+
+      <!-- M3 Blinded Spot-Check Toggle -->
+      <button class="toggle-chip" id="spotcheck-toggle" onclick="toggleSpotCheck()">
+        🎯 M3 Your Call First: OFF
+      </button>
+
+      <a class="toggle-chip" href="/landing">✦ 3D Architecture Overview</a>
+    </div>
+  </header>
+
+  <!-- Overhead Shelf: Enlargeable BoardView + CategoriesStrip -->
+  <section class="overhead-shelf">
+    <div class="board-view" id="overhead-board">
+      <div class="board-header">
+        <div class="board-title">
+          <span>Overhead Spatial BoardView · N=160 Benchmark (AUROC 0.8110 Strict vs 1.0000 Leaked · 100% Routine Sync Suppression)</span>
+        </div>
+        <button class="pill-btn active" onclick="toggleBoardSize()" id="board-size-btn">Enlarge Board ⤢</button>
+      </div>
+      <div class="board-lanes" id="board-lanes-container"></div>
+    </div>
+
+    <div class="categories-strip" id="categories-strip-container"></div>
+  </section>
+
+  <!-- Main 3-Wing Spatial Crossroads Stage -->
+  <main class="crossroads-stage" id="crossroads-stage">
+
+    <!-- Left Wing: Collapsible SidePanel -->
+    <aside class="side-panel" id="left-side-panel">
+      <div class="side-panel-header">
+        <span style="font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);" id="side-panel-title">
+          Left Wing · Deep Inspection
+        </span>
+        <button class="pill-btn" onclick="toggleSidePanel()" id="side-collapse-btn" title="Collapse/Expand SidePanel">◀</button>
+      </div>
+      <div id="side-panel-inner">
+        <div class="side-tabs">
+          <button class="side-tab-btn active" onclick="setSideTab('agents')" id="stab-agents">3-Agent PHA</button>
+          <button class="side-tab-btn" onclick="setSideTab('trust')" id="stab-trust">Rate Trust (R/N/W/D)</button>
+          <button class="side-tab-btn" onclick="setSideTab('voi')" id="stab-voi">Ask Next (VOI)</button>
+          <button class="side-tab-btn" onclick="setSideTab('m4')" id="stab-m4">M4 Promote ★</button>
+          <button class="side-tab-btn" onclick="setSideTab('m5')" id="stab-m5">M5 Lineage</button>
+        </div>
+        <div class="side-body" id="side-panel-content"></div>
+      </div>
+    </aside>
+
+    <!-- Center Wing: Central NowCard + Pop-Out Categorical OptionRing -->
+    <section class="center-crossroads">
+      <div class="now-card" id="now-card-container"></div>
+      <div id="option-ring-wrapper" style="display:none;"></div>
+    </section>
+
+    <!-- Right Wing: UpNextStrip Priority Queue -->
+    <aside class="up-next-strip">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);">
+          Right Wing · Up-Next Queue
+        </span>
+        <span style="font-size:11px;color:var(--ai-blue);" id="queue-count-label">6 Episodes</span>
+      </div>
+      <p style="font-size:11.5px;color:var(--text-muted);">
+        Click any card to pull into the central <strong>NowCard</strong> crossroads (`makeNow`).
       </p>
-      <div class="hero-cta-row">
-        <a href="/workspace" class="btn btn-glow">Open Live Wearable &amp; Clinical Workspace (`/workspace`)</a>
-        <a href="#scenario-explorer" class="btn btn-outline">Explore 6 Flagship Scenarios (`PHA-01`–`PHA-06`)</a>
-        <a href="https://github.com/deesatzed/personal-health-agent-bridge/blob/main/PAPER/MANUSCRIPT_PHA_SALVAGE_BRIDGE.md" target="_blank" rel="noopener" class="btn btn-outline">📝 Read Preprint #2 (`MANUSCRIPT_PHA_SALVAGE_BRIDGE.md`)</a>
-        <a href="https://github.com/deesatzed/personal-health-agent-bridge/blob/main/PAPER/arxiv_submission/main.pdf" target="_blank" rel="noopener" class="btn btn-outline">📄 Download Compiled PDF (`main.pdf`)</a>
-      </div>
+      <div id="up-next-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </aside>
 
-      <div class="kpi-strip">
-        <div class="kpi-card">
-          <div class="kpi-val">+0.1890</div>
-          <div class="kpi-label">Outpatient `charttime` Leakage Caught (`0.8110` Strict vs `1.0000` Leaky)</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-val">100.0%</div>
-          <div class="kpi-label">Top-3 Missing-Workup VOI Recall@3 inside DEA (`vs 68.8% PHA`)</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-val">3.82 mW</div>
-          <div class="kpi-label">Tier-0 Wearable Coral NPU (`100%` Benign Syncs Suppressed)</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-val">0.0%</div>
-          <div class="kpi-label">Unsafe Coaching in Acute Flares (`100%` Signed NowCard Handoff)</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Interactive 3D Canvas Stage -->
-    <div class="hero-3d-stage">
-      <canvas id="phaCanvas"></canvas>
-      <div class="stage-hud-top">
-        <div class="stage-mode-tabs">
-          <button class="stage-tab active" onclick="window.setStageMode('EDGE_SENTINEL', this)">1. ⚡ Coral NPU Edge (3.82 mW)</button>
-          <button class="stage-tab" onclick="window.setStageMode('STORETIME_LOCK', this)">2. 🔒 4D storetime Lock</button>
-          <button class="stage-tab" onclick="window.setStageMode('MULTI_AGENT', this)">3. 🤖 3-Agent PHA (DSA·DEA·HCA)</button>
-          <button class="stage-tab" onclick="window.setStageMode('NOWCARD_BRIDGE', this)">4. 🩺 sdr.decision.v1 NowCard</button>
-        </div>
-        <span class="badge b-cyan" id="activeScenarioBadge">ACTIVE: PHA-01 (FLARE)</span>
-      </div>
-      <div class="stage-hud-bottom">
-        <span id="stageTelemetryLeft" style="color:var(--cyan);">240-KC Sparse Edge Projection (95.0% Sparsity · 12 Active KCs)</span>
-        <span style="color:var(--text-muted);">Drag to Orbit 3D · Select Scenario Below</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section 1: Interactive 6-Scenario Explorer -->
-  <section class="section" id="scenario-explorer">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">🩺 LIVE MULTI-AGENT &amp; WEARABLE EDGE INSPECTOR · 6 FLAGSHIP POST-DISCHARGE SCENARIOS</div>
-        <h2 class="section-title">Inspect the Tier-0 Coral NPU Sentinel &amp; 3-Specialist PHA (`DSA` + `DEA` + `HCA`)</h2>
-        <p class="section-desc">
-          Select any flagship clinical scenario (`PHA-01` through `PHA-06`) to inspect how the on-wearable <strong>Google Coral NPU (`RV32IMF_Zve32x`)</strong> gates cloud wake-ups, how the <strong>Data Science Agent (`DSA`)</strong> enforces fail-closed target trials, how the <strong>Domain Expert Agent (`DEA`)</strong> ranks missing outpatient labs via the `240-KC` VOI router, and how the <strong>Health Coach Agent (`HCA`)</strong> switches between `OARS` Motivational Interviewing and a signed `sdr.decision.v1` Clinician `NowCard`.
-        </p>
-      </div>
-    </div>
-
-    <div class="explorer-grid">
-      <div id="scenarioList"></div>
-      <div class="glass-panel" id="scenarioDetail"></div>
-    </div>
-  </section>
-
-  <!-- Section 2: Bidirectional Architectural Synthesis -->
-  <section class="section" id="bidirectional-architecture">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">🧬 BIDIRECTIONAL ARCHITECTURAL SYNTHESIS · DIRECTIONS A &amp; B</div>
-        <h2 class="section-title">How `SALVAGE-AI` Hardens Google's PHA — and How PHA Extends `SALVAGE-AI` Home</h2>
-        <p class="section-desc">
-          Unifying acute inpatient decision support (`deesatzed/spatial-clinical-router`) with longitudinal consumer personal health coaching (`Heydari, Xu, et al., Nature 2026`).
-        </p>
-      </div>
-    </div>
-
-    <div class="arch-grid">
-      <div class="arch-card" style="border-color:rgba(34,211,238,0.45);">
-        <div class="arch-num">STAGE A1 · 4D STORETIME LOCK</div>
-        <h3>Outpatient Portal vs. Specimen Time</h3>
-        <p>Joins continuous wearable syncs (`t_sync_hours`) strictly with verified outpatient portal labs (`t_store_hours &lt;= t_k`), masking pending send-out wound cultures and preventing a <strong>`+0.1890` AUROC look-ahead inflation</strong> at Day 7 post-discharge.</p>
-      </div>
-      <div class="arch-card" style="border-color:rgba(16,185,129,0.45);">
-        <div class="arch-num" style="color:var(--emerald);">STAGE A2 · 240-KC VOI ROUTER IN DEA</div>
-        <h3>`Unavailable != Negative` Routing</h3>
-        <p>Embeds a 95%-sparse *Drosophila* Kenyon-Cell associative router inside the <strong>Domain Expert Agent (`DEA`)</strong>, raising Top-3 missing outpatient workup Recall@3 from `45.6%` (monolithic LLM) and `68.8%` (unguarded PHA) to <strong>`100.0%`</strong>.</p>
-      </div>
-      <div class="arch-card" style="border-color:rgba(245,158,11,0.45);">
-        <div class="arch-num" style="color:var(--amber);">STAGE A3 · FAIL-CLOSED TARGET TRIALS</div>
-        <h3>Positivity Gate inside DSA</h3>
-        <p>Embeds a Hernán–Robins target-trial gate (`Overlap &gt;= 70%`, `|SMD| &lt;= 0.12`, Manski bounds) inside the <strong>Data Science Agent (`DSA`)</strong>, blocking <strong>`100.0%`</strong> of confounded exercise or fluid claims during acute flares while preserving cardiorenal decongestion (`RD = -0.131`).</p>
-      </div>
-      <div class="arch-card" style="border-color:rgba(168,85,247,0.45);">
-        <div class="arch-num" style="color:var(--violet);">STAGE A4 &amp; B · CORAL NPU + HCA BRIDGE</div>
-        <h3>3.82 mW Edge Gate &amp; `OARS` / `NowCard`</h3>
-        <p>Tier-0 wearable Coral NPU (`RV32IMF_Zve32x`, `6.40 KB` SRAM, `0.0341 ms`) suppresses <strong>`100.0%`</strong> of benign cloud syncs. On flares, the <strong>Health Coach Agent (`HCA`)</strong> halts `OARS` coaching (`0.0%` unsafe rate) and mints a signed `sdr.decision.v1` Clinician `NowCard`.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section 3: Empirical Benchmark Tables -->
-  <section class="section" id="benchmarks">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">📊 DETERMINISTIC N = 160 POST-DISCHARGE BENCHMARK · SEED 20261024</div>
-        <h2 class="section-title">Three-Arm Architecture Comparison &amp; Outpatient Timestamp Leakage Audit</h2>
-      </div>
-    </div>
-
-    <div class="glass-panel" style="margin-bottom:18px;">
-      <h3 style="font-size:16px;margin-bottom:6px;">Table 1 · Three-Arm Architecture Comparison Across $N = 160$ Post-Discharge Trajectories ($80$ `POST_DFI_SALVAGE` + $80$ `POST_SEPSIS_CARDIORENAL`)</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Architectural Arm</th>
-            <th>Exposed to Outpatient `charttime` Leakage?</th>
-            <th>Missing-Workup Top-3 VOI Recall@3</th>
-            <th>Unidentifiable Causal Claims Blocked (%)</th>
-            <th>Unsafe Lifestyle Coaching During Acute Flare (%)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Arm 1: Monolithic Ungated LLM</strong></td>
-            <td><span class="badge b-crimson">Yes (Leaked)</span></td>
-            <td><code>0.4562 (45.6%)</code></td>
-            <td><code>0.0%</code></td>
-            <td><span style="color:var(--crimson);font-weight:700;">34.0%</span></td>
-          </tr>
-          <tr>
-            <td><strong>Arm 2: Standard 3-Agent PHA (No `SALVAGE` Guards)</strong></td>
-            <td><span class="badge b-amber">Yes (Leaked)</span></td>
-            <td><code>0.6875 (68.8%)</code></td>
-            <td><code>0.0%</code></td>
-            <td><span style="color:var(--amber);font-weight:700;">12.5%</span></td>
-          </tr>
-          <tr style="background:rgba(16,185,129,0.08);">
-            <td><strong>Arm 3: Bidirectional `PHA × SALVAGE-AI` Bridge (Ours)</strong></td>
-            <td><span class="badge b-emerald">No (storetime Locked)</span></td>
-            <td><strong style="color:var(--emerald);">1.0000 (100.0%)</strong></td>
-            <td><strong style="color:var(--emerald);">100.0%</strong></td>
-            <td><strong style="color:var(--emerald);">0.0%</strong></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- Section 4: Step-by-Step Setup & Run Guide -->
-  <section class="section" id="setup-guide">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">💻 ZERO-DEPENDENCY PYTHON 3.10+ REPRODUCIBILITY PROTOCOL</div>
-        <h2 class="section-title">How to Set Up, Verify, &amp; Run `personal-health-agent-bridge` in 60 Seconds</h2>
-      </div>
-    </div>
-
-    <div class="glass-panel">
-      <pre style="font-size:12.5px;line-height:1.65;color:#a5f3fc;"># 1. Clone the standalone repository (zero third-party packages required)
-git clone https://github.com/deesatzed/personal-health-agent-bridge.git
-cd personal-health-agent-bridge
-
-# 2. Run the 5-Test Automated Verification Suite &amp; Manuscript Consistency Auditor
-PYTHONPATH=src python3 tests/test_pha_salvage_bridge.py -v
-python3 scripts/verify_pha_manuscript.py
-
-# 3. Regenerate the N=160 Bidirectional Post-Discharge Benchmark (data/pha_salvage_bidirectional_benchmark.json)
-PYTHONPATH=src python3 src/pha_salvage_bridge/benchmark.py
-
-# 4. Launch the Standalone Interactive Web Server on Port 8790 (http://127.0.0.1:8790/landing)
-python3 src/pha_salvage_bridge/server.py</pre>
-    </div>
-  </section>
-
-  <footer>
-    <div>
-      <strong>PHA × SALVAGE-AI Bridge</strong> · Wayne Satz &amp; <strong>Google Science Program</strong> · Companion to <a href="https://github.com/deesatzed/spatial-clinical-router" style="color:var(--cyan);">deesatzed/spatial-clinical-router</a>
-    </div>
-    <div>
-      Zero-Dependency Python 3.10+ · Nature (s41586-026-11161-8) Bidirectional Synthesis
-    </div>
-  </footer>
+  </main>
 
   <script>
-    // Pre-bundled deterministic benchmark fallback so the page works 100% offline / on GitHub Pages
-    const FALLBACK_BENCHMARK = {
-      "outpatient_timestamp_leakage_audit": {
-        "strict_storetime_auroc": 0.811,
-        "naive_charttime_leaked_auroc": 1.0,
-        "auroc_inflation_delta": 0.189,
-        "episodes_with_delayed_outpatient_labs_pct": 100.0
-      },
-      "coral_npu_wearable_sentinel_audit": {
-        "isa_target": "RV32IMF_Zve32x_CoralNPU_Wearable250MHz",
-        "simulated_latency_ms": 0.0341,
-        "simulated_power_mw": 3.82,
-        "sram_footprint_kb": 6.4,
-        "routine_benign_syncs_suppressed_pct": 100.0,
-        "clinical_red_flag_wake_sensitivity_pct": 100.0
-      },
-      "three_arm_architecture_comparison": {
-        "Arm_3_Bidirectional_PHA_x_SALVAGE_AI_Bridge": {
-          "missing_workup_voi_recall_at_3": 1.0,
-          "unidentifiable_causal_claims_blocked_pct": 100.0,
-          "unsafe_coaching_during_acute_flare_pct": 0.0
+    const SCENARIOS = [
+      {
+        scenario_id: "PHA-01",
+        title: "Post-DFI Plantar Thermal Flare (+2.6°C) + Pending Wound Culture (4D Storetime Trap)",
+        cohort_domain: "POST_DFI_SALVAGE",
+        patient_id: "PHA_PT_DFI01",
+        t_landmark_hours: 168.0,
+        spatial_crossroads_mode: "NOW_CARD_HARD_ESCALATION",
+        urgency: "STAT_PROVIDER_CROSSROADS",
+        drift_z_score: 3.06,
+        wake_cloud_orchestrator: true,
+        suppress_cloud_wakeup: false,
+        predicted_risk: 0.432,
+        leaked_risk: 0.948,
+        leakage_rows_blocked: 2,
+        red_flags: [
+          "PLANTAR_THERMAL_FLARE (+2.6°C >= 2.2°C)",
+          "SUBOPTIMAL_BOOT_OFFLOADING (52% < 70%)",
+          "AUTONOMIC_TACHYCARDIA (RHR 88 bpm, +17 bpm)",
+          "AUTONOMIC_HRV_SUPPRESSION (RMSSD 24 ms, -18 ms)"
+        ],
+        role_seat_framings: {
+          overseer: "Limb Salvage Podiatry/Vascular Overseer: ΔT=+2.6°C plantar asymmetry (drift z=3.06); 4D storetime lock holds 2 pending lab/culture records (CRP drawn 164h/posts 172h; MRSA culture posts 212h).",
+          bedside: "Wound Clinic Provider: Inspect plantar ulcer depth, verify TCC/boot offloading (52%), and confirm STAT CRP + deep probe-to-bone before escalating antibiotics.",
+          nurse: "Home-Health Triage Nurse (HITM): Pause autonomous walking progression immediately, perform OARS check-in on boot wear (52%), and book same-day limb-salvage clinic slot."
+        },
+        cascading_dossier: {
+          L0_awareness: "[PHA-01] NOW_CARD_HARD_ESCALATION · Drift z=3.06 · Red Flags=4 · Held-Back 4D Labs=2 (CRP, Deep Culture)",
+          L1_trends: "7d Wearable Trajectory: Plantar ΔT +0.7°C → +2.6°C, RHR 71 → 88 bpm (Z=+1.89), HRV 42 → 24 ms (Z=-1.80), Smart-Boot Adherence 92% → 52%.",
+          L2_storetime_target_trial: "4D Storetime Lock: Outpatient CRP (94 mg/L, storetime 172h) & MRSA Culture (storetime 212h) are MASKED at t=168h. Target-Trial Gate PHA_TT1 fails closed (NOT_IDENTIFIABLE, overlap 31.4% < 70%).",
+          L3_full_chart: "3-Agent PHA Synthesis: DSA blocks look-ahead leakage; DEA ranks Hallux Toe Pressure (VOI 0.95) & Deep Culture (VOI 0.95); HCA halts exercise coaching and routes signed sdr.decision.v1 NowCard."
+        },
+        field_reliability: {
+          plantar_temp_asymmetry_c: "reliable",
+          boot_offloading_adherence_pct: "said_differently",
+          crp_mg_l: "not_said",
+          wound_probe_or_culture: "not_said",
+          pedal_doppler_toe_pressure_mmhg: "not_said"
+        },
+        if_wrong_risk_range: "If empirical step progression continues during +2.6°C flare: [23.8%, 76.9%] 30-day relapse / osteomyelitis amputation risk.",
+        voi_workup: [
+          { feature_key: "pedal_doppler_toe_pressure_mmhg", label: "Outpatient Hallux Toe Pressure / Perfusion", status: "MISSING_UNORDERED", voi: 0.95, range: "[0.238, 0.755]" },
+          { feature_key: "wound_probe_or_culture", label: "Deep Wound / Bone Culture Speciation", status: "PENDING_AT_LANDMARK", voi: 0.95, range: "[0.238, 0.755]" },
+          { feature_key: "crp_mg_l", label: "Outpatient C-Reactive Protein (CRP)", status: "PENDING_AT_LANDMARK", voi: 0.92, range: "[0.238, 0.745]" }
+        ],
+        oars: {
+          mode: "HALTED_FOR_CLINICIAN_ESCALATION",
+          open_q: "I noticed a +2.6°C warmth spike on your smart-boot mat today—have you felt new throbbing or chills over the past 12 hours?",
+          affirmation: "Thank you for syncing your smart-boot sensor every morning; catching this thermal shift early protects your foot.",
+          reflection: "When plantar asymmetry exceeds 2.2°C and outpatient culture results are still pending in the lab, autonomous step coaching is paused.",
+          summary: "Offload strictly for 24h, complete same-day hallux perfusion & CRP check, and await your provider's signed NowCard."
         }
       },
-      "flagship_scenarios": [
-        {
-          "scenario_id": "PHA-01",
-          "title": "Post-DFI Plantar Thermal Flare (+2.6 C) + Pending Outpatient Wound Culture (`storetime` Trap)",
-          "cohort_domain": "POST_DFI_SALVAGE",
-          "clinical_story": "62M discharged after 1st-ray debridement. At Day 7 (168h), Smart Offloading Boot mat detects plantar temperature asymmetry +2.6 C (threshold >= 2.2 C) and RHR rose from 71 to 88 bpm. Outpatient deep wound swab & CRP were collected at 164h (`charttime`), but CRP posts at 172h and MRSA speciation posts at 212h (`storetime`).",
-          "t_landmark_hours": 168.0,
-          "merkle_root": "8cd8f93c5d7e248a102245afaaaf024efcdf180b1e8b516292133bbcbba7ab73",
-          "coral_sentinel": {
-            "latency_ms": 0.0035,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": true,
-            "wake_reason": "IMMEDIATE_CLINICAL_ESCALATION (RED_FLAG_PLANTAR_THERMAL_FLARE_GE_2_2C, RED_FLAG_UNPROTECTED_WEIGHT_BEARING_SURGE)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.5112,
-            "leakage_rows_blocked": 2,
-            "trajectory_trends_7d": {
-              "resting_heart_rate": "71.0 -> 88.0 bpm (Z=+2.11)",
-              "hrv_rmssd": "42.0 -> 24.0 ms (Z=-2.00)",
-              "plantar_thermal_asymmetry": "2.60 C (Boot adherence 52%)"
-            },
-            "target_trial_contrast": {
-              "trial_id": "PHA_TT1_STEP_GRADED_RELOADING_DURING_THERMAL_FLARE",
-              "gate_status": "NOT_IDENTIFIABLE",
-              "common_support_pct": 31.4,
-              "manski_bounds": [-0.48, 0.52],
-              "rationale": "FAIL-CLOSED POSITIVITY GATE: Common support is 31.4% (< 70%) because IWGDF 2023 guidelines mandate immediate 48-72h step reduction & offloading when plantar asymmetry >= 2.2 C."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "STAT_PROVIDER_CROSSROADS",
-            "reward_alignment_note": "Aligned Functional Salvage Utility (+3.00): Prior minor 1st-ray resection with intact heel/plantar arch is modeled as successful functional limb preservation.",
-            "top_voi_missing_workup": [
-              {"feature_key": "pedal_doppler_toe_pressure_mmhg", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.95, "if_wrong_risk_interval": [0.281, 0.834]},
-              {"feature_key": "wound_probe_or_culture", "epistemic_status": "PENDING_AT_LANDMARK", "voi_score": 0.95, "if_wrong_risk_interval": [0.281, 0.834]},
-              {"feature_key": "crp_mg_l", "epistemic_status": "PENDING_AT_LANDMARK", "voi_score": 0.92, "if_wrong_risk_interval": [0.281, 0.824]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "HALTED_FOR_CLINICIAN_ESCALATION",
-            "smart_goal": "PAUSE autonomous step/diuretic progression for 24h; rest/offload the limb, complete the ordered high-VOI workup, and await your provider's signed NowCard.",
-            "clinician_nowcard_handoff": {
-              "schema": "sdr.decision.v1",
-              "episode_id": "PHA-01",
-              "urgency": "STAT_PROVIDER_CROSSROADS",
-              "target_trial_gate": "NOT_IDENTIFIABLE",
-              "recommended_clinician_options": [
-                "Pass: Order Top-VOI Outpatient Panel & Same-Day Tele-Triage",
-                "Modify (OptionRing): Adjust Offloading / Diuretic Protocol with Safety Bounds",
-                "Escalate: Direct Urgent Limb-Salvage / Cardiorenal Clinic Admission"
-              ]
-            }
-          }
+      {
+        scenario_id: "PHA-05",
+        title: "Post-Sepsis Acute +2.5 kg Fluid Surge + Unordered Urine Sodium (Fail-Closed Gate)",
+        cohort_domain: "POST_SEPSIS_CARDIORENAL",
+        patient_id: "PHA_PT_SEP02",
+        t_landmark_hours: 168.0,
+        spatial_crossroads_mode: "NOW_CARD_HARD_ESCALATION",
+        urgency: "STAT_PROVIDER_CROSSROADS",
+        drift_z_score: 3.85,
+        wake_cloud_orchestrator: true,
+        suppress_cloud_wakeup: false,
+        predicted_risk: 0.449,
+        leaked_risk: 0.912,
+        leakage_rows_blocked: 2,
+        red_flags: [
+          "ACUTE_FLUID_WEIGHT_GAIN (+2.5 kg >= 2.0 kg)",
+          "AUTONOMIC_TACHYCARDIA (RHR 101 bpm, +22 bpm)",
+          "AUTONOMIC_HRV_SUPPRESSION (RMSSD 18 ms, -15 ms)"
+        ],
+        role_seat_framings: {
+          overseer: "Cardiorenal HF/Nephrology Overseer: ΔWeight=+2.5kg in 72h (drift z=3.85); 4D storetime lock masks pending NT-proBNP (174h) & Cr (171h).",
+          bedside: "Cardiorenal Day-Unit Provider: Perform bedside VExUS venous congestion scan + STAT Spot Urine Sodium before IV vs oral loop diuretic titration.",
+          nurse: "Home-Health Cardiorenal Nurse (HITM): Pause autonomous fluid/step targets, assess orthopnea, and arrange STAT BMP + Urine Na draw."
         },
-        {
-          "scenario_id": "PHA-02",
-          "title": "Post-DFI Minor Ray Resection Remission (Anti-Reward-Hacking + Active OARS Coaching)",
-          "cohort_domain": "POST_DFI_SALVAGE",
-          "clinical_story": "58F s/p planned 2nd-toe minor ray resection achieving clean granulating wound and 94% smart-boot adherence (`Delta T = 0.5 C`, `RHR = 68 bpm`, `HRV = 46 ms`). Demonstrates Coral NPU suppressing unnecessary cloud wake-ups on routine days and aligned functional salvage utility (+3.00).",
-          "t_landmark_hours": 336.0,
-          "merkle_root": "8d0f0c60d4b628ad2cf9bc540b5926fc6e531c3b9c28aad28e53ed916c3afd61",
-          "coral_sentinel": {
-            "latency_ms": 0.0034,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": false,
-            "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.1195,
-            "leakage_rows_blocked": 0,
-            "target_trial_contrast": {
-              "trial_id": "PHA_TT2_HIGH_OFFLOADING_BOOT_ADHERENCE_GE_85PCT",
-              "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
-              "common_support_pct": 94.2,
-              "risk_difference_point": -0.164,
-              "rationale": "Propensity overlap 94.2% (>= 70%) and post-IPTW |SMD| = 0.052 (<= 0.12). Consistent >=85% boot adherence is associated with a -16.4% absolute reduction in 90-day re-ulceration (E-value 2.84)."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "ROUTINE_COACHING",
-            "reward_alignment_note": "Aligned Functional Salvage Utility (+3.00): Prior minor 1st-ray resection with intact heel/plantar arch is modeled as successful functional limb preservation.",
-            "top_voi_missing_workup": [
-              {"feature_key": "wound_probe_or_culture", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.92, "if_wrong_risk_interval": [0.066, 0.432]},
-              {"feature_key": "hba1c_pct", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.74, "if_wrong_risk_interval": [0.066, 0.371]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-            "smart_goal": "Maintain >=88% smart-boot offloading adherence over the next 7 days and complete scheduled outpatient follow-up.",
-            "mi_strategy_oars": {
-              "Open_Question": "Your recovery metrics look steady this week—what part of your daily offloading routine feels easiest to maintain right now?",
-              "Affirmation": "You maintained 94% smart-boot adherence and 7.9h of restorative sleep—that directly supports tissue recovery.",
-              "Reflection": "Aligned Functional Salvage Utility (+3.00): Prior minor ray resection with intact heel/arch is modeled as functional limb preservation.",
-              "Summary": "Let's keep building on this momentum while keeping an eye on any unmeasured follow-up labs."
-            }
-          }
+        cascading_dossier: {
+          L0_awareness: "[PHA-05] NOW_CARD_HARD_ESCALATION · Drift z=3.85 · Red Flags=3 · Held-Back 4D Labs=2 (Serum Cr, NT-proBNP)",
+          L1_trends: "7d Wearable Trajectory: Weight 88.0 → 90.5 kg (+2.5 kg), RHR 79 → 101 bpm, HRV 33 → 18 ms, Sleep 6.9 → 4.9h.",
+          L2_storetime_target_trial: "4D Storetime Lock masks Cr 2.45 mg/dL (storetime 171h) & NT-proBNP 4850 pg/mL (storetime 174h). Target-Trial PHA_SEPSIS_TT1 fails closed (overlap 28.5% < 70%).",
+          L3_full_chart: "3-Agent PHA Synthesis: Autonomous diuretic adjustment without verified Spot Urine Na & potassium violates positivity; STAT NowCard escalated."
         },
-        {
-          "scenario_id": "PHA-03",
-          "title": "Post-DFI Unmeasured Outpatient Perfusion (`Unavailable != Negative` VOI Routing)",
-          "cohort_domain": "POST_DFI_SALVAGE",
-          "clinical_story": "71M with medial arterial calcinosis (prior inpatient ABI 1.42) discharged to outpatient wound clinic. At Day 10, hallux toe pressure (`pedal_doppler_toe_pressure_mmhg`) has never been ordered. 240-KC VOI router flags `MISSING_UNORDERED` (`VOI = 0.95`) rather than assuming normal perfusion.",
-          "t_landmark_hours": 240.0,
-          "merkle_root": "26e25f20842f542a26e539bd7170bfb8405ab0ad37c4eea2a323427860e0aedb",
-          "coral_sentinel": {
-            "latency_ms": 0.0034,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": true,
-            "wake_reason": "SUBCLINICAL_PHYSIOLOGICAL_DRIFT (Wake 3-Agent PHA)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.236,
-            "leakage_rows_blocked": 0,
-            "target_trial_contrast": {
-              "trial_id": "PHA_TT2_HIGH_OFFLOADING_BOOT_ADHERENCE_GE_85PCT",
-              "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
-              "common_support_pct": 94.2,
-              "risk_difference_point": -0.164,
-              "rationale": "Propensity overlap 94.2% (>= 70%) and post-IPTW |SMD| = 0.052 (<= 0.12)."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "ROUTINE_COACHING",
-            "reward_alignment_note": "Unmeasured hallux toe pressure masks critical ischemia or calcified ABI artifact (`Unavailable != Negative`).",
-            "top_voi_missing_workup": [
-              {"feature_key": "pedal_doppler_toe_pressure_mmhg", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.95, "if_wrong_risk_interval": [0.13, 0.559]},
-              {"feature_key": "wound_probe_or_culture", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.92, "if_wrong_risk_interval": [0.13, 0.549]},
-              {"feature_key": "crp_mg_l", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.89, "if_wrong_risk_interval": [0.13, 0.539]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-            "smart_goal": "Maintain >=88% smart-boot offloading adherence over the next 7 days and request outpatient Hallux Toe Pressure check.",
-            "mi_strategy_oars": {
-              "Open_Question": "What part of your offloading routine feels easiest to maintain right now?",
-              "Affirmation": "You maintained 72% smart-boot adherence and 6.2h of restorative sleep.",
-              "Summary": "Complete scheduled outpatient follow-up (Outpatient Hallux Toe Pressure / Perfusion Check)."
-            }
-          }
+        field_reliability: {
+          body_weight_kg: "reliable",
+          spot_urine_sodium_mmol_l: "not_said",
+          serum_creatinine_mg_dl: "not_said",
+          venous_pocus_vexus_grade: "not_said"
         },
-        {
-          "scenario_id": "PHA-04",
-          "title": "Post-Sepsis Cardiorenal Decongestion with Permissive Hypercreatininemia (`UNa > 70`)",
-          "cohort_domain": "POST_SEPSIS_CARDIORENAL",
-          "clinical_story": "67F recovering from urosepsis & cardiorenal syndrome on oral torsemide. Weight decreased -1.8 kg over 5 days (`82.4 -> 80.6 kg`), HRV improved (`29 -> 38 ms`), and outpatient BMP shows mild creatinine rise (`1.55 -> 1.82 mg/dL`) with brisk Spot Urine Sodium `84 mmol/L`. PHA × SALVAGE-AI prevents AKI reward hacking and supports continued decongestion (`RD = -0.131`).",
-          "t_landmark_hours": 120.0,
-          "merkle_root": "742502abd80f0926c71ccd6e54b9223129c369095ca1901516dffb233b7b520d",
-          "coral_sentinel": {
-            "latency_ms": 0.0034,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": false,
-            "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.0573,
-            "leakage_rows_blocked": 0,
-            "target_trial_contrast": {
-              "trial_id": "PHA_SEPSIS_TT2_DECONGESTIVE_MAINTENANCE_PERMISSIVE_CR",
-              "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
-              "common_support_pct": 96.0,
-              "risk_difference_point": -0.131,
-              "rationale": "Propensity overlap 96.0%, max |SMD| = 0.038. Preserving decongestive diuresis during benign hemoconcentration reduces 30-day readmission by -13.1%."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "ROUTINE_COACHING",
-            "reward_alignment_note": "Aligned Cardiorenal Utility (+2.85): Mild creatinine rise (Cr 1.82 mg/dL) with brisk natriuresis (Spot UNa 84 mmol/L) and negative fluid balance represents permissive hypercreatininemia, NOT tubular AKI.",
-            "top_voi_missing_workup": [
-              {"feature_key": "venous_pocus_vexus_grade", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.91, "if_wrong_risk_interval": [0.032, 0.367]},
-              {"feature_key": "nt_probnp_pg_ml", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.86, "if_wrong_risk_interval": [0.032, 0.35]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-            "smart_goal": "Continue daily morning weight + symptom check over the next 7 days on prescribed decongestive protocol.",
-            "mi_strategy_oars": {
-              "Affirmation": "Your -1.8 kg fluid weight reduction and improved HRV (38 ms) show strong cardiorenal recovery.",
-              "Reflection": "Aligned Cardiorenal Utility (+2.85): Mild creatinine bump with Spot UNa 84 mmol/L reflects effective hemoconcentration, not kidney injury."
-            }
-          }
-        },
-        {
-          "scenario_id": "PHA-05",
-          "title": "Post-Sepsis Acute +2.5 kg Fluid Weight Surge + Unordered Urine Sodium (Fail-Closed Gate)",
-          "cohort_domain": "POST_SEPSIS_CARDIORENAL",
-          "clinical_story": "74M post-septic cardiomyopathy gains +2.5 kg in 72 hours (`88.0 -> 90.5 kg`) with RHR surging to 101 bpm and HRV dropping to 18 ms. Outpatient BMP & Spot Urine Na have not been verified yet. DSA Target-Trial Gate fails closed (`NOT_IDENTIFIABLE`, overlap 28.5%), HCA pauses lifestyle coaching, and Coral NPU triggers a STAT `sdr.decision.v1` Clinician NowCard.",
-          "t_landmark_hours": 168.0,
-          "merkle_root": "30e1db365a50e1d2841d9ee03fb720204adb298913e88852b2d48d6a1507c93c",
-          "coral_sentinel": {
-            "latency_ms": 0.0034,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": true,
-            "wake_reason": "IMMEDIATE_CLINICAL_ESCALATION (RED_FLAG_ACUTE_CONGESTIVE_WEIGHT_GAIN_GE_2KG, RED_FLAG_CARDIORENAL_SYMPATHETIC_DECOMPENSATION)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.583,
-            "leakage_rows_blocked": 2,
-            "target_trial_contrast": {
-              "trial_id": "PHA_SEPSIS_TT1_AUTONOMOUS_FLUID_RESTRICTION_WITHOUT_LABS",
-              "gate_status": "NOT_IDENTIFIABLE",
-              "common_support_pct": 28.5,
-              "rationale": "FAIL-CLOSED POSITIVITY GATE: Common support 28.5% (< 70%). Autonomous diuretic/fluid dosing without verified serum creatinine/potassium and spot urine sodium violates positivity."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "STAT_PROVIDER_CROSSROADS",
-            "reward_alignment_note": "Cardiorenal Reward Guard Active: Distinguishes decongestive hemoconcentration from intrinsic tubular injury.",
-            "top_voi_missing_workup": [
-              {"feature_key": "serum_creatinine_mg_dl", "epistemic_status": "PENDING_AT_LANDMARK", "voi_score": 0.97, "if_wrong_risk_interval": [0.321, 0.913]},
-              {"feature_key": "spot_urine_sodium_mmol_l", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.96, "if_wrong_risk_interval": [0.321, 0.909]},
-              {"feature_key": "venous_pocus_vexus_grade", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.91, "if_wrong_risk_interval": [0.321, 0.892]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "HALTED_FOR_CLINICIAN_ESCALATION",
-            "smart_goal": "PAUSE autonomous diuretic/fluid changes; complete STAT BMP & Spot Urine Sodium and await your provider's signed NowCard.",
-            "clinician_nowcard_handoff": {
-              "schema": "sdr.decision.v1",
-              "episode_id": "PHA-05",
-              "urgency": "STAT_PROVIDER_CROSSROADS",
-              "target_trial_gate": "NOT_IDENTIFIABLE",
-              "recommended_clinician_options": [
-                "Pass: Order Top-VOI Outpatient Panel & Same-Day Tele-Triage",
-                "Modify (OptionRing): Adjust Offloading / Diuretic Protocol with Safety Bounds",
-                "Escalate: Direct Urgent Limb-Salvage / Cardiorenal Clinic Admission"
-              ]
-            }
-          }
-        },
-        {
-          "scenario_id": "PHA-06",
-          "title": "Post-Sepsis Stable Recovery with Routine Wearable Sync Suppressed on Coral NPU Edge",
-          "cohort_domain": "POST_SEPSIS_CARDIORENAL",
-          "clinical_story": "54M post-pneumonia sepsis recovery with stable euvolemic weight (`76.2 -> 76.1 kg`), RHR `66 bpm`, HRV `48 ms`, and verified normal BMP (`Cr 0.95 mg/dL`). Coral NPU wearable sentinel (`0.0341 ms`, `3.82 mW`) confirms zero red flags and suppresses unnecessary cloud LLM wake-ups.",
-          "t_landmark_hours": 240.0,
-          "merkle_root": "7d8ff7f2ddd88ed3ff38bd99a7101fe7820c4b3c927d0fd4d0797ef8be42458d",
-          "coral_sentinel": {
-            "latency_ms": 0.0034,
-            "active_power_mw": 3.82,
-            "sram_kb": 6.4,
-            "kc_sparsity_pct": 95.0,
-            "wake_cloud_orchestrator": false,
-            "wake_reason": "ROUTINE_STABLE_SYNC_SUPPRESSED_ON_EDGE (Cloud LLM Sleeps)"
-          },
-          "dsa_output": {
-            "predicted_30d_readmission_risk": 0.1043,
-            "leakage_rows_blocked": 0,
-            "target_trial_contrast": {
-              "trial_id": "PHA_SEPSIS_TT2_DECONGESTIVE_MAINTENANCE_PERMISSIVE_CR",
-              "gate_status": "EXPLORATORY_FEASIBLE_WITH_BOUNDS",
-              "common_support_pct": 96.0,
-              "risk_difference_point": -0.131,
-              "rationale": "Propensity overlap 96.0%, max |SMD| = 0.038."
-            }
-          },
-          "dea_output": {
-            "escalation_urgency": "ROUTINE_COACHING",
-            "reward_alignment_note": "Cardiorenal Reward Guard Active: Stable euvolemic trajectory confirmed.",
-            "top_voi_missing_workup": [
-              {"feature_key": "spot_urine_sodium_mmol_l", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.96, "if_wrong_risk_interval": [0.057, 0.431]},
-              {"feature_key": "venous_pocus_vexus_grade", "epistemic_status": "MISSING_UNORDERED", "voi_score": 0.91, "if_wrong_risk_interval": [0.057, 0.414]}
-            ]
-          },
-          "hca_output": {
-            "coaching_mode": "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-            "smart_goal": "Maintain daily morning weight check and 8.0h restorative sleep routine over the next 7 days.",
-            "mi_strategy_oars": {
-              "Affirmation": "Stable euvolemic weight (76.1 kg) and restorative sleep (8.0h)—Coral NPU kept your daily sync 100% local on-device.",
-              "Summary": "Continue routine home recovery and scheduled outpatient check-in."
-            }
-          }
+        if_wrong_risk_range: "Blindly doubling loop diuretic vs missing acute cardiorenal decompensation: [24.7%, 77.9%] 30d readmission/AKI risk.",
+        voi_workup: [
+          { feature_key: "serum_creatinine_mg_dl", label: "Outpatient Serum Creatinine (BMP)", status: "PENDING_AT_LANDMARK", voi: 0.97, range: "[0.247, 0.779]" },
+          { feature_key: "spot_urine_sodium_mmol_l", label: "Spot Urine Sodium (Natriuresis Check)", status: "MISSING_UNORDERED", voi: 0.96, range: "[0.247, 0.776]" },
+          { feature_key: "venous_pocus_vexus_grade", label: "Point-of-Care VExUS Congestion Grade", status: "MISSING_UNORDERED", voi: 0.91, range: "[0.247, 0.759]" }
+        ],
+        oars: {
+          mode: "HALTED_FOR_CLINICIAN_ESCALATION",
+          open_q: "Your morning scale logged a +2.5 kg increase over 3 days—have you noticed ankle swelling or needing extra pillows to sleep?",
+          affirmation: "Logging your morning weight and wearing your ring daily caught this fluid shift before an emergency room visit.",
+          reflection: "Because your BMP and Spot Urine Sodium are still unverified, self-adjusting diuretics at home is unsafe.",
+          summary: "Hold autonomous fluid changes, complete today's STAT BMP + Spot Urine Sodium draw, and join the same-day cardiorenal clinic review."
         }
+      },
+      {
+        scenario_id: "PHA-03",
+        title: "Post-DFI Unmeasured Outpatient Perfusion (Unavailable != Negative VOI Routing)",
+        cohort_domain: "POST_DFI_SALVAGE",
+        patient_id: "PHA_PT_DFI03",
+        t_landmark_hours: 240.0,
+        spatial_crossroads_mode: "NOW_CARD_STANDARD_REVIEW",
+        urgency: "SAME_DAY_CLINIC_REVIEW",
+        drift_z_score: 2.12,
+        wake_cloud_orchestrator: true,
+        suppress_cloud_wakeup: false,
+        predicted_risk: 0.236,
+        leaked_risk: 0.236,
+        leakage_rows_blocked: 0,
+        red_flags: [],
+        role_seat_framings: {
+          overseer: "Limb Salvage Overseer: Prior inpatient ABI 1.42 (calcified); Day 10 hallux toe pressure is MISSING_UNORDERED (VOI=0.95).",
+          bedside: "Wound Clinic Provider: Obtain bedside Doppler hallux toe pressure + TcPO2 before clearing patient for increased weight-bearing.",
+          nurse: "Home-Health Nurse (HITM): Reinforce 85%+ smart-boot adherence (currently 72%) and schedule non-invasive vascular lab slot."
+        },
+        cascading_dossier: {
+          L0_awareness: "[PHA-03] NOW_CARD_STANDARD_REVIEW · Drift z=2.12 · Unmeasured Hallux Toe Pressure Flagged (VOI=0.95)",
+          L1_trends: "7d Wearable Trajectory: ΔT +1.3°C → +1.8°C, Boot Adherence 81% → 72%, HbA1c verified at 8.4%.",
+          L2_storetime_target_trial: "240-KC VOI Router blocks zero-imputation of missing hallux toe pressure (Unavailable != Negative). Target-Trial TT2 feasible with Manski bounds [-0.42, +0.38].",
+          L3_full_chart: "3-Agent PHA Synthesis: DEA prioritizes hallux toe pressure (VOI 0.95) & deep wound probe (VOI 0.92) before step progression."
+        },
+        field_reliability: {
+          plantar_temp_asymmetry_c: "reliable",
+          boot_offloading_adherence_pct: "reliable",
+          hba1c_pct: "reliable",
+          pedal_doppler_toe_pressure_mmhg: "not_said"
+        },
+        if_wrong_risk_range: "Assuming normal perfusion under medial arterial calcinosis: [13.0%, 55.9%] occult ischemic ulcer relapse risk.",
+        voi_workup: [
+          { feature_key: "pedal_doppler_toe_pressure_mmhg", label: "Outpatient Hallux Toe Pressure / Perfusion", status: "MISSING_UNORDERED", voi: 0.95, range: "[0.130, 0.559]" },
+          { feature_key: "wound_probe_or_culture", label: "Deep Wound / Bone Culture Speciation", status: "MISSING_UNORDERED", voi: 0.92, range: "[0.130, 0.549]" },
+          { feature_key: "crp_mg_l", label: "Outpatient C-Reactive Protein (CRP)", status: "MISSING_UNORDERED", voi: 0.89, range: "[0.130, 0.539]" }
+        ],
+        oars: {
+          mode: "ACTIVE_MOTIVATIONAL_INTERVIEWING",
+          open_q: "You've been wearing the offloading boot 72% of the time—what moments during the day make the boot hardest to keep on?",
+          affirmation: "Your honesty and daily sensor syncs give us an accurate picture of how the foot is tolerating household walking.",
+          reflection: "Raising boot wear above 85% lowers 90-day re-ulceration by 16.4%, while we verify hallux perfusion in clinic.",
+          summary: "Aim for >=85% boot adherence indoors this week and complete the ordered hallux toe-pressure Doppler study."
+        }
+      },
+      {
+        scenario_id: "PHA-04",
+        title: "Post-Sepsis Cardiorenal Decongestion with Permissive Hypercreatininemia (UNa > 70)",
+        cohort_domain: "POST_SEPSIS_CARDIORENAL",
+        patient_id: "PHA_PT_SEP01",
+        t_landmark_hours: 120.0,
+        spatial_crossroads_mode: "SUPPRESSED_ROUTINE_SYNC",
+        urgency: "ROUTINE_COACHING",
+        drift_z_score: 1.45,
+        wake_cloud_orchestrator: false,
+        suppress_cloud_wakeup: true,
+        predicted_risk: 0.057,
+        leaked_risk: 0.057,
+        leakage_rows_blocked: 0,
+        red_flags: [],
+        role_seat_framings: {
+          overseer: "Cardiorenal Overseer: Cr 1.82 mg/dL with brisk Spot UNa 84 mmol/L & -1.8 kg weight loss = benign hemoconcentration (Anti-Reward-Hacking +2.85).",
+          bedside: "Cardiorenal Clinic Provider: Do NOT halt torsemide/SGLT2i; mild Cr rise reflects successful intravascular decongestion (RD = -13.1%).",
+          nurse: "Home-Health Nurse (HITM): Reinforce daily morning dry weight & OARS hydration coaching; routine sync suppressed from STAT interruption."
+        },
+        cascading_dossier: {
+          L0_awareness: "[PHA-04] SUPPRESSED_ROUTINE_SYNC · Permissive Hypercreatininemia Guard Active (Spot UNa 84 mmol/L > 70)",
+          L1_trends: "5d Trajectory: Weight 82.4 → 80.6 kg (-1.8 kg), RHR 82 → 73 bpm, HRV 29 → 38 ms, Cr 1.82 mg/dL, Spot UNa 84 mmol/L.",
+          L2_storetime_target_trial: "Target-Trial PHA_SEPSIS_TT2 feasible (overlap 96.0%, |SMD|=0.038): continuing decongestion reduces 30d HF/sepsis readmission by -13.1% (E-value 3.12).",
+          L3_full_chart: "3-Agent PHA Synthesis: Prevents naive AKI reward-hacking (which would falsely stop diuretics); HCA continues active OARS coaching."
+        },
+        field_reliability: {
+          body_weight_kg: "reliable",
+          serum_creatinine_mg_dl: "reliable",
+          spot_urine_sodium_mmol_l: "reliable",
+          venous_pocus_vexus_grade: "not_said"
+        },
+        if_wrong_risk_range: "Falsely stopping diuresis for benign hemoconcentration increases rebound congestion risk by +13.1%.",
+        voi_workup: [
+          { feature_key: "venous_pocus_vexus_grade", label: "Outpatient VExUS Congestion Grade", status: "MISSING_UNORDERED", voi: 0.91, range: "[0.031, 0.367]" },
+          { feature_key: "nt_probnp_pg_ml", label: "Outpatient NT-proBNP Trend", status: "MISSING_UNORDERED", voi: 0.86, range: "[0.031, 0.350]" }
+        ],
+        oars: {
+          mode: "ACTIVE_MOTIVATIONAL_INTERVIEWING",
+          open_q: "Your breathing and HRV have improved steadily as 1.8 kg of fluid came off—how is your energy level during morning walks?",
+          affirmation: "Consistent morning weight checks and prescribed torsemide adherence are driving textbook cardiorenal recovery.",
+          reflection: "Your slight creatinine bump alongside strong urine sodium (84 mmol/L) shows effective fluid removal, not kidney injury.",
+          summary: "Continue current decongestive regimen and daily weight log; no urgent clinician interrupt needed."
+        }
+      },
+      {
+        scenario_id: "PHA-02",
+        title: "Post-DFI Minor Ray Resection Remission (Anti-Reward-Hacking + Active OARS Coaching)",
+        cohort_domain: "POST_DFI_SALVAGE",
+        patient_id: "PHA_PT_DFI02",
+        t_landmark_hours: 336.0,
+        spatial_crossroads_mode: "SUPPRESSED_ROUTINE_SYNC",
+        urgency: "ROUTINE_COACHING",
+        drift_z_score: 0.59,
+        wake_cloud_orchestrator: false,
+        suppress_cloud_wakeup: true,
+        predicted_risk: 0.119,
+        leaked_risk: 0.119,
+        leakage_rows_blocked: 0,
+        red_flags: [],
+        role_seat_framings: {
+          overseer: "Limb Salvage Overseer: Planned 2nd-toe minor ray resection with intact heel arch = +3.00 Functional Salvage Utility (NOT penalized as major amputation).",
+          bedside: "Wound Clinic Provider: Granulating wound bed, CRP 8.5 mg/L, Hallux Toe Pressure 58 mmHg; continue transition to custom offloading footwear.",
+          nurse: "Home-Health Nurse (HITM): Celebrate 94% smart-boot adherence via OARS Affirmation; routine wearable sync suppressed at Vision Pro Gate."
+        },
+        cascading_dossier: {
+          L0_awareness: "[PHA-02] SUPPRESSED_ROUTINE_SYNC · Drift z=0.59 · Functional Salvage Utility +3.00 · 94% Boot Adherence",
+          L1_trends: "14d Trajectory: Plantar ΔT 0.5°C, RHR 68 bpm, HRV 46 ms, Smart-Boot Adherence 94%, CRP 8.5 mg/L, Toe Pressure 58 mmHg.",
+          L2_storetime_target_trial: "Target-Trial PHA_TT2 feasible (94.2% overlap): >=85% boot adherence reduces 90d re-ulceration by -16.4% (E-value 2.84).",
+          L3_full_chart: "3-Agent PHA Synthesis: Zero red flags; Vision Pro Spatial Gate suppresses unnecessary provider alert while HCA delivers OARS coaching."
+        },
+        field_reliability: {
+          plantar_temp_asymmetry_c: "reliable",
+          boot_offloading_adherence_pct: "reliable",
+          crp_mg_l: "reliable",
+          pedal_doppler_toe_pressure_mmhg: "reliable"
+        },
+        if_wrong_risk_range: "Premature transition out of offloading boot before full epithelialization: [6.5%, 43.2%] relapse risk.",
+        voi_workup: [
+          { feature_key: "wound_probe_or_culture", label: "Routine Surveillance Wound Check", status: "MISSING_UNORDERED", voi: 0.92, range: "[0.065, 0.432]" },
+          { feature_key: "hba1c_pct", label: "Quarterly Glycated Hemoglobin (HbA1c)", status: "MISSING_UNORDERED", voi: 0.74, range: "[0.065, 0.371]" }
+        ],
+        oars: {
+          mode: "ACTIVE_MOTIVATIONAL_INTERVIEWING",
+          open_q: "You've held 94% smart-boot adherence for two full weeks—what routine helped you stay so consistent?",
+          affirmation: "Maintaining 94% offloading and 7.9 hours of sleep is directly protecting your healing plantar arch.",
+          reflection: "Aligned Functional Salvage Utility (+3.00) recognizes your successful ray preservation and steady perfusion (58 mmHg).",
+          summary: "Keep >=88% boot adherence over the next 7 days as we prepare for custom orthotic fitting."
+        }
+      },
+      {
+        scenario_id: "PHA-06",
+        title: "Post-Sepsis Stable Euvolemic Recovery (Routine Wearable Sync Suppressed at Spatial Gate)",
+        cohort_domain: "POST_SEPSIS_CARDIORENAL",
+        patient_id: "PHA_PT_SEP03",
+        t_landmark_hours: 240.0,
+        spatial_crossroads_mode: "SUPPRESSED_ROUTINE_SYNC",
+        urgency: "ROUTINE_COACHING",
+        drift_z_score: 0.35,
+        wake_cloud_orchestrator: false,
+        suppress_cloud_wakeup: true,
+        predicted_risk: 0.104,
+        leaked_risk: 0.104,
+        leakage_rows_blocked: 0,
+        red_flags: [],
+        role_seat_framings: {
+          overseer: "Cardiorenal Overseer: Euvolemic weight (76.1 kg), RHR 66 bpm, HRV 48 ms, Cr 0.95 mg/dL; 0 interrupts.",
+          bedside: "Outpatient Primary/Cardiorenal Clinic: Routine 30-day follow-up; no acute medication changes required.",
+          nurse: "Home-Health Nurse (HITM): Automated OARS maintenance check-in; Vision Pro Spatial Gate suppresses cloud/provider wake-up."
+        },
+        cascading_dossier: {
+          L0_awareness: "[PHA-06] SUPPRESSED_ROUTINE_SYNC · Drift z=0.35 · Euvolemic Recovery (Cr 0.95 mg/dL)",
+          L1_trends: "10d Trajectory: Weight 76.2 → 76.1 kg, RHR 68 → 66 bpm, HRV 45 → 48 ms, Steps 4500 → 5800/day.",
+          L2_storetime_target_trial: "All verified labs within normal limits under strict storetime lock; Target-Trial TT2 feasible.",
+          L3_full_chart: "3-Agent PHA Synthesis: Demonstrates 100% benign sync suppression at the Vision Pro Spatial Gate."
+        },
+        field_reliability: {
+          body_weight_kg: "reliable",
+          serum_creatinine_mg_dl: "reliable",
+          spot_urine_sodium_mmol_l: "not_said"
+        },
+        if_wrong_risk_range: "Low baseline readmission risk band: [5.7%, 39.6%].",
+        voi_workup: [
+          { feature_key: "spot_urine_sodium_mmol_l", label: "Optional Baseline Spot Urine Sodium", status: "MISSING_UNORDERED", voi: 0.96, range: "[0.057, 0.431]" }
+        ],
+        oars: {
+          mode: "ACTIVE_MOTIVATIONAL_INTERVIEWING",
+          open_q: "You're back up to 5,800 steps a day with steady 8-hour sleep—what recovery milestone are you looking forward to next?",
+          affirmation: "Your steady hydration, sleep, and gradual walking progression have restored your HRV to 48 ms.",
+          reflection: "With verified kidney function (Cr 0.95 mg/dL) and stable weight, your recovery is right on track.",
+          summary: "Continue daily morning weight check and progressive walking routine."
+        }
+      }
+    ];
+
+    const state = {
+      activeScenarioId: "PHA-01",
+      role: "overseer",
+      domainFilter: "ALL",
+      strictStoretimeLock: true,
+      spotCheckMode: false,
+      spotCheckCommitted: {},
+      boardEnlarged: false,
+      sideCollapsed: false,
+      sideTab: "agents",
+      cascadeLevel: 2,
+      openAccordion: "dsa",
+      showAiDepth: false,
+      optionRingOpen: false,
+      hoveredOptionPreview: null,
+      autonomyDelta: 0,
+      lastAutonomyDelta: 0,
+      splitRating: {},
+      decisionLedger: [],
+      categories: [
+        { code: "ACCEPT_PATHWAY", label: "Accept VOI + OARS Pathway", lifecycle: "promoted", badge: "★ Promoted", preview: "Orders top-VOI diagnostic test + updates HCA OARS coaching state." },
+        { code: "STAT_CLINIC_SLOT", label: "Fast-Track 24h Limb/Cardiorenal Clinic", lifecycle: "promoted", badge: "★ Promoted", preview: "Books same-day vascular/cardiorenal clinic slot + holds empirical IV escalation." },
+        { code: "TRIAL_VIDEO_BOOT_12H", label: "trial: 12h Video Offload & Thermal Re-Check", lifecycle: "trial", runs: 5, agree: 92, badge: "trial (5/5 runs · 92% agree)", preview: "Schedules 12h nurse video check + repeat smart-mat thermal scan." },
+        { code: "DORMANT_EMPIRICAL_ABX", label: "Dormant: Empirical Home Antibiotic Escalation", lifecycle: "dormant", badge: "⌀ Dormant", preview: "Blocked by Target-Trial stewardship guard until culture/CRP storetime." }
       ]
     };
 
-    let BENCH = FALLBACK_BENCHMARK;
-    let ACTIVE_SCENARIO_IDX = 0;
-    let STAGE_MODE = 'EDGE_SENTINEL';
+    function getActiveScenario() {
+      return SCENARIOS.find(s => s.scenario_id === state.activeScenarioId) || SCENARIOS[0];
+    }
 
-    function renderScenario(idx) {
-      ACTIVE_SCENARIO_IDX = idx;
-      const sc = BENCH.flagship_scenarios[idx];
-      document.querySelectorAll('.sc-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-      const c = sc.coral_sentinel;
-      const dsa = sc.dsa_output;
-      const dea = sc.dea_output;
-      const hca = sc.hca_output;
+    function getFilteredScenarios() {
+      if (state.domainFilter === "ALL") return SCENARIOS;
+      return SCENARIOS.filter(s => s.cohort_domain === state.domainFilter);
+    }
 
-      const badge = document.getElementById('activeScenarioBadge');
-      badge.textContent = `ACTIVE: ${sc.scenario_id} (${c.wake_cloud_orchestrator ? 'CLOUD WAKE' : 'EDGE SLEEP'})`;
-      badge.className = 'badge ' + (c.wake_cloud_orchestrator ? 'b-crimson' : 'b-emerald');
+    function setRole(role) {
+      state.role = role;
+      ["overseer", "bedside", "nurse"].forEach(r => {
+        document.getElementById("role-" + r).classList.toggle("active", r === role);
+      });
+      renderAll();
+    }
 
-      document.getElementById('scenarioDetail').innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
-          <div>
-            <span class="badge b-cyan">${sc.scenario_id} · ${sc.cohort_domain}</span>
-            <span class="badge b-violet" style="margin-left:6px;">Landmark +${sc.t_landmark_hours}h Post-Discharge</span>
+    function setDomainFilter(dom) {
+      state.domainFilter = dom;
+      ["ALL", "POST_DFI_SALVAGE", "POST_SEPSIS_CARDIORENAL"].forEach(d => {
+        document.getElementById("dom-" + d).classList.toggle("active", d === dom);
+      });
+      const list = getFilteredScenarios();
+      if (!list.some(s => s.scenario_id === state.activeScenarioId) && list.length) {
+        state.activeScenarioId = list[0].scenario_id;
+      }
+      renderAll();
+    }
+
+    function toggleStoretimeLock() {
+      state.strictStoretimeLock = !state.strictStoretimeLock;
+      const btn = document.getElementById("storetime-toggle");
+      btn.textContent = state.strictStoretimeLock
+        ? "🔒 4D Storetime Lock: ON"
+        : "⚠ Naive charttime Leakage: EXPOSED";
+      btn.classList.toggle("active-guard", state.strictStoretimeLock);
+      renderAll();
+    }
+
+    function toggleSpotCheck() {
+      state.spotCheckMode = !state.spotCheckMode;
+      const btn = document.getElementById("spotcheck-toggle");
+      btn.textContent = state.spotCheckMode
+        ? "🎯 M3 Your Call First: ACTIVE"
+        : "🎯 M3 Your Call First: OFF";
+      btn.classList.toggle("active-spot", state.spotCheckMode);
+      renderAll();
+    }
+
+    function commitSpotCheck(choice) {
+      const sc = getActiveScenario();
+      state.spotCheckCommitted[sc.scenario_id] = choice;
+      renderAll();
+    }
+
+    function toggleBoardSize() {
+      state.boardEnlarged = !state.boardEnlarged;
+      document.getElementById("overhead-board").classList.toggle("enlarged", state.boardEnlarged);
+      document.getElementById("board-size-btn").textContent = state.boardEnlarged ? "Shrink Board ⤡" : "Enlarge Board ⤢";
+      renderBoardAndCategories();
+    }
+
+    function toggleSidePanel() {
+      state.sideCollapsed = !state.sideCollapsed;
+      document.getElementById("crossroads-stage").classList.toggle("side-collapsed", state.sideCollapsed);
+      document.getElementById("side-panel-inner").style.display = state.sideCollapsed ? "none" : "block";
+      document.getElementById("side-panel-title").style.display = state.sideCollapsed ? "none" : "inline";
+      document.getElementById("side-collapse-btn").textContent = state.sideCollapsed ? "▶" : "◀";
+    }
+
+    function setSideTab(tab) {
+      state.sideTab = tab;
+      ["agents", "trust", "voi", "m4", "m5"].forEach(t => {
+        document.getElementById("stab-" + t).classList.toggle("active", t === tab);
+      });
+      renderSidePanel();
+    }
+
+    function makeNow(scenarioId) {
+      state.activeScenarioId = scenarioId;
+      state.optionRingOpen = false;
+      renderAll();
+    }
+
+    function cycleRelChip(featureKey) {
+      const sc = getActiveScenario();
+      const order = ["reliable", "not_said", "said_wrong", "said_differently"];
+      const cur = sc.field_reliability[featureKey] || "reliable";
+      const next = order[(order.indexOf(cur) + 1) % order.length];
+      sc.field_reliability[featureKey] = next;
+      renderAll();
+    }
+
+    function setCascadeLevel(lvl) {
+      state.cascadeLevel = lvl;
+      renderNowCard();
+    }
+
+    function toggleAccordion(sec) {
+      state.openAccordion = state.openAccordion === sec ? "" : sec;
+      renderNowCard();
+    }
+
+    function adjustAutonomy(delta) {
+      state.lastAutonomyDelta = state.autonomyDelta;
+      state.autonomyDelta = Math.max(-15, Math.min(25, state.autonomyDelta + delta));
+      renderNowCard();
+    }
+
+    function undoAutonomyMove() {
+      state.autonomyDelta = state.lastAutonomyDelta;
+      renderNowCard();
+    }
+
+    function toggleOptionRing() {
+      state.optionRingOpen = !state.optionRingOpen;
+      renderOptionRing();
+    }
+
+    function createTrialCategory() {
+      const name = prompt("Enter new Trial Category label for OptionRing (M0 -> M4 lifecycle):", "12h Home Point-of-Care CRP Fingerstick");
+      if (!name) return;
+      state.categories.push({
+        code: "TRIAL_" + Date.now().toString().slice(-4),
+        label: "trial: " + name,
+        lifecycle: "trial",
+        runs: 1,
+        agree: 100,
+        badge: "trial (1/5 runs · 100% agree)",
+        preview: "Logs trial category decision into M4 Promotion Engine."
+      });
+      renderBoardAndCategories();
+      renderOptionRing();
+    }
+
+    function promoteTrialCategory(code) {
+      const cat = state.categories.find(c => c.code === code);
+      if (cat) {
+        cat.lifecycle = "promoted";
+        cat.label = cat.label.replace(/^trial:\s*/i, "");
+        cat.badge = "★ Promoted (Overseer Signed)";
+      }
+      renderAll();
+    }
+
+    function recordDecision(actionLabel, categoryCode) {
+      const sc = getActiveScenario();
+      const entry = {
+        ts: new Date().toISOString().slice(11, 19),
+        episode_id: sc.scenario_id,
+        role: state.role.toUpperCase(),
+        action: actionLabel,
+        category: categoryCode || "PRIMARY_ROUTE",
+        storetime_lock: state.strictStoretimeLock,
+        hash: "0x" + Math.random().toString(16).slice(2, 10) + sc.scenario_id.replace("-", "").toLowerCase()
+      };
+      state.decisionLedger.unshift(entry);
+      state.optionRingOpen = false;
+      renderAll();
+    }
+
+    function renderBoardAndCategories() {
+      const lanes = [
+        { title: "1. Hard Escalation Crossroads", items: SCENARIOS.filter(s => s.spatial_crossroads_mode === "NOW_CARD_HARD_ESCALATION"), cls: "escalated" },
+        { title: "2. Standard VOI Clinic Review", items: SCENARIOS.filter(s => s.spatial_crossroads_mode === "NOW_CARD_STANDARD_REVIEW"), cls: "" },
+        { title: "3. Active OARS / Gate Suppressed", items: SCENARIOS.filter(s => s.spatial_crossroads_mode === "SUPPRESSED_ROUTINE_SYNC"), cls: "suppressed" },
+        { title: "4. M5 Signed Decision Ledger", items: state.decisionLedger.map(d => ({ scenario_id: d.episode_id, title: d.action })), cls: "" }
+      ];
+
+      document.getElementById("board-lanes-container").innerHTML = lanes.map(lane => `
+        <div class="board-lane">
+          <div class="lane-head">
+            <span>${lane.title}</span>
+            <span>${lane.items.length}</span>
           </div>
-          <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">4D Merkle Root: <code>${sc.merkle_root.slice(0, 24)}...</code></span>
+          <div class="lane-chips">
+            ${lane.items.length === 0 ? `<span style="font-size:11px;color:var(--text-dim);">None yet</span>` :
+              lane.items.map(it => `
+                <span class="lane-card-pill ${lane.cls}" onclick="makeNow('${it.scenario_id}')">
+                  <strong>${it.scenario_id}</strong> ${state.boardEnlarged ? "· " + it.title.slice(0, 34) + "…" : ""}
+                </span>
+              `).join("")}
+          </div>
         </div>
-        <h3 style="font-size:19px;margin-bottom:8px;">${sc.title}</h3>
-        <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:14px;">${sc.clinical_story}</p>
+      `).join("");
 
-        <div class="agent-grid">
-          <div class="agent-card">
-            <span class="badge ${c.wake_cloud_orchestrator ? 'b-crimson' : 'b-emerald'}">TIER-0 · GOOGLE CORAL NPU WEARABLE SENTINEL</span>
-            <h4>${c.wake_cloud_orchestrator ? '🚨 Cloud 3-Agent PHA Woken' : '🛌 Suppressed on Edge (Cloud LLM Sleeps)'}</h4>
-            <p><strong>Silicon Profile:</strong> <code>${c.latency_ms} ms</code> · <code>${c.active_power_mw} mW</code> · <code>${c.sram_kb} KB SRAM</code> (${c.kc_sparsity_pct}% KC Sparsity)</p>
-            <p style="color:var(--text-muted);">${c.wake_reason}</p>
+      document.getElementById("categories-strip-container").innerHTML = `
+        <span class="cat-strip-label">M0 Category Registry (Trial → Promoted ★ → Dormant ⌀):</span>
+        ${state.categories.map(c => `
+          <span class="cat-pill ${c.lifecycle}" onclick="state.optionRingOpen=true;renderOptionRing();" title="${c.preview}">
+            ${c.label} <small style="opacity:0.8;">(${c.badge})</small>
+          </span>
+        `).join("")}
+        <button class="pill-btn active" onclick="createTrialCategory()">+ New Trial Category</button>
+      `;
+    }
+
+    function renderNowCard() {
+      const sc = getActiveScenario();
+      const container = document.getElementById("now-card-container");
+      const isHard = sc.spatial_crossroads_mode === "NOW_CARD_HARD_ESCALATION";
+      const isSuppressed = sc.spatial_crossroads_mode === "SUPPRESSED_ROUTINE_SYNC";
+      container.className = "now-card" + (isHard ? " hard-escalation" : "");
+
+      const rawAutonomy = isHard ? 18 : (isSuppressed ? 36 : 28);
+      const effAutonomy = Math.min(40, Math.max(5, rawAutonomy + state.autonomyDelta));
+      const effDeference = Math.max(80, 100 - effAutonomy);
+      const riskShown = state.strictStoretimeLock ? sc.predicted_risk : sc.leaked_risk;
+      const spotPending = state.spotCheckMode && !state.spotCheckCommitted[sc.scenario_id];
+
+      const bannerHtml = isHard ? `
+        <div class="hard-escalation-banner">
+          <span>⚠ HARD ESCALATION — ${sc.urgency} · AUTONOMOUS OARS COACHING HALTED</span>
+          <span>DRIFT Z = ${sc.drift_z_score.toFixed(2)} · 90 Hz VISION PRO GATE</span>
+        </div>
+      ` : (isSuppressed ? `
+        <div class="routine-suppressed-banner">
+          <span>✓ ROUTINE WEARABLE SYNC SUPPRESSED AT SPATIAL GATE · ACTIVE OARS COACHING</span>
+          <span>DRIFT Z = ${sc.drift_z_score.toFixed(2)} · ZERO PROVIDER INTERRUPT</span>
+        </div>
+      ` : "");
+
+      const relEntries = Object.entries(sc.field_reliability);
+
+      container.innerHTML = `
+        ${bannerHtml}
+        <div class="now-body">
+          <div class="now-header-row">
+            <div>
+              <div class="now-episode-tag">${sc.scenario_id} · ${sc.cohort_domain} · Landmark t=${sc.t_landmark_hours}h</div>
+              <h2 class="now-title">${sc.title}</h2>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:11px;color:var(--text-muted);">30d Relapse / Readmission Risk</div>
+              <div style="font-size:22px;font-weight:900;color:${riskShown >= 0.4 ? 'var(--alert-red)' : 'var(--pass-green)'};">
+                ${(riskShown * 100).toFixed(1)}%
+                <span style="font-size:11px;font-weight:600;color:var(--text-muted);">
+                  (${state.strictStoretimeLock ? "Strict storetime" : "LEAKED charttime"})
+                </span>
+              </div>
+            </div>
           </div>
 
-          <div class="agent-card">
-            <span class="badge b-cyan">AGENT 1 · DATA SCIENCE AGENT (DSA) + TARGET-TRIAL GATE</span>
-            <h4>30-Day Readmission Risk: ${(dsa.predicted_30d_readmission_risk * 100).toFixed(1)}% (${dsa.leakage_rows_blocked} Future Rows Masked)</h4>
-            <p><strong>Target Trial (<code>${dsa.target_trial_contrast.trial_id}</code>):</strong> <span class="badge ${dsa.target_trial_contrast.gate_status === 'NOT_IDENTIFIABLE' ? 'b-crimson' : 'b-emerald'}">${dsa.target_trial_contrast.gate_status}</span> (Overlap ${dsa.target_trial_contrast.common_support_pct}%)</p>
-            <p style="color:var(--text-muted);">${dsa.target_trial_contrast.rationale}</p>
+          <!-- Active Seat Framing -->
+          <div class="role-framing-box">
+            <strong>Active Seat (${state.role.toUpperCase()}):</strong> ${sc.role_seat_framings[state.role]}
           </div>
 
-          <div class="agent-card">
-            <span class="badge b-emerald">AGENT 2 · DOMAIN EXPERT AGENT (DEA) + 240-KC VOI ROUTER</span>
-            <h4>Escalation Urgency: <code>${dea.escalation_urgency}</code></h4>
-            <p>${dea.reward_alignment_note}</p>
-            <pre>${JSON.stringify(dea.top_voi_missing_workup, null, 2)}</pre>
+          <!-- WHY QUEUED Severity Chips -->
+          <div class="chip-row">
+            <span class="row-label">WHY QUEUED:</span>
+            ${sc.red_flags.length ? sc.red_flags.map(rf => `<span class="why-chip">${rf}</span>`).join("") :
+              `<span class="why-chip calm">No Acute Red Flags · ${sc.urgency}</span>`}
+            ${sc.leakage_rows_blocked > 0 ? `<span class="why-chip">${sc.leakage_rows_blocked} Future EHR Lab/Culture Rows Masked (storetime > ${sc.t_landmark_hours}h)</span>` : ""}
           </div>
 
-          <div class="agent-card">
-            <span class="badge ${hca.coaching_mode.includes('HALTED') ? 'b-crimson' : 'b-emerald'}">AGENT 3 · HEALTH COACH AGENT (HCA) + SDR NOWCARD BRIDGE</span>
-            <h4>Mode: <code>${hca.coaching_mode}</code></h4>
-            <p><strong>SMART Goal:</strong> ${hca.smart_goal}</p>
-            <pre>${JSON.stringify(hca.clinician_nowcard_handoff || hca.mi_strategy_oars, null, 2)}</pre>
+          <!-- 4-State Reliability Chips (Click to cycle R/N/W/D) -->
+          <div class="chip-row">
+            <span class="row-label">4-STATE RELIABILITY (Click to cycle):</span>
+            ${relEntries.map(([k, status]) => `
+              <span class="rel-chip ${status}" onclick="cycleRelChip('${k}')" title="Click to cycle: reliable -> not_said -> said_wrong -> said_differently">
+                ${k}: <strong>${status.toUpperCase()}</strong>
+              </span>
+            `).join("")}
+          </div>
+
+          <!-- Pink IF WRONG Counterfactual Risk Strip -->
+          <div class="if-wrong-strip">
+            <span><strong>IF WRONG COUNTERFACTUAL BAND:</strong> ${sc.if_wrong_risk_range}</span>
+            <span style="font-weight:700;white-space:nowrap;">Unavailable ≠ Negative</span>
+          </div>
+
+          <!-- M3 Blinded Spot-Check ('Your Call First') -->
+          ${state.spotCheckMode ? `
+            <div class="your-call-first">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <strong style="color:#ffedd5;font-size:12.5px;">🎯 M3 BLINDED SPOT-CHECK ("Your Call First")</strong>
+                <span style="font-size:11px;color:#fed7aa;">
+                  ${spotPending ? "AI synthesis masked until you commit your initial clinical call" : "✓ SpotReveal Unlocked — Calibrated against 3-Agent PHA"}
+                </span>
+              </div>
+              ${spotPending ? `
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="pill-btn active" onclick="commitSpotCheck('STAT_ESCALATE')">My Call: Escalate STAT + Order VOI Labs</button>
+                  <button class="pill-btn active" onclick="commitSpotCheck('SAME_DAY_VOI')">My Call: Same-Day Clinic VOI Check</button>
+                  <button class="pill-btn active" onclick="commitSpotCheck('ROUTINE_OARS')">My Call: Continue Active OARS Coaching</button>
+                </div>
+              ` : `
+                <div style="font-size:12px;color:#d1fae5;">
+                  Your Blinded Call: <strong>${state.spotCheckCommitted[sc.scenario_id]}</strong> · PHA Recommendation: <strong>${sc.urgency}</strong> (Calibration recorded in M2 Dials).
+                </div>
+              `}
+            </div>
+          ` : ""}
+
+          <!-- 4-Level Cascading Progressive Dossier (L0 -> L1 -> L2 -> L3) -->
+          <div class="cascade-dossier">
+            <div class="cascade-bar">
+              <span class="row-label">4-LEVEL CASCADING DOSSIER (Progressive Disclosure):</span>
+              <div class="level-pills">
+                <button class="level-pill ${state.cascadeLevel >= 0 ? 'active' : ''}" onclick="setCascadeLevel(0)">L0 Awareness</button>
+                <button class="level-pill ${state.cascadeLevel >= 1 ? 'active' : ''}" onclick="setCascadeLevel(1)">L1 7d Trends</button>
+                <button class="level-pill ${state.cascadeLevel >= 2 ? 'active' : ''}" onclick="setCascadeLevel(2)">L2 4D & Target-Trial</button>
+                <button class="level-pill ${state.cascadeLevel >= 3 ? 'active' : ''}" onclick="setCascadeLevel(3)">L3 Full Chart Accordion</button>
+              </div>
+            </div>
+
+            <div class="cascade-layer">
+              <strong>L0 Awareness:</strong> ${sc.cascading_dossier.L0_awareness}
+            </div>
+            ${state.cascadeLevel >= 1 ? `
+              <div class="cascade-layer">
+                <strong>L1 7d Wearable & Lab Trajectory:</strong> ${sc.cascading_dossier.L1_trends}
+              </div>
+            ` : ""}
+            ${state.cascadeLevel >= 2 ? `
+              <div class="cascade-layer l2">
+                <strong>L2 4D Storetime Lock & Target-Trial Positivity Gate:</strong> ${spotPending ? "<em>[Masked until M3 YourCallFirst selection]</em>" : sc.cascading_dossier.L2_storetime_target_trial}
+              </div>
+            ` : ""}
+            ${state.cascadeLevel >= 3 ? `
+              <div class="cascade-layer l3">
+                <strong>L3 Full 3-Agent Clinical Chart (One-Section-at-a-Time Accordion):</strong>
+                <div class="chart-accordion">
+                  <div class="acc-item">
+                    <button class="acc-header" onclick="toggleAccordion('dsa')">
+                      <span>${state.openAccordion === 'dsa' ? '▾' : '▸'} 1. Data Science Agent (DSA) — Trajectory Z-Scores & Target-Trial Gate</span>
+                      <span style="font-size:11px;color:var(--ai-blue);">${state.openAccordion === 'dsa' ? 'Hide' : 'Show'}</span>
+                    </button>
+                    ${state.openAccordion === 'dsa' ? `
+                      <div class="acc-content">
+                        ${sc.cascading_dossier.L2_storetime_target_trial}<br/>
+                        <strong>Blocked Future Rows:</strong> ${sc.leakage_rows_blocked} records held back by strict <code>t_store &lt;= ${sc.t_landmark_hours}h</code> lock.
+                      </div>
+                    ` : ""}
+                  </div>
+
+                  <div class="acc-item">
+                    <button class="acc-header" onclick="toggleAccordion('dea')">
+                      <span>${state.openAccordion === 'dea' ? '▾' : '▸'} 2. Domain Expert Agent (DEA) — 240-KC VOI Router & Anti-Reward-Hacking</span>
+                      <span style="font-size:11px;color:var(--ai-blue);">${state.openAccordion === 'dea' ? 'Hide' : 'Show'}</span>
+                    </button>
+                    ${state.openAccordion === 'dea' ? `
+                      <div class="acc-content">
+                        ${sc.voi_workup.map(v => `<div>• <strong>${v.label}</strong> (${v.status}) · VOI=${v.voi} · If-Wrong=${v.range}</div>`).join("")}
+                      </div>
+                    ` : ""}
+                  </div>
+
+                  <div class="acc-item">
+                    <button class="acc-header" onclick="toggleAccordion('hca')">
+                      <span>${state.openAccordion === 'hca' ? '▾' : '▸'} 3. Health Coach Agent (HCA) — OARS Motivational Interviewing</span>
+                      <span style="font-size:11px;color:var(--ai-blue);">${state.openAccordion === 'hca' ? 'Hide' : 'Show'}</span>
+                    </button>
+                    ${state.openAccordion === 'hca' ? `
+                      <div class="acc-content">
+                        <div><strong>Mode:</strong> ${sc.oars.mode}</div>
+                        <div>• <strong>Open Question:</strong> ${sc.oars.open_q}</div>
+                        <div>• <strong>Affirmation:</strong> ${sc.oars.affirmation}</div>
+                        <div>• <strong>Reflection:</strong> ${sc.oars.reflection}</div>
+                        <div>• <strong>Summary / SMART Goal:</strong> ${sc.oars.summary}</div>
+                      </div>
+                    ` : ""}
+                  </div>
+                </div>
+              </div>
+            ` : ""}
+          </div>
+
+          <!-- SymbiosisPanel: 3-Column Division of Labor (YOU HOLD / BRIDGE / AI HOLDS) -->
+          <div class="symbiosis-panel">
+            <div class="symbiosis-top">
+              <span class="row-label">SYMBIOSIS DIVISION OF LABOR (YOU HOLD · BRIDGE · AI HOLDS):</span>
+              <button class="pill-btn active" onclick="state.showAiDepth=!state.showAiDepth;renderNowCard();">
+                ${state.showAiDepth ? "Hide AI depth ▴" : "Show AI depth ▾"}
+              </button>
+            </div>
+            <div class="symbiosis-grid">
+              <div class="sym-col you-col">
+                <div class="sym-col-title" style="color:var(--you-orange);">YOU HOLD (Clinician Principal)</div>
+                <ul>
+                  <li>Final prescription & escalation sign-off (Autonomy Cap ≤ 40%)</li>
+                  <li>Physical wound probe / bedside VExUS verification</li>
+                  <li>M4 Promotion sign-off (n ≥ 5 runs, ≥ 80% agreement)</li>
+                </ul>
+              </div>
+              <div class="sym-col bridge-col">
+                <div class="sym-col-title" style="color:var(--bridge-pink);">BRIDGE (Shared Crossroads)</div>
+                <ul>
+                  <li>Pop-out OptionRing modification & trial routing</li>
+                  <li>4-state field reliability tagging (R / N / W / D)</li>
+                  <li>M3 Blinded Spot-Check ("Your Call First")</li>
+                </ul>
+              </div>
+              <div class="sym-col ai-col">
+                <div class="sym-col-title" style="color:var(--ai-blue);">AI HOLDS (3-Agent PHA + 4D Gate)</div>
+                <ul>
+                  <li>7d wearable drift Z-score & circadian HRV tracking</li>
+                  <li>4D bitemporal storetime lock (${sc.leakage_rows_blocked} future rows masked)</li>
+                  ${state.showAiDepth ? `
+                    <li>240-KC sparse olfactory VOI ranking (95% sparsity)</li>
+                    <li>Hernán-Robins Target-Trial positivity & Manski bounds</li>
+                  ` : ""}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- M2 Earned-Autonomy Dials + Sparkline -->
+          <div class="dials-strip">
+            <div class="dial-box">
+              <svg width="48" height="48" viewBox="0 0 48 48">
+                <circle cx="24" cy="24" r="19" fill="none" stroke="rgba(148,163,184,0.2)" stroke-width="5"/>
+                <circle cx="24" cy="24" r="19" fill="none" stroke="#4da6ff" stroke-width="5"
+                  stroke-dasharray="${(effAutonomy / 100) * 119.4} 119.4" transform="rotate(-90 24 24)"/>
+                <text x="24" y="28" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">${effAutonomy}%</text>
+              </svg>
+              <div class="dial-meta">
+                <strong style="color:var(--ai-blue);">M2 Earned Autonomy Dial</strong>
+                <span style="color:var(--text-muted);">Hard Clinical Safety Cap: ≤ 40%</span>
+              </div>
+            </div>
+
+            <div class="dial-box">
+              <svg width="48" height="48" viewBox="0 0 48 48">
+                <circle cx="24" cy="24" r="19" fill="none" stroke="rgba(148,163,184,0.2)" stroke-width="5"/>
+                <circle cx="24" cy="24" r="19" fill="none" stroke="#f7941d" stroke-width="5"
+                  stroke-dasharray="${(effDeference / 100) * 119.4} 119.4" transform="rotate(-90 24 24)"/>
+                <text x="24" y="28" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">${effDeference}%</text>
+              </svg>
+              <div class="dial-meta">
+                <strong style="color:var(--you-orange);">Clinician Deference Floor</strong>
+                <span style="color:var(--text-muted);">Hard Safety Floor: ≥ 80%</span>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:6px;align-items:center;">
+              <button class="pill-btn active" onclick="adjustAutonomy(5)" title="Test hard 40% autonomy cap">+5% Autonomy (Test Cap)</button>
+              <button class="pill-btn" onclick="undoAutonomyMove()">Undo move</button>
+            </div>
+          </div>
+
+          <!-- Primary Routing Action Bar + SplitRatingRow -->
+          <div class="routing-bar">
+            <div class="route-buttons">
+              <button class="route-btn pass" onclick="recordDecision('Pass: Dispatch Top-VOI Order + OARS Plan', 'ACCEPT_PATHWAY')">
+                ✓ Pass & Dispatch VOI/OARS
+              </button>
+              <button class="route-btn modify" onclick="toggleOptionRing()">
+                ◎ Modify… (Pop-Out OptionRing)
+              </button>
+              <button class="route-btn escalate" onclick="recordDecision('STAT Provider Crossroads Escalation', 'STAT_CLINIC_SLOT')">
+                ⚠ Escalate STAT Clinic
+              </button>
+              <button class="route-btn defer" onclick="recordDecision('Hold for Pending 4D Storetime Release', 'DEFER_STORETIME')">
+                ⏸ Hold for Lab Storetime
+              </button>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-size:11px;color:var(--text-muted);">Split Rating:</span>
+              <button class="pill-btn ${state.splitRating[sc.scenario_id]==='sound'?'active':''}" onclick="state.splitRating['${sc.scenario_id}']='sound';renderNowCard();">👍 Sound Call</button>
+              <button class="pill-btn ${state.splitRating[sc.scenario_id]==='flawed'?'active':''}" onclick="state.splitRating['${sc.scenario_id}']='flawed';renderNowCard();">👎 Override</button>
+            </div>
           </div>
         </div>
       `;
     }
 
-    function initExplorer(data) {
-      BENCH = data;
-      document.getElementById('scenarioList').innerHTML = data.flagship_scenarios.map((s, i) => `
-        <button class="sc-btn ${i === 0 ? 'active' : ''}" onclick="renderScenario(${i})">
+    function renderOptionRing() {
+      const wrapper = document.getElementById("option-ring-wrapper");
+      if (!state.optionRingOpen) {
+        wrapper.style.display = "none";
+        return;
+      }
+      wrapper.style.display = "block";
+      wrapper.innerHTML = `
+        <div class="option-ring-popout">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:11px;color:var(--cyan);font-weight:700;">${s.scenario_id} · ${s.cohort_domain}</span>
-            <span class="badge ${s.coral_sentinel.wake_cloud_orchestrator ? 'b-crimson' : 'b-emerald'}">${s.coral_sentinel.wake_cloud_orchestrator ? 'WAKE' : 'SLEEP'}</span>
+            <div>
+              <span style="font-size:11px;font-weight:800;text-transform:uppercase;color:var(--bridge-pink);letter-spacing:0.07em;">
+                POP-OUT CATEGORICAL OPTION RING · M0–M4 LIFECYCLE
+              </span>
+              <div style="font-size:14px;font-weight:700;">Select a categorical modification or create a purple <code>trial:</code> option</div>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="pill-btn active" onclick="createTrialCategory()">+ New Trial Category</button>
+              <button class="pill-btn" onclick="toggleOptionRing()">Close ✕</button>
+            </div>
           </div>
-          <div style="font-size:13px;font-weight:700;margin-top:5px;line-height:1.35;">${s.title}</div>
-        </button>
-      `).join('');
-      renderScenario(0);
+
+          <div class="option-ring-grid">
+            ${state.categories.map(cat => `
+              <div class="ring-card ${cat.lifecycle}" onclick="recordDecision('${cat.label}', '${cat.code}')">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <strong style="font-size:12.5px;">${cat.label}</strong>
+                  <span class="cat-pill ${cat.lifecycle}" style="font-size:10px;padding:2px 7px;">${cat.badge}</span>
+                </div>
+                <div style="font-size:11.5px;color:var(--text-muted);">
+                  <strong>WHAT HAPPENS NEXT:</strong> ${cat.preview}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
     }
 
-    initExplorer(FALLBACK_BENCHMARK);
-    fetch('/api/benchmark').then(r => r.ok ? r.json() : null).then(d => { if (d && d.flagship_scenarios) initExplorer(d); }).catch(() => {});
-
-    // Interactive 3D Canvas Renderer
-    const canvas = document.getElementById('phaCanvas');
-    const ctx = canvas.getContext('2d');
-    let rotY = 0.4, rotX = 0.25, dragging = false, lastX = 0, lastY = 0, tick = 0;
-
-    function resizeCanvas() {
-      const rect = canvas.parentElement.getBoundingClientRect();
-      canvas.width = rect.width * window.devicePixelRatio;
-      canvas.height = rect.height * window.devicePixelRatio;
-      ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    canvas.addEventListener('mousedown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
-    window.addEventListener('mouseup', () => dragging = false);
-    window.addEventListener('mousemove', e => {
-      if (!dragging) return;
-      rotY += (e.clientX - lastX) * 0.008;
-      rotX = Math.max(-0.8, Math.min(0.8, rotX + (e.clientY - lastY) * 0.008));
-      lastX = e.clientX;
-      lastY = e.clientY;
-    });
-
-    window.setStageMode = function(mode, btn) {
-      STAGE_MODE = mode;
-      document.querySelectorAll('.stage-tab').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-      const labels = {
-        EDGE_SENTINEL: '240-KC Sparse Edge Projection (95.0% Sparsity · 3.82 mW · 6.40 KB SRAM)',
-        STORETIME_LOCK: '4D Time-Locked State: Wearable t_sync Joined with Verified Portal storetime <= t_k',
-        MULTI_AGENT: '3-Specialist PHA (DSA Target-Trial Gate + DEA 240-KC VOI + HCA OARS Coaching)',
-        NOWCARD_BRIDGE: 'Fail-Closed sdr.decision.v1 Clinician NowCard & HMAC-SHA256 Merkle Provenance'
-      };
-      document.getElementById('stageTelemetryLeft').textContent = labels[mode] || '';
-    };
-
-    function project3D(x, y, z, w, h) {
-      const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
-      const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
-      const x1 = x * cosY - z * sinY;
-      const z1 = z * cosY + x * sinY;
-      const y2 = y * cosX - z1 * sinX;
-      const z2 = z1 * cosX + y * sinX;
-      const scale = 320 / (420 + z2);
-      return { sx: w / 2 + x1 * scale, sy: h / 2 + y2 * scale, scale, z2 };
+    function renderUpNextQueue() {
+      const filtered = getFilteredScenarios();
+      document.getElementById("queue-count-label").textContent = filtered.length + " Episodes";
+      document.getElementById("up-next-list").innerHTML = filtered.map(sc => {
+        const isCurrent = sc.scenario_id === state.activeScenarioId;
+        const modeCls = sc.spatial_crossroads_mode === "NOW_CARD_HARD_ESCALATION"
+          ? "hard-esc"
+          : (sc.spatial_crossroads_mode === "SUPPRESSED_ROUTINE_SYNC" ? "suppressed-sync" : "");
+        return `
+          <div class="queue-card ${isCurrent ? 'active-now' : ''} ${modeCls}" onclick="makeNow('${sc.scenario_id}')">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);">
+              <strong>${sc.scenario_id} · ${sc.cohort_domain === 'POST_DFI_SALVAGE' ? '4DMFEET' : '4D-SEPSIS'}</strong>
+              <span>Drift z=${sc.drift_z_score.toFixed(2)}</span>
+            </div>
+            <div style="font-size:12.5px;font-weight:700;margin:3px 0;">${sc.title}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
+              <span style="color:${sc.wake_cloud_orchestrator ? '#fca5a5' : '#86efac'};">
+                ${sc.spatial_crossroads_mode}
+              </span>
+              <span style="color:var(--ai-blue);font-weight:700;">${isCurrent ? "● ACTIVE NOW" : "Pull to Now →"}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
     }
 
-    function animate() {
-      tick += 0.02;
-      if (!dragging) rotY += 0.0035;
-      const w = canvas.width / window.devicePixelRatio;
-      const h = canvas.height / window.devicePixelRatio;
-      ctx.clearRect(0, 0, w, h);
+    function renderSidePanel() {
+      const sc = getActiveScenario();
+      const box = document.getElementById("side-panel-content");
 
-      const sc = BENCH.flagship_scenarios[ACTIVE_SCENARIO_IDX] || BENCH.flagship_scenarios[0];
-      const isWake = sc.coral_sentinel.wake_cloud_orchestrator;
-
-      // Draw 3D ring of 48 representative Kenyon Cells + 4 core architectural nodes
-      const coreNodes = [
-        { x: -115, y: -45, z: 0, label: 'Wearable + EHR', color: '#22d3ee' },
-        { x: -35, y: 45, z: 30, label: 'Coral NPU (3.82mW)', color: isWake ? '#ef4444' : '#10b981' },
-        { x: 45, y: -40, z: -25, label: 'DSA · DEA · HCA', color: '#a855f7' },
-        { x: 120, y: 35, z: 10, label: isWake ? 'sdr.decision.v1 NowCard' : 'OARS Home Coaching', color: isWake ? '#f59e0b' : '#10b981' }
-      ];
-
-      // Outer 240-KC sparse halo
-      for (let i = 0; i < 48; i++) {
-        const angle = (i / 48) * Math.PI * 2 + tick * 0.25;
-        const radius = 145 + Math.sin(i * 1.7 + tick) * 14;
-        const py = Math.cos(i * 0.9 + tick * 0.6) * 55;
-        const p = project3D(Math.cos(angle) * radius, py, Math.sin(angle) * radius, w, h);
-        const activeKC = (i % 8 === 0);
-        ctx.beginPath();
-        ctx.arc(p.sx, p.sy, activeKC ? 3.8 * p.scale : 1.8 * p.scale, 0, Math.PI * 2);
-        ctx.fillStyle = activeKC ? (isWake ? '#ef4444' : '#22d3ee') : 'rgba(148, 163, 184, 0.25)';
-        ctx.fill();
+      if (state.sideTab === "agents") {
+        box.innerHTML = `
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
+            <div style="padding:10px;border-radius:8px;background:rgba(77,166,255,0.12);border:1px solid rgba(77,166,255,0.35);">
+              <strong style="color:var(--ai-blue);">1. Data Science Agent (DSA)</strong>
+              <p style="margin-top:4px;color:#cbd5e1;">${sc.cascading_dossier.L1_trends}</p>
+              <p style="margin-top:4px;color:#93c5fd;">${sc.cascading_dossier.L2_storetime_target_trial}</p>
+            </div>
+            <div style="padding:10px;border-radius:8px;background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.35);">
+              <strong style="color:var(--bridge-pink);">2. Domain Expert Agent (DEA)</strong>
+              <p style="margin-top:4px;color:#cbd5e1;">240-KC Olfactory VOI Router (${sc.voi_workup.length} missing/pending tests ranked).</p>
+            </div>
+            <div style="padding:10px;border-radius:8px;background:rgba(247,148,29,0.12);border:1px solid rgba(247,148,29,0.35);">
+              <strong style="color:var(--you-orange);">3. Health Coach Agent (HCA · OARS)</strong>
+              <p style="margin-top:4px;color:#cbd5e1;"><strong>${sc.oars.mode}:</strong> "${sc.oars.open_q}"</p>
+            </div>
+          </div>
+        `;
+      } else if (state.sideTab === "trust") {
+        box.innerHTML = `
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
+            <p style="color:var(--text-muted);">Click any field chip to cycle 4-state epistemic reliability (<strong>Reliable</strong>, <strong>Not said</strong>, <strong>Said wrong</strong>, <strong>Said differently</strong>):</p>
+            ${Object.entries(sc.field_reliability).map(([k, v]) => `
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 9px;background:rgba(15,23,42,0.8);border-radius:7px;">
+                <span>${k}</span>
+                <span class="rel-chip ${v}" onclick="cycleRelChip('${k}')">${v.toUpperCase()}</span>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      } else if (state.sideTab === "voi") {
+        box.innerHTML = `
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
+            <p style="color:var(--text-muted);">Top Expected Value-of-Information (EVOI) diagnostic queries before empirical prescription:</p>
+            ${sc.voi_workup.map(v => `
+              <div style="padding:9px;border-radius:8px;background:rgba(15,23,42,0.85);border:1px solid var(--border-glass);">
+                <div style="display:flex;justify-content:space-between;font-weight:700;">
+                  <span>${v.label}</span>
+                  <span style="color:var(--ai-blue);">VOI ${v.voi}</span>
+                </div>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">
+                  Status: <code>${v.status}</code> · If-Wrong Band: <strong>${v.range}</strong>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      } else if (state.sideTab === "m4") {
+        const trialCats = state.categories.filter(c => c.lifecycle === "trial");
+        box.innerHTML = `
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
+            <div style="font-weight:800;color:var(--trial-purple);">M4 Promotion PrincipalCard (n ≥ 5 runs · ≥ 80% agreement)</div>
+            ${trialCats.length === 0 ? `<p style="color:var(--text-muted);">All current trial categories have been promoted to ★ Promoted!</p>` :
+              trialCats.map(tc => `
+                <div style="padding:11px;border-radius:9px;background:rgba(168,85,247,0.14);border:1px solid rgba(168,85,247,0.5);">
+                  <div style="font-weight:700;">${tc.label}</div>
+                  <div style="font-size:11px;color:#e9d5ff;margin:4px 0;">Runs: ${tc.runs || 5}/5 · Clinician Agreement: ${tc.agree || 92}% (Threshold ≥ 80%)</div>
+                  <button class="pill-btn active" onclick="promoteTrialCategory('${tc.code}')">★ Sign & Promote to OptionRing</button>
+                </div>
+              `).join("")}
+          </div>
+        `;
+      } else {
+        box.innerHTML = `
+          <div class="paper-lineage-card">
+            <div style="font-weight:800;border-bottom:1px solid #cbd5e1;padding-bottom:6px;margin-bottom:8px;">
+              M5 CRYPTOGRAPHIC DECISION LINEAGE (sdr.decision.v1)
+            </div>
+            <div>• <strong>M0 Registry:</strong> ${state.categories.length} OptionRing categories active</div>
+            <div>• <strong>M1 4D Gate:</strong> Strict Storetime=${state.strictStoretimeLock} (${sc.leakage_rows_blocked} masked)</div>
+            <div>• <strong>M2 Dials:</strong> Safety Cap ≤ 40% / Deference ≥ 80% enforced</div>
+            <div>• <strong>M3 Calibration:</strong> Blinded Spot-Check ${state.spotCheckMode ? 'ON' : 'OFF'}</div>
+            <hr style="margin:8px 0;border:none;border-top:1px dashed #94a3b8;"/>
+            <div style="font-weight:700;margin-bottom:4px;">Signed Clinician Actions (${state.decisionLedger.length}):</div>
+            ${state.decisionLedger.length === 0 ? `<div>No signed actions yet in this session.</div>` :
+              state.decisionLedger.slice(0, 5).map(d => `
+                <div style="margin-bottom:4px;">[${d.ts}] <strong>${d.episode_id}</strong> (${d.role}): ${d.action} <code>${d.hash}</code></div>
+              `).join("")}
+          </div>
+        `;
       }
-
-      // Connect core architectural pipeline nodes
-      const projectedCores = coreNodes.map(n => ({ ...n, ...project3D(n.x, n.y, n.z, w, h) }));
-      for (let i = 0; i < projectedCores.length - 1; i++) {
-        const a = projectedCores[i], b = projectedCores[i + 1];
-        ctx.beginPath();
-        ctx.moveTo(a.sx, a.sy);
-        ctx.lineTo(b.sx, b.sy);
-        ctx.strokeStyle = isWake ? 'rgba(239, 68, 68, 0.55)' : 'rgba(34, 211, 238, 0.55)';
-        ctx.lineWidth = 2.2;
-        ctx.stroke();
-      }
-
-      projectedCores.forEach(n => {
-        ctx.beginPath();
-        ctx.arc(n.sx, n.sy, 11 * n.scale, 0, Math.PI * 2);
-        ctx.fillStyle = n.color;
-        ctx.shadowColor = n.color;
-        ctx.shadowBlur = 16;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-
-        ctx.fillStyle = '#f8fafc';
-        ctx.font = '700 11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(n.label, n.sx, n.sy - 16 * n.scale);
-      });
-
-      requestAnimationFrame(animate);
     }
-    animate();
+
+    function renderAll() {
+      renderBoardAndCategories();
+      renderNowCard();
+      renderOptionRing();
+      renderUpNextQueue();
+      renderSidePanel();
+    }
+
+    renderAll();
   </script>
 </body>
 </html>

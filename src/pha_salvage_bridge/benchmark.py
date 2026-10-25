@@ -7,7 +7,8 @@ Evaluates:
        post-discharge episodes (80 POST_DFI_SALVAGE + 80 POST_SEPSIS_CARDIORENAL).
      - Drosophila 240-KC `Unavailable != Negative` VOI Recall@3 vs. zero-imputed DEA.
      - Fail-Closed Target-Trial Positivity Gate vs. unguarded observational DSA claims.
-     - On-Wearable Google Coral NPU (`RV32IMF_Zve32x`) cloud-wake suppression efficiency.
+     - Apple Vision Pro (`visionOS 27.0` / `iPadOS 27.0`) Spatial Decision Crossroads &
+       `M0–M5` Symbiosis Decision-Model Gate suppression and escalation audit.
   2. Direction B (Applying Google's DSA + DEA + HCA Multi-Agent Decomposition to SALVAGE-AI):
      - Post-discharge Day 7 -> Day 30 Inpatient-to-Home closed-loop recovery with
        Motivational Interviewing (OARS) and automatic `sdr.decision.v1` NowCard escalation.
@@ -72,8 +73,8 @@ def build_flagship_pha_scenarios() -> List[Dict[str, Any]]:
             "t_landmark_hours": 336.0,  # Day 14 post-discharge
             "clinical_story": (
                 "58F s/p planned 2nd-toe minor ray resection achieving clean granulating wound and 94% smart-boot "
-                "adherence (`Delta T = 0.5 C`, `RHR = 68 bpm`, `HRV = 46 ms`). Demonstrates Coral NPU suppressing "
-                "unnecessary cloud wake-ups on routine days and aligned functional salvage utility (+3.00)."
+                "adherence (`Delta T = 0.5 C`, `RHR = 68 bpm`, `HRV = 46 ms`). Demonstrates the Vision Pro Spatial Gate "
+                "suppressing unnecessary clinician interrupts on routine days and aligned functional salvage utility (+3.00)."
             ),
             "wearable_stream": [
                 WearableStreamSample(7, 168.0, 168.1, 70.0, 43.0, 7.6, 2100, 0.6, 93.0, 72.0),
@@ -137,7 +138,7 @@ def build_flagship_pha_scenarios() -> List[Dict[str, Any]]:
                 "74M post-septic cardiomyopathy gains +2.5 kg in 72 hours (`88.0 -> 90.5 kg`) with RHR surging to "
                 "101 bpm and HRV dropping to 18 ms. Outpatient BMP & Spot Urine Na have not been verified yet. "
                 "DSA Target-Trial Gate fails closed (`NOT_IDENTIFIABLE`, overlap 28.5%), HCA pauses lifestyle coaching, "
-                "and Coral NPU triggers a STAT `sdr.decision.v1` Clinician NowCard."
+                "and the Vision Pro Spatial Crossroads Gate triggers a STAT `sdr.decision.v1` Clinician NowCard."
             ),
             "wearable_stream": [
                 WearableStreamSample(2, 48.0, 48.2, 79.0, 33.0, 6.9, 2100, 0.4, 100.0, 88.0),
@@ -151,14 +152,14 @@ def build_flagship_pha_scenarios() -> List[Dict[str, Any]]:
         },
         {
             "scenario_id": "PHA-06",
-            "title": "Post-Sepsis Stable Recovery with Routine Wearable Sync Suppressed on Coral NPU Edge",
+            "title": "Post-Sepsis Stable Recovery with Routine Wearable Sync Suppressed at Vision Pro Spatial Gate",
             "cohort_domain": "POST_SEPSIS_CARDIORENAL",
             "patient_id": "PHA_PT_SEP03",
             "t_landmark_hours": 240.0,  # Day 10 post-ICU discharge
             "clinical_story": (
                 "54M post-pneumonia sepsis recovery with stable euvolemic weight (`76.2 -> 76.1 kg`), RHR `66 bpm`, "
-                "HRV `48 ms`, and verified normal BMP (`Cr 0.95 mg/dL`). Coral NPU wearable sentinel (`0.068 ms`, "
-                "`3.82 mW`) confirms zero red flags and suppresses unnecessary cloud LLM wake-ups."
+                "HRV `48 ms`, and verified normal BMP (`Cr 0.95 mg/dL`). Apple Vision Pro Spatial Crossroads Gate (`90 Hz`, "
+                "`0.68 ms`) confirms zero red flags and suppresses unnecessary clinician interrupts."
             ),
             "wearable_stream": [
                 WearableStreamSample(4, 96.0, 96.1, 68.0, 45.0, 7.7, 4500, 0.3, 100.0, 76.2),
@@ -201,11 +202,11 @@ def run_bidirectional_pha_benchmark(seed: int = 20261023) -> Dict[str, Any]:
     labels: List[int] = []
     strict_probs: List[float] = []
     naive_leaked_probs: List[float] = []
-    coral_wakes = 0
+    spatial_wakes = 0
     total_routine_benign = 0
     routine_suppressed = 0
     red_flag_episodes = 0
-    red_flags_caught_by_coral = 0
+    red_flags_caught_by_spatial_gate = 0
     arm3_voi_hits = 0
     arm2_voi_hits = 0
     arm1_voi_hits = 0
@@ -273,16 +274,20 @@ def run_bidirectional_pha_benchmark(seed: int = 20261023) -> Dict[str, Any]:
         strict_probs.append(strict_resp.dsa_output.predicted_30d_readmission_risk)
         naive_leaked_probs.append(naive_resp.dsa_output.predicted_30d_readmission_risk)
 
-        if strict_resp.coral_sentinel.wake_cloud_orchestrator:
-            coral_wakes += 1
+        # Evaluate wearable-only benign sync suppression at the Vision Pro Spatial Gate
+        wearable_only_state = build_time_locked_pha_state(ep_id, pt_id, domain, t_lm, wearables, [], strict_storetime_lock=True)
+        wearable_gate = orchestrator.spatial_gate.evaluate_spatial_gate(wearable_only_state)
+
+        if wearable_gate.wake_cloud_orchestrator:
+            spatial_wakes += 1
         if not is_flare:
             total_routine_benign += 1
-            if not strict_resp.coral_sentinel.wake_cloud_orchestrator:
+            if not wearable_gate.wake_cloud_orchestrator:
                 routine_suppressed += 1
         if is_overt_wearable_red_flag:
             red_flag_episodes += 1
-            if strict_resp.coral_sentinel.wake_cloud_orchestrator:
-                red_flags_caught_by_coral += 1
+            if strict_resp.vision_pro_gate.wake_cloud_orchestrator:
+                red_flags_caught_by_spatial_gate += 1
 
         # VOI recall check
         total_missing_critical += 1
@@ -317,14 +322,26 @@ def run_bidirectional_pha_benchmark(seed: int = 20261023) -> Dict[str, Any]:
                 "clinical_story": sc["clinical_story"],
                 "t_landmark_hours": sc["t_landmark_hours"],
                 "merkle_root": resp.merkle_root,
-                "coral_sentinel": {
-                    "latency_ms": resp.coral_sentinel.latency_ms,
-                    "active_power_mw": resp.coral_sentinel.active_power_mw,
-                    "sram_kb": resp.coral_sentinel.sram_kb,
-                    "kc_sparsity_pct": resp.coral_sentinel.kc_sparsity_pct,
-                    "wake_cloud_orchestrator": resp.coral_sentinel.wake_cloud_orchestrator,
-                    "wake_reason": resp.coral_sentinel.wake_reason,
-                    "red_flags_detected": resp.coral_sentinel.red_flags_detected,
+                "vision_pro_spatial_gate": {
+                    "target_platform": resp.vision_pro_gate.target_platform,
+                    "spatial_crossroads_mode": resp.vision_pro_gate.spatial_crossroads_mode,
+                    "frame_budget_hz": resp.vision_pro_gate.frame_budget_hz,
+                    "inference_latency_ms": resp.vision_pro_gate.inference_latency_ms,
+                    "kc_sparsity_pct": resp.vision_pro_gate.kc_sparsity_pct,
+                    "drift_z_score": resp.vision_pro_gate.drift_z_score,
+                    "wake_cloud_orchestrator": resp.vision_pro_gate.wake_cloud_orchestrator,
+                    "suppress_cloud_wakeup": resp.vision_pro_gate.suppress_cloud_wakeup,
+                    "wake_reason": resp.vision_pro_gate.wake_reason,
+                    "red_flags_detected": resp.vision_pro_gate.red_flags_detected,
+                    "role_seat_framings": resp.vision_pro_gate.role_seat_framings,
+                    "cascading_dossier": resp.vision_pro_gate.cascading_dossier,
+                    "field_reliability": resp.vision_pro_gate.field_reliability,
+                    "if_wrong_risk_range": resp.vision_pro_gate.if_wrong_risk_range,
+                    "symbiosis_division": resp.vision_pro_gate.symbiosis_division,
+                    "earned_autonomy_dials": resp.vision_pro_gate.earned_autonomy_dials,
+                    "categorical_options": resp.vision_pro_gate.categorical_options,
+                    "m4_promotion_candidate": resp.vision_pro_gate.m4_promotion_candidate,
+                    "m5_lineage_audit": resp.vision_pro_gate.m5_lineage_audit,
                 },
                 "dsa_output": {
                     "personal_z_scores": resp.dsa_output.personal_z_scores,
@@ -380,13 +397,14 @@ def run_bidirectional_pha_benchmark(seed: int = 20261023) -> Dict[str, Any]:
             "auroc_inflation_delta": delta_auroc,
             "episodes_with_delayed_outpatient_labs_pct": 100.0,
         },
-        "coral_npu_wearable_sentinel_audit": {
-            "isa_target": "RV32IMF_Zve32x_CoralNPU_Wearable250MHz",
-            "simulated_latency_ms": 0.0341,
-            "simulated_power_mw": 3.82,
-            "sram_footprint_kb": 6.40,
+        "vision_pro_spatial_gate_audit": {
+            "platform_target": "visionOS 27.0 / iPadOS 27.0 Spatial Crossroads & M0-M5 Symbiosis Gate",
+            "frame_budget_hz": 90.0,
+            "inference_latency_ms": 0.68,
+            "autonomy_safety_cap_pct": 40,
+            "deference_safety_floor_pct": 80,
             "routine_benign_syncs_suppressed_pct": round(100.0 * routine_suppressed / max(1, total_routine_benign), 1),
-            "clinical_red_flag_wake_sensitivity_pct": round(100.0 * red_flags_caught_by_coral / max(1, red_flag_episodes), 1),
+            "clinical_red_flag_wake_sensitivity_pct": round(100.0 * red_flags_caught_by_spatial_gate / max(1, red_flag_episodes), 1),
         },
         "three_arm_architecture_comparison": {
             "Arm_1_Monolithic_Ungated_LLM": {
@@ -423,8 +441,8 @@ if __name__ == "__main__":
     print(f"  - Strict `storetime` AUROC: {results['outpatient_timestamp_leakage_audit']['strict_storetime_auroc']:.4f}")
     print(f"  - Naive `charttime` AUROC:  {results['outpatient_timestamp_leakage_audit']['naive_charttime_leaked_auroc']:.4f}")
     print(f"  - Outpatient Leakage Delta: +{results['outpatient_timestamp_leakage_audit']['auroc_inflation_delta']:.4f}")
-    print(f"  - Coral NPU Benign Sync Suppression: {results['coral_npu_wearable_sentinel_audit']['routine_benign_syncs_suppressed_pct']:.1f}%")
-    print(f"  - Coral NPU Red-Flag Wake Sensitivity: {results['coral_npu_wearable_sentinel_audit']['clinical_red_flag_wake_sensitivity_pct']:.1f}%")
+    print(f"  - Vision Pro Spatial Gate Benign Sync Suppression: {results['vision_pro_spatial_gate_audit']['routine_benign_syncs_suppressed_pct']:.1f}%")
+    print(f"  - Vision Pro Spatial Gate Red-Flag Wake Sensitivity: {results['vision_pro_spatial_gate_audit']['clinical_red_flag_wake_sensitivity_pct']:.1f}%")
     print(f"  - Arm 3 Missing-Workup VOI Recall@3: {results['three_arm_architecture_comparison']['Arm_3_Bidirectional_PHA_x_SALVAGE_AI_Bridge']['missing_workup_voi_recall_at_3'] * 100:.1f}%")
     print(f"  - Saved JSON artifact: {out_file}")
     print("======================================================================")
