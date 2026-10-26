@@ -36,6 +36,7 @@ from pha_salvage_bridge.models import (
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 STATIC_LANDING_PATH = STATIC_DIR / "landing.html"
 STATIC_WORKSPACE_PATH = STATIC_DIR / "workspace.html"
+STATIC_CARDIOMETABOLIC_PATH = STATIC_DIR / "cardiometabolic.html"
 
 
 def simulate_custom_pha_state(payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -254,8 +255,15 @@ class PHABridgeRequestHandler(BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)
-        elif parsed.path in ("/", "/workspace", "/workspace.html", "/index.html"):
+        elif parsed.path in ("/", "/workspace", "/workspace.html", "/index.html", "/post-discharge", "/workspace/post-discharge"):
             body = STATIC_WORKSPACE_PATH.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+        elif parsed.path in ("/cardiometabolic", "/cardiometabolic.html", "/home-health", "/workspace/cardiometabolic"):
+            body = STATIC_CARDIOMETABOLIC_PATH.read_bytes()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))

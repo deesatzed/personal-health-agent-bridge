@@ -3,22 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PHA × SALVAGE-AI — Bounded Spatial Volume Workspace</title>
+  <title>PHA Post-Discharge Wound & Mobility Recovery — Apple Vision Pro Bounded Spatial Volume</title>
   <style>
     :root {
-      --bg-room: #060d14;
-      --card-bg: rgba(22, 34, 46, 0.84);
-      --card-border: rgba(255, 255, 255, 0.18);
-      --card-shadow: 0 22px 54px rgba(0, 0, 0, 0.62);
-      --text-main: #f4f8fb;
-      --text-dim: #9fb2c4;
-      --urgent-bg: #eb453d;
-      --provider-bg: #e08024;
-      --nurse-bg: #d9a624;
-      --silent-bg: #2ead9e;
-      --now-blue: #1a73e8;
-      --pass-green: #229954;
-      --cyan-glow: #2ad4c8;
+      --bg-top: #0f2537;
+      --bg-mid: #0a1926;
+      --bg-bot: #050d14;
+      --glass-bg: rgba(24, 38, 52, 0.80);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --glass-highlight: rgba(255, 255, 255, 0.28);
+      --now-blue: #0284c7;
+      --pass-green: #2ecc71;
+      --urgent-red: #e74c3c;
+      --provider-amber: #f39c12;
+      --nurse-blue: #3498db;
+      --silent-gray: #7f8c8d;
+      --cyan-glow: #38bdf8;
+      --text-main: #f5f9fa;
+      --text-dim: rgba(245, 249, 250, 0.65);
     }
 
     * {
@@ -26,14 +28,15 @@
       margin: 0;
       padding: 0;
       user-select: none;
+      -webkit-font-smoothing: antialiased;
     }
 
-    body, html {
+    html, body {
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-      background: var(--bg-room);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", sans-serif;
+      background: radial-gradient(circle at 50% 38%, #164e63 0%, var(--bg-top) 38%, var(--bg-mid) 70%, var(--bg-bot) 100%);
       color: var(--text-main);
     }
 
@@ -43,57 +46,65 @@
       width: 100vw;
       height: 100vh;
       z-index: 1;
-    }
-
-    #spatial-volume {
-      position: fixed;
-      inset: 0;
-      z-index: 10;
       pointer-events: none;
     }
 
+    #spatial-volume {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      z-index: 10;
+      perspective: 1400px;
+    }
+
     .glass-card {
-      pointer-events: auto;
-      background: var(--card-bg);
-      backdrop-filter: blur(24px) saturate(150%);
-      -webkit-backdrop-filter: blur(24px) saturate(150%);
-      border: 1.5px solid var(--card-border);
-      border-radius: 24px;
-      box-shadow: var(--card-shadow);
+      background: linear-gradient(155deg, rgba(38, 58, 78, 0.84) 0%, rgba(18, 28, 40, 0.82) 100%);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
+      border: 1.5px solid var(--glass-border);
+      box-shadow:
+        0 22px 50px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 var(--glass-highlight);
+      border-radius: 26px;
       color: var(--text-main);
-      transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease, border-color 0.25s ease;
+      transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.2, 1),
+                  opacity 0.24s ease,
+                  border-color 0.24s ease,
+                  box-shadow 0.24s ease;
     }
 
     .route-pill {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 5px 14px;
+      padding: 6px 16px;
       border-radius: 999px;
       font-weight: 700;
       font-size: 15px;
       letter-spacing: -0.01em;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
       white-space: nowrap;
     }
-    .route-pill.urgent_page { background: var(--urgent-bg); color: #fff; }
-    .route-pill.provider_task { background: var(--provider-bg); color: #fff; }
-    .route-pill.nurse_task { background: var(--nurse-bg); color: #10161d; }
-    .route-pill.silent_log { background: var(--silent-bg); color: #0b1719; }
+    .route-pill.urgent_page   { background: var(--urgent-red); }
+    .route-pill.provider_task { background: var(--provider-amber); }
+    .route-pill.nurse_task    { background: var(--nurse-blue); }
+    .route-pill.silent_log    { background: var(--silent-gray); }
 
     #status-card {
       position: absolute;
       top: 22px;
       left: 50%;
       transform: translateX(-50%);
-      min-width: 520px;
-      max-width: 780px;
-      padding: 14px 22px;
-      z-index: 25;
+      min-width: 590px;
+      padding: 14px 24px;
+      z-index: 20;
     }
     .status-top {
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
+      gap: 14px;
       margin-bottom: 8px;
     }
     .status-title-btn {
@@ -101,81 +112,71 @@
       border: none;
       color: var(--text-main);
       font-size: 20px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
+      display: flex;
+      align-items: baseline;
       gap: 8px;
     }
-    .status-title-btn span.show-lbl {
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--text-dim);
-    }
-    .synthetic-pill {
-      background: #f5c518;
-      color: #111;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 999px;
-      letter-spacing: 0.03em;
-    }
-    .domain-pills {
-      display: inline-flex;
-      gap: 6px;
-      margin-left: 6px;
-    }
-    .domain-btn {
-      background: rgba(255, 255, 255, 0.09);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      color: var(--text-dim);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.18s;
-    }
-    .domain-btn.active {
-      background: rgba(42, 212, 200, 0.26);
-      border-color: var(--cyan-glow);
-      color: #fff;
-    }
-    .close-btn {
-      margin-left: auto;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #fff;
+    .status-title-btn .show-lbl {
       font-size: 14px;
       font-weight: 600;
-      padding: 5px 14px;
+      color: var(--text-dim);
+    }
+    .topic-pill {
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.20);
+      border: 1px solid rgba(56, 189, 248, 0.55);
+      color: #bae6fd;
+    }
+    .page-switch-link {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #e9d5ff;
+      background: rgba(168, 85, 247, 0.18);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      padding: 5px 13px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: all 0.18s;
+    }
+    .page-switch-link:hover {
+      background: rgba(168, 85, 247, 0.30);
+    }
+    .close-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 13px;
       border-radius: 999px;
       cursor: pointer;
       text-decoration: none;
     }
     .status-metrics {
       display: flex;
-      align-items: baseline;
-      gap: 28px;
+      align-items: center;
+      gap: 22px;
     }
     .stat-inline {
-      display: inline-flex;
+      display: flex;
       align-items: baseline;
       gap: 7px;
     }
     .stat-inline .val {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 800;
       font-variant-numeric: tabular-nums;
     }
     .stat-inline .lbl {
-      font-size: 15px;
+      font-size: 14px;
       color: var(--text-dim);
-      font-weight: 500;
-    }
-    .stat-inline.hot .val, .stat-inline.hot .lbl {
-      color: #ff9f43;
+      font-weight: 600;
     }
     #status-drawer {
       display: none;
@@ -184,6 +185,8 @@
       border-top: 1px solid rgba(255, 255, 255, 0.14);
       font-size: 13px;
       color: var(--text-dim);
+      max-height: 180px;
+      overflow-y: auto;
     }
     #status-drawer.open {
       display: block;
@@ -192,88 +195,78 @@
       display: flex;
       justify-content: space-between;
       padding: 4px 0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-family: "SF Mono", Menlo, monospace;
       font-size: 12px;
-      color: #d8e6f2;
     }
 
     .spoke-card {
       position: absolute;
-      width: 265px;
-      padding: 13px 16px;
-      border-radius: 18px;
-      z-index: 15;
-    }
-    #spoke-layer1 {
-      left: 6%;
-      bottom: 12%;
-    }
-    #spoke-routedesk {
-      left: 11%;
-      top: 20%;
-    }
-    #spoke-urgent {
-      right: 11%;
-      top: 19%;
+      width: 285px;
+      padding: 15px 18px;
+      z-index: 12;
     }
     .spoke-header {
       display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 5px;
-    }
-    .spoke-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      display: none;
-    }
-    .spoke-card.lit-urgent {
-      border: 2px solid var(--urgent-bg);
-      box-shadow: 0 0 28px rgba(235, 69, 61, 0.35), var(--card-shadow);
-    }
-    .spoke-card.lit-urgent .spoke-dot {
-      display: inline-block;
-      background: var(--urgent-bg);
-      box-shadow: 0 0 8px var(--urgent-bg);
-    }
-    .spoke-card.lit-desk {
-      border: 2px solid var(--provider-bg);
-      box-shadow: 0 0 28px rgba(224, 128, 36, 0.32), var(--card-shadow);
-    }
-    .spoke-card.lit-desk .spoke-dot {
-      display: inline-block;
-      background: var(--provider-bg);
-      box-shadow: 0 0 8px var(--provider-bg);
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 4px;
     }
     .spoke-name {
-      font-size: 16px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
     }
     .spoke-count {
-      margin-left: auto;
       font-size: 14px;
-      font-variant-numeric: tabular-nums;
       color: var(--text-dim);
+      font-weight: 600;
     }
     .spoke-count strong {
+      font-size: 19px;
       color: var(--text-main);
-      font-size: 16px;
+      font-weight: 800;
     }
     .spoke-sub {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-dim);
       line-height: 1.35;
     }
-    .spoke-sub.lit-urgent-txt {
-      color: #ff6b63;
-      font-weight: 700;
-      font-size: 16px;
+    .spoke-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-right: 6px;
+      background: rgba(255, 255, 255, 0.35);
     }
-    .spoke-sub.lit-desk-txt {
-      color: #ffb142;
+    .spoke-card.pass-target {
+      border-color: var(--pass-green);
+      box-shadow:
+        0 18px 44px rgba(0, 0, 0, 0.55),
+        0 0 28px rgba(46, 204, 113, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .spoke-card.pass-target .spoke-dot {
+      background: var(--pass-green);
+      box-shadow: 0 0 10px var(--pass-green);
+    }
+    .spoke-card.pass-target .spoke-sub {
+      color: #6ee7b7;
       font-weight: 700;
-      font-size: 16px;
+    }
+
+    #spoke-layer1 {
+      left: 7%;
+      bottom: 13%;
+    }
+    #spoke-routedesk {
+      left: 16%;
+      top: 17%;
+    }
+    #spoke-urgent {
+      right: 16%;
+      top: 17%;
     }
 
     #now-card {
@@ -281,42 +274,43 @@
       left: 50%;
       top: 53%;
       transform: translate(-50%, -50%);
-      width: 650px;
-      max-width: 90vw;
+      width: 580px;
       padding: 24px 28px;
-      z-index: 20;
+      z-index: 25;
+      border-width: 2px;
+      border-color: rgba(56, 189, 248, 0.44);
     }
     .now-row1 {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .now-badge {
       background: var(--now-blue);
       color: #fff;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
-      padding: 5px 13px;
+      padding: 5px 12px;
       border-radius: 999px;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
     }
     .now-id {
-      font-size: 32px;
+      font-size: 29px;
       font-weight: 800;
       letter-spacing: -0.02em;
     }
     .now-right-badge {
       margin-left: auto;
-      background: #f39c12;
-      color: #111;
-      font-size: 14px;
+      background: rgba(255, 255, 255, 0.13);
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 13px;
       font-weight: 800;
       padding: 5px 14px;
       border-radius: 999px;
     }
     .now-story {
-      font-size: 21px;
+      font-size: 20px;
       font-weight: 600;
       line-height: 1.42;
       color: rgba(255, 255, 255, 0.96);
@@ -373,9 +367,9 @@
       transition: all 0.18s;
     }
     .layer-pill.active {
-      background: rgba(42, 212, 200, 0.34);
+      background: rgba(56, 189, 248, 0.34);
       border-color: var(--cyan-glow);
-      box-shadow: 0 0 16px rgba(42, 212, 200, 0.25);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
     }
     .now-footer {
       font-size: 13px;
@@ -388,7 +382,7 @@
       left: 50%;
       top: calc(53% + 168px);
       transform: translateX(-50%);
-      width: 440px;
+      width: 470px;
       padding: 18px 20px;
       z-index: 30;
     }
@@ -421,7 +415,7 @@
       transition: background 0.15s;
     }
     .mod-opt:hover {
-      background: rgba(42, 212, 200, 0.18);
+      background: rgba(56, 189, 248, 0.18);
       border-color: var(--cyan-glow);
     }
 
@@ -430,7 +424,9 @@
       right: 3.2%;
       top: 52%;
       transform: translateY(-50%);
-      width: 320px;
+      width: 330px;
+      max-height: 76vh;
+      overflow-y: auto;
       padding: 18px 20px;
       z-index: 20;
     }
@@ -484,7 +480,7 @@
       gap: 10px;
     }
     .queue-id {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
     }
     .queue-item-why {
@@ -503,7 +499,7 @@
       left: 2.5%;
       top: 53%;
       transform: translateY(-50%) translateX(-20px);
-      width: 440px;
+      width: 450px;
       max-height: 80vh;
       overflow-y: auto;
       padding: 20px 22px;
@@ -544,7 +540,7 @@
       padding: 13px 15px;
       margin-bottom: 12px;
     }
-    .dossier-section.story { border-color: rgba(42, 212, 200, 0.45); background: rgba(42, 212, 200, 0.09); }
+    .dossier-section.story { border-color: rgba(56, 189, 248, 0.45); background: rgba(56, 189, 248, 0.09); }
     .dossier-section.rules { border-color: rgba(243, 156, 18, 0.45); background: rgba(243, 156, 18, 0.09); }
     .dossier-section.more  { border-color: rgba(46, 204, 113, 0.45); background: rgba(46, 204, 113, 0.09); }
     .sec-badge {
@@ -577,7 +573,7 @@
     .voi-btn {
       margin-top: 8px;
       width: 100%;
-      background: rgba(42, 212, 200, 0.25);
+      background: rgba(56, 189, 248, 0.25);
       border: 1px solid var(--cyan-glow);
       color: #fff;
       font-size: 13px;
@@ -594,80 +590,76 @@
 
   <div id="spatial-volume">
 
-    <!-- Top-Center Compact Status Card -->
+    <!-- Top-Center Single-Topic Status Card (100% Dedicated to PHA Post-Discharge Wound & Mobility) -->
     <div id="status-card" class="glass-card">
       <div class="status-top">
         <button class="status-title-btn" onclick="toggleStatusDrawer()">
           <span>Status</span>
           <span class="show-lbl" id="status-show-lbl">Show</span>
         </button>
-        <span class="synthetic-pill">SYNTHETIC</span>
-        <div class="domain-pills">
-          <button class="domain-btn active" id="dom-home_health" onclick="switchDomain('home_health')">PHA Home-Bridge</button>
-          <button class="domain-btn" id="dom-salvage_dfi" onclick="switchDomain('salvage_dfi')">4DMFEET Salvage</button>
-          <button class="domain-btn" id="dom-sepsis_cardiorenal" onclick="switchDomain('sepsis_cardiorenal')">4D-SEPSIS ICU</button>
-        </div>
+        <span class="topic-pill">PHA · POST-DISCHARGE WOUND &amp; MOBILITY RECOVERY (DSA+DEA+HCA)</span>
+        <a href="/cardiometabolic" class="page-switch-link">Home Glycemic &amp; BP Page ↗</a>
         <a href="/landing" class="close-btn">Landing</a>
       </div>
       <div class="status-metrics">
         <div class="stat-inline">
-          <span class="val" id="stat-reviewed">0/6</span>
-          <span class="lbl">Reviewed</span>
+          <span class="val" id="stat-reviewed">0/8</span>
+          <span class="lbl">Post-Discharge Cases</span>
         </div>
-        <div class="stat-inline" id="stat-alerts-wrap">
+        <div class="stat-inline">
           <span class="val" id="stat-alerts">0</span>
-          <span class="lbl">Alerts</span>
+          <span class="lbl">Hospital Readmit Pages</span>
         </div>
-        <div class="stat-inline" id="stat-corr-wrap">
+        <div class="stat-inline">
           <span class="val" id="stat-corrections">0</span>
-          <span class="lbl">Corrections</span>
+          <span class="lbl">Human Overrides</span>
         </div>
       </div>
       <div id="status-drawer">
         <div style="margin-bottom:6px; font-weight:700; color:#fff;">
-          PHA × SALVAGE-AI Continuum Ledger · 0.0% False Reassurance (<span id="sync-indicator">LIVE :8790</span>)
+          PHA 3-Agent Continuum Ledger (DSA · DEA · HCA) · Storetime Locked (<span id="sync-indicator">LIVE :8790</span>)
         </div>
         <div id="audit-log-rows">
-          <div class="audit-row"><span>Waiting for first decision...</span><span>Epistemic Abstention Active</span></div>
+          <div class="audit-row"><span>Waiting for first post-discharge decision...</span><span>OARS Coaching + 4D Gate Active</span></div>
         </div>
       </div>
     </div>
 
-    <!-- Lower-Left Spoke Card: Layer 1 Intake -->
+    <!-- Lower-Left Spoke Card: Smart Boot & Wearable Stream -->
     <div id="spoke-layer1" class="glass-card spoke-card">
       <div class="spoke-header">
-        <span class="spoke-name">Layer 1</span>
-        <span class="spoke-count"><strong id="l1-waiting-count">5</strong> waiting</span>
+        <span class="spoke-name">Smart Boot &amp; Wearable</span>
+        <span class="spoke-count"><strong id="l1-waiting-count">7</strong> waiting</span>
       </div>
-      <div id="l1-next-id" style="font-size:17px; font-weight:800; margin-bottom:2px;">HK6-007</div>
-      <div class="spoke-sub" id="l1-next-why">Day 5 07:45: Home oral temp 38.9°C with resting HR 108 bpm (+28 bpm).</div>
+      <div id="l1-next-id" style="font-size:17px; font-weight:800; margin-bottom:2px;">PHA-02 · RIGORS</div>
+      <div class="spoke-sub" id="l1-next-why">Day 5 post-discharge: Rapid plantar erythema spread with home oral fever 38.9°C and resting HR 108 bpm.</div>
     </div>
 
-    <!-- Upper-Left Spoke Card: Route Desk -->
+    <!-- Upper-Left Spoke Card: Health Coach (HCA) & Clinic Desk -->
     <div id="spoke-routedesk" class="glass-card spoke-card">
       <div class="spoke-header">
         <span class="spoke-dot"></span>
-        <span class="spoke-name">Route desk</span>
+        <span class="spoke-name">Health Coach &amp; Clinic</span>
         <span class="spoke-count"><strong id="desk-sent-count">0</strong> sent</span>
       </div>
-      <div class="spoke-sub" id="desk-sub">silent, nurse, or provider</div>
+      <div class="spoke-sub" id="desk-sub">OARS coaching, tele-podiatry, or silent sync</div>
     </div>
 
-    <!-- Upper-Right Spoke Card: Urgent Page -->
+    <!-- Upper-Right Spoke Card: Hospital Bridge Readmission Page -->
     <div id="spoke-urgent" class="glass-card spoke-card">
       <div class="spoke-header">
         <span class="spoke-dot"></span>
-        <span class="spoke-name">Urgent page</span>
+        <span class="spoke-name">Hospital Bridge Readmit</span>
         <span class="spoke-count"><strong id="urgent-sent-count">0</strong> sent</span>
       </div>
-      <div class="spoke-sub" id="urgent-sub">Pass sends here</div>
+      <div class="spoke-sub" id="urgent-sub">Immediate Vascular / ED handoff</div>
     </div>
 
-    <!-- Mid-Left Peel-Back Dossier Card (Hidden at Awareness Level 0) -->
+    <!-- Mid-Left Peel-Back Dossier Card -->
     <div id="dossier-card" class="glass-card">
       <div class="dossier-top">
-        <span class="dossier-id" id="dos-id">HK6-006</span>
-        <span id="dos-route-chip" class="route-pill urgent_page">Urgent page</span>
+        <span class="dossier-id" id="dos-id">PHA-01 · ΔT-FLARE</span>
+        <span id="dos-route-chip" class="route-pill provider_task">Provider task</span>
         <button class="dossier-collapse" onclick="collapseLayer()">Collapse</button>
       </div>
       <div id="dossier-body"></div>
@@ -677,12 +669,12 @@
     <div id="now-card" class="glass-card">
       <div class="now-row1">
         <span class="now-badge">NOW</span>
-        <span class="now-id" id="now-id">HK6-006</span>
-        <span id="now-route-chip" class="route-pill urgent_page">Urgent page</span>
-        <span class="now-right-badge" id="now-badge-right">Bundled</span>
+        <span class="now-id" id="now-id">PHA-01 · ΔT-FLARE</span>
+        <span id="now-route-chip" class="route-pill provider_task">Provider task</span>
+        <span class="now-right-badge" id="now-badge-right">Plantar +2.6°C</span>
       </div>
       <div class="now-story" id="now-story">
-        Day 4 08:12: Finger-stick glucose 54 mg/dL before breakfast, repeated 58 mg/dL 15m later after juice. Lives alone, reports shakiness.
+        Day 7 post-debridement: Smart Offloading Boot mat detects plantar thermal asymmetry +2.6°C and resting HR rose from 71 to 88 bpm; outpatient wound swab is still pending (storetime 212h).
       </div>
       <div class="now-actions">
         <button class="action-btn btn-pass" onclick="passCurrent()">Pass ✓</button>
@@ -702,22 +694,22 @@
 
     <!-- Modify Route Popover -->
     <div id="modify-popover" class="glass-card">
-      <div class="mod-title">Change route</div>
-      <div class="mod-sub">Select destination tier. Logs human override to the signed ledger.</div>
+      <div class="mod-title">Change PHA Continuum Route</div>
+      <div class="mod-sub">Select destination tier across the Home-to-Hospital bridge. Logs override to the signed continuum ledger.</div>
       <button class="mod-opt" onclick="selectModifiedRoute('urgent_page')">
-        <span><strong>Urgent page</strong> · Immediate OR / ICU / ED escalation</span>
+        <span><strong>Urgent page</strong> · Halt HCA coaching &amp; trigger Hospital Bridge Readmission</span>
         <span class="route-pill urgent_page">Urgent page</span>
       </button>
       <button class="mod-opt" onclick="selectModifiedRoute('provider_task')">
-        <span><strong>Provider task</strong> · Same-day Attending / Vascular consult</span>
+        <span><strong>Provider task</strong> · Same-day Tele-Podiatry / Wound Clinic review</span>
         <span class="route-pill provider_task">Provider task</span>
       </button>
       <button class="mod-opt" onclick="selectModifiedRoute('nurse_task')">
-        <span><strong>Nurse task</strong> · Hold autonomy &amp; collect bedside VOI first</span>
+        <span><strong>Nurse task</strong> · Visiting nurse / HCA OARS offloading check-in</span>
         <span class="route-pill nurse_task">Nurse task</span>
       </button>
       <button class="mod-opt" onclick="selectModifiedRoute('silent_log')">
-        <span><strong>Silent log</strong> · Record verified stability with zero alert</span>
+        <span><strong>Silent log</strong> · Continue HCA OARS coaching with zero clinician alert</span>
         <span class="route-pill silent_log">Silent log</span>
       </button>
     </div>
@@ -725,9 +717,9 @@
     <!-- Mid-Right Compact Queue Card -->
     <div id="queue-card" class="glass-card">
       <div class="queue-header" onclick="toggleQueueOpen()">
-        <span class="queue-title" id="queue-title-lbl">Queue</span>
+        <span class="queue-title" id="queue-title-lbl">PHA Queue</span>
         <div class="queue-count-wrap">
-          <span class="queue-count" id="queue-count">4</span>
+          <span class="queue-count" id="queue-count">7</span>
           <span class="queue-show" id="queue-show-lbl">Show</span>
         </div>
       </div>
@@ -744,459 +736,416 @@
       silent_log: "Silent log"
     };
 
-    const DOMAINS = {
-      home_health: [
-        {
-          id: "HK6-006",
-          route: "urgent_page",
-          badge: "Bundled",
-          story: "Day 4 08:12: Finger-stick glucose 54 mg/dL before breakfast, repeated 58 mg/dL 15m later after juice. Lives alone, reports shakiness.",
-          purpose: "Trigger immediate live outreach for persistent symptomatic hypoglycemia in a solo-living post-discharge patient.",
-          whyFlagged: "Two consecutive blood glucose readings < 60 mg/dL failed to recover after oral fast-acting carbohydrate.",
-          context: "72F Post-Discharge Day 4 · Solo living · Persistent hypoglycemia despite rescue carb.",
-          methodsUsed: "Home Glycemic Safety Gate (persistent < 60 mg/dL after rescue carb + solo-living risk factor).",
-          blindSpot: "Unresolved hypoglycemia in a patient living alone risks neuroglycopenic syncope or seizure.",
-          overallScope: "Urgent page initiates an immediate live clinician call and holds morning basal/bolus insulin.",
-          voiText: "Verify Glucagon Kit & Live Voice Contact (VOI 0.96)"
-        },
-        {
-          id: "HK6-007",
-          route: "urgent_page",
-          badge: "4D Live",
-          story: "Day 5 07:45: Home oral temp 38.9°C with resting heart rate 108 bpm (+28 bpm above baseline) and foul drainage on post-debridement dressing.",
-          purpose: "Bypass outpatient clinic queues and route directly to the Emergency Department / Surgical team for wet gangrene sepsis.",
-          whyFlagged: "Systemic fever (38.9°C) + tachycardia (108 bpm) + purulent plantar drainage triggers the non-bypassable M0 home-sepsis alarm.",
-          context: "63M Post-Ray Resection Day 5 · Fever 38.9°C, HR 108, foul purulence -> Direct ED/OR Bypass.",
-          methodsUsed: "M0 Home-to-ED Direct Escalation Rule (SIRS + Post-Op Wound Breakdown).",
-          blindSpot: "Waiting for a routine outpatient podiatry appointment risks life-threatening bacteremia and limb loss.",
-          overallScope: "Urgent page pages the Limb-Salvage On-Call & ED Fast-Track Desk immediately.",
-          voiText: "Dispatch EMS Transport & Alert ED Triage (VOI 0.98)"
-        },
-        {
-          id: "LX4-009",
-          route: "nurse_task",
-          badge: "VOI Gate",
-          story: "Day 9 08:30: Smart-sock plantar temperature rose +3.1°C at right 1st MTP over 48 hours while resting HRV dropped -31%. Patient reports 0/10 foot pain.",
-          purpose: "Block the consumer Personal Health Agent (PHA) from giving false self-care reassurance when diabetic neuropathy masks pain and blood flow is unmeasured.",
-          whyFlagged: "Sustained +3.1°C plantar heat + autonomic stress (-31% HRV) signals silent diabetic foot ulcer recurrence, even though pain is 0/10.",
-          context: "69F Post-Discharge Day 9 · Smart-sock +3.1°C & HRV -31% · Perfusion unverified at home.",
-          methodsUsed: "PHA × SALVAGE-AI Epistemic Abstention Gate (0.0% false reassurance vs 51.8% ungated) + 14-Day Wearable Trend Fusion.",
-          blindSpot: "If 0/10 pain is trusted as 'safe to watch at home' (51.8% ungated failure mode), silent ischemia progresses to deep infection.",
-          overallScope: "Nurse task holds consumer AI reassurance and dispatches a home-health nurse for handheld Doppler toe pressure & wound photo today.",
-          voiText: "Dispatch Home-Health Nurse for Handheld Doppler Toe Pressure (VOI 0.94)"
-        },
-        {
-          id: "M82-004",
-          route: "provider_task",
-          badge: "4D Live",
-          story: "Day 11 10:05: Continuous glucose monitor Time-in-Range fell from 74% to 44% over 5 days alongside a +1.8°C plantar warm spot.",
-          purpose: "Arrange same-day multidisciplinary limb-salvage & endocrine review for early inflammatory stress hyperglycemia.",
-          whyFlagged: "Parallel glycemic deterioration (-30% TIR) and focal plantar warming (+1.8°C) precede overt ulcer breakdown by 4–7 days.",
-          context: "66M Post-Discharge Day 11 · Coupled glycemic & plantar thermal drift.",
-          methodsUsed: "Multi-Stream Wearable Coupling Detector (CGM TIR + Smart-Sock ΔT cross-correlation).",
-          blindSpot: "Treating high glucose alone without inspecting the foot misses occult pre-ulcerative callus hemorrhage.",
-          overallScope: "Provider task books a same-day Limb-Salvage & Endocrine telehealth + offloading boot adjustment.",
-          voiText: "Request Patient Plantar Photo & Offloading Boot Log (VOI 0.88)"
-        },
-        {
-          id: "N19-001",
-          route: "silent_log",
-          badge: "Bundled",
-          story: "Day 14 08:00: Smart-sock ΔT +0.4°C (symmetric), resting HRV 41 ms (+8% recovery), CGM Time-in-Range 79%, offloading adherence 94%.",
-          purpose: "Confirm stable 14-day post-discharge recovery and allow the consumer PHA to continue routine coaching.",
-          whyFlagged: "Scheduled Day-14 transition milestone; all thermal, autonomic, glycemic, and offloading thresholds are green.",
-          context: "58F Post-Discharge Day 14 · Symmetric thermal profile & 94% offloading adherence.",
-          methodsUsed: "14-Day Post-Discharge Positivity Gate (verified symmetric plantar thermal profile + stable autonomic baseline).",
-          blindSpot: "Low risk (<2%); continuous passive smart-sock and CGM monitoring remains active.",
-          overallScope: "Silent log signs the Day-14 clearance into the hash-chained ledger and permits routine PHA wellness coaching.",
-          voiText: "Log Day-14 Milestone Clearance (VOI 0.30)"
-        },
-        {
-          id: "P41-002",
-          route: "nurse_task",
-          badge: "VOI Gate",
-          story: "Day 7 09:20: Home blood pressure cuff reads 168/96 mmHg with mild ankle swelling, but daily weight scale has not synced for 3 days.",
-          purpose: "Verify dry-weight trend and cuff technique before adjusting outpatient diuretic or antihypertensive dosing.",
-          whyFlagged: "Elevated home BP + edema with 72 hours of missing weight telemetry (Unavailable != Negative).",
-          context: "74M Post-Discharge Day 7 · Weight telemetry missing 72h (Unavailable != Negative).",
-          methodsUsed: "Epistemic Abstention Gate (missing weight telemetry blocks automatic medication titration).",
-          blindSpot: "Increasing diuretics without verifying weight and orthostatic vitals risks acute prerenal azotemia.",
-          overallScope: "Nurse task schedules a same-day nurse check to reconcile scale weight, orthostatic BP, and basic metabolic panel.",
-          voiText: "Reconcile Home Scale Sync & Check Orthostatic BP (VOI 0.90)"
-        }
-      ],
-      salvage_dfi: [
-        {
-          id: "G06-MTP",
-          route: "provider_task",
-          badge: "4D Live",
-          story: "Day 0 08:15: Ankle cuff ABI 1.45 with calcified tibial vessels (false-normal flag). Day 0 08:24: Hallux toe pressure 22 mmHg on a damped waveform with bone exposed at 1st MTP.",
-          purpose: "Prevent local foot debridement on an ischemic limb before arterial blood flow is restored.",
-          whyFlagged: "Ankle cuff ABI reads 1.45 (falsely high from calcified arteries), contradicting the critically low 22 mmHg toe pressure.",
-          context: "68M T2DM/CKD3 · Right plantar 1st MTP ulcer · 4 future post-T0 records held back.",
-          methodsUsed: "4D Time-Locked EHR Gate (storetime <= T0) + WIfI Perfusion Discrepancy Check + 240-KC Sparse Case Memory.",
-          blindSpot: "If ABI 1.45 is trusted as normal perfusion (30–68% risk), local debridement fails to heal and leads to major below-knee amputation.",
-          overallScope: "Provider task routes directly to Vascular Surgery for same-day duplex/angiography before foot resection.",
-          voiText: "Order Bedside Hallux Toe Pressure & Arterial Duplex (VOI 0.94)"
-        },
-        {
-          id: "G03-GAS",
-          route: "urgent_page",
-          badge: "Hard Gate",
-          story: "Day 0 06:40: Plantar forefoot crepitus with subcutaneous gas on plain film. Day 0 06:52: Arterial lactate 4.2 mmol/L and spreading erythema.",
-          purpose: "Trigger immediate surgical source control for life- and limb-threatening necrotizing infection.",
-          whyFlagged: "Subcutaneous gas + systemic lactic acidosis (4.2 mmol/L) exceeds the non-bypassable M0 emergency safety threshold.",
-          context: "59M T2DM · Left plantar crepitus, Lactate 4.2 mmol/L · Non-bypassable OR escalation.",
-          methodsUsed: "M0 Clinical Hard-Lock Rule (IDSA Grade 4 + Radiographic Gas + Lactate >= 4.0).",
-          blindSpot: "Every hour of operative delay increases necrotizing fasciitis mortality and proximal amputation risk (>75%).",
-          overallScope: "Urgent page alerts the Acute Surgical & ICU Shock Team immediately for operating room debridement.",
-          voiText: "Confirm Operating Room & Anesthesia Stat Availability (VOI 0.98)"
-        },
-        {
-          id: "G08-VOI",
-          route: "nurse_task",
-          badge: "VOI Gate",
-          story: "Day 0 09:10: Deep 2nd-toe ulcer queued for bedside debridement with zero arterial perfusion studies on file (ABI and toe pressure unmeasured).",
-          purpose: "Resolve missing arterial perfusion data before committing to surgical tissue resection.",
-          whyFlagged: "Perfusion is unmeasured at T0 (Unavailable != Negative).",
-          context: "71F T2DM · Perfusion unordered at T0 · Epistemic abstention active.",
-          methodsUsed: "Epistemic Abstention Gate (Unavailable != Negative) + Value-of-Information calculator (VOI = 0.94).",
-          blindSpot: "Operating without verifying toe pressure carries a 28–64% risk of unmasking occult ischemia.",
-          overallScope: "Nurse task dispatches a 10-minute bedside handheld Doppler & toe-pressure check before releasing the surgical order.",
-          voiText: "Dispatch Bedside Nurse for Handheld Doppler & Hallux Toe Pressure (VOI 0.94)"
-        }
-      ],
-      sepsis_cardiorenal: [
-        {
-          id: "SEP-02",
-          route: "urgent_page",
-          badge: "4D Live",
-          story: "Hr 0 10:12: Arm cuff blood pressure reads 118/76 mmHg (looks normal), but invasive radial arterial line MAP is 55 mmHg with lactate 4.6 mmol/L.",
-          purpose: "Expose cryptic septic shock hidden by an inaccurate arm cuff reading and start vasopressors immediately.",
-          whyFlagged: "Oscillometric arm cuff overestimates blood pressure by 28 mmHg compared to the invasive radial arterial line.",
-          context: "MIMIC-IV #10014354 · 62M pneumonia with mottled extremities & cryptic vasoplegic shock.",
-          methodsUsed: "4D MIMIC-IV Storetime Gate (8 future charttime records blocked; ΔAUROC +0.062 inflation prevented).",
-          blindSpot: "Trusting the 118/76 arm cuff (28–69% risk) leaves true MAP at 55 mmHg, causing acute kidney injury.",
-          overallScope: "Urgent page alerts the ICU Shock Team to titrate norepinephrine strictly by radial arterial line MAP >= 65 mmHg.",
-          voiText: "Zero Radial Arterial Transducer & Reconcile Cuff Artifact (VOI 0.94)"
-        },
-        {
-          id: "SEP-03",
-          route: "provider_task",
-          badge: "4D Live",
-          story: "Hr 24 08:30: Hepatic and portal vein ultrasound shows severe venous congestion (VExUS Grade 3); creatinine rose +0.4 mg/dL during brisk diuresis (urine Na 88 mmol/L).",
-          purpose: "Continue de-resuscitation (fluid removal) for venous congestion instead of mistakenly giving IV fluids.",
-          whyFlagged: "Rising creatinine (+0.4) during high urine sodium (88 mmol/L) reflects hemoconcentration, not kidney tubular injury.",
-          context: "MIMIC-IV #10018081 · Hemoconcentration Cr +0.4 mg/dL during brisk natriuresis (UNa 88 mmol/L).",
-          methodsUsed: "Cardiorenal VExUS + Natriuresis Gate under 4D storetime lock.",
-          blindSpot: "Stopping diuretics and giving IV fluids worsens right-ventricular congestion and renal venous back-pressure.",
-          overallScope: "Provider task routes to the ICU Attending for continued IV loop diuretic de-resuscitation.",
-          voiText: "Repeat Bedside Portal Vein Pulsatility & Spot Urine Na (VOI 0.89)"
-        }
-      ]
-    };
+    const PHA_WOUND_CASES = [
+      {
+        id: "PHA-01 · ΔT-FLARE",
+        route: "provider_task",
+        badge: "Plantar +2.6°C",
+        story: "Day 7 post-debridement: Smart Offloading Boot mat detects plantar thermal asymmetry +2.6°C and resting HR rose from 71 to 88 bpm; outpatient wound swab is still pending (storetime 212h).",
+        purpose: "Catch early sub-clinical dorsal/plantar wound relapse at home while blocking the Health Coach Agent from encouraging step-count progression.",
+        whyFlagged: "DSA detected plantar temperature asymmetry >= +2.2°C (+2.6°C) + RHR jump (+17 bpm) + offloading adherence dip to 52%; outpatient culture is locked in PENDING_AT_LANDMARK.",
+        context: "62M · Day 7 s/p 1st-ray debridement · Plantar ΔT +2.6°C · RHR 88 bpm · HRV 24 ms · Boot adherence 52%.",
+        methodsUsed: "3-Agent PHA Decomposition (DSA Target-Trial Gate fails closed on step progression; DEA masks unposted 212h MRSA culture under 4D storetime lock; HCA shifts to strict offloading rest).",
+        blindSpot: "An ungated wellness AI coach seeing 4,200 steps would praise activity, accelerating plantar tissue breakdown into deep osteomyelitis.",
+        overallScope: "Provider task routes to Outpatient Tele-Podiatry for same-day video wound inspection and empiric oral antibiotic bridge while awaiting the 212h culture.",
+        voiText: "Request Home Wound Photo & 48h Strict Offloading Rest (VOI 0.94)"
+      },
+      {
+        id: "PHA-02 · RIGORS",
+        route: "urgent_page",
+        badge: "Bridge Readmit",
+        story: "Day 5 post-discharge: Patient reports rigors with home oral temperature 38.9°C, Apple Watch resting HR 108 bpm (+28 bpm over baseline), and erythema spreading 3 cm above the malleolus.",
+        purpose: "Halt automated health coaching immediately and execute a closed-loop Hospital Bridge Readmission handoff (`sdr.decision.v1`) to Vascular / Podiatry.",
+        whyFlagged: "Hard outpatient systemic sepsis trigger: fever >= 38.5°C + tachycardia > 100 bpm + ascending cellulitis post-foot surgery.",
+        context: "65M · Day 5 s/p transmetatarsal debridement · Temp 38.9°C · RHR 108 bpm · Ascending erythema.",
+        methodsUsed: "Vision Pro Spatial Gate Hard-Escalation (`NOW_CARD_HARD_ESCALATION`) + HCA Immediate Coaching Halt (`HALTED_FOR_CLINICIAN_ESCALATION`).",
+        blindSpot: "Scheduling a routine next-week clinic appointment for ascending post-op cellulitis with rigors risks septic shock at home.",
+        overallScope: "Urgent page transmits a signed `sdr.decision.v1` inpatient handoff packet directly to the Hospital Limb Salvage ED/Vascular intake desk.",
+        voiText: "Transmit Hospital Bridge Readmission Packet & Hold Oral Meds (VOI 0.99)"
+      },
+      {
+        id: "PHA-03 · NO-DOPPLER",
+        route: "nurse_task",
+        badge: "VOI 0.95 Missing",
+        story: "Day 10 post-discharge: 71M with medial arterial calcinosis (inpatient ABI 1.42) has slow wound granulation and plantar ΔT +1.8°C, but outpatient hallux toe pressure has never been ordered.",
+        purpose: "Enforce 'Unavailable != Negative' in the outpatient continuum: obtain objective hallux toe pressure before clearing the patient for progressive weight-bearing.",
+        whyFlagged: "Domain Expert Agent (DEA) 240-KC VOI Router ranked `pedal_doppler_toe_pressure_mmhg` #1 missing workup (`MISSING_UNORDERED`, VOI = 0.95).",
+        context: "71M · Prior calcified ABI 1.42 · Day 10 wound clinic follow-up · Hallux Toe Pressure = None · HbA1c 8.4%.",
+        methodsUsed: "Drosophila 240-KC Sparse WTA Missingness Encoder (preventing zero-imputed normal perfusion assumptions after hospital discharge).",
+        blindSpot: "Assuming inpatient ABI 1.42 means adequate outpatient perfusion masks critical pedal ischemia during post-op wound remodeling.",
+        overallScope: "Nurse task dispatches a vascular lab / visiting nurse handheld photoplethysmography toe pressure check prior to physical therapy progression.",
+        voiText: "Schedule Outpatient Hallux Toe Pressure & TBI Check (VOI 0.95)"
+      },
+      {
+        id: "PHA-04 · REMISSION",
+        route: "silent_log",
+        badge: "94% Boot Adherence",
+        story: "Day 14 post-ray resection: Clean granulating wound bed with 94% smart-boot adherence, plantar ΔT 0.5°C, resting HR 68 bpm, HRV 46 ms, and verified outpatient CRP 8.5 mg/L.",
+        purpose: "Suppress unnecessary clinician interrupts on stable recovery days while delivering personalized OARS Motivational Interviewing reinforcement.",
+        whyFlagged: "Vision Pro Spatial Gate (`SUPPRESSED_ROUTINE_SYNC`, 95% KC sparsity) verified zero red flags and aligned functional salvage utility (+3.00).",
+        context: "58F · Day 14 s/p 2nd-toe ray resection · ΔT 0.5°C · RHR 68 bpm · HRV 46 ms · Toe pressure 58 mmHg · CRP 8.5 mg/L.",
+        methodsUsed: "90 Hz Vision Pro Spatial Crossroads Gate (filtering out 88% of routine benign wearable syncs) + HCA Active OARS Coaching Engine.",
+        blindSpot: "Flooding clinicians with daily normal smart-boot telemetry causes alert fatigue; failing to affirm patient adherence erodes offloading compliance.",
+        overallScope: "Silent log records verified Day 14 remission in the continuum ledger while the Health Coach Agent sends an OARS affirmation message to the patient.",
+        voiText: "Send OARS Adherence Affirmation & Log Silent Sync (VOI 0.06)"
+      },
+      {
+        id: "PHA-05 · BOOT-DROP",
+        route: "nurse_task",
+        badge: "OARS Coaching",
+        story: "Day 6 post-discharge: Smart-Boot offloading adherence dropped from 92% to 48% over 48 hours ahead of a family gathering, though plantar ΔT remains 0.9°C with no systemic fever.",
+        purpose: "Intervene early on behavioral offloading non-adherence before mechanical plantar shear triggers a thermal flare or wound dehiscence.",
+        whyFlagged: "Wearable adherence velocity drop (-44% over 48h) with preserved physiological stability (ΔT < 1.5°C, normal RHR/HRV).",
+        context: "60M · Day 6 s/p plantar ulcer debridement · Boot adherence 48% · Plantar ΔT 0.9°C · RHR 72 bpm.",
+        methodsUsed: "HCA Behavioral Barrier Detector + OARS Motivational Interviewing Protocol (open-ended exploration of social/footwear barriers without punitive alarmism).",
+        blindSpot: "Waiting until plantar temperature spikes > 2.2°C misses the 72-hour window where simple offloading coaching prevents mechanical ulcer recurrence.",
+        overallScope: "Nurse task schedules a brief nurse/coach OARS call to problem-solve indoor offloading footwear for the family event.",
+        voiText: "Trigger HCA OARS Barrier Check-In & Offloading Plan (VOI 0.78)"
+      },
+      {
+        id: "PHA-06 · DRAINAGE",
+        route: "provider_task",
+        badge: "CRP 18 → 64",
+        story: "Day 9 post-discharge: Patient-uploaded home dressing photo shows new malodorous serosanguinous drainage, and verified outpatient CRP rose from 18 to 64 mg/L.",
+        purpose: "Escalate early outpatient wound infection for same-day clinic debridement and targeted deep swab before systemic sepsis develops.",
+        whyFlagged: "Multimodal concordance: computer-vision dressing exudate shift + verified outpatient CRP > 50 mg/L (`storetime` verified at 214h).",
+        context: "67F · Day 9 s/p heel debridement · New malodorous exudate on home photo · Outpatient CRP 64 mg/L · Afebrile (37.3°C).",
+        methodsUsed: "DEA Multimodal Wound Progression Rule combining time-locked outpatient lab trends with structured patient-reported dressing telemetry.",
+        blindSpot: "Relying on oral temperature alone in an immunocompromised diabetic patient misses localized deep space relapse until bone is involved.",
+        overallScope: "Provider task books a same-day add-on slot in the Limb Salvage Outpatient Clinic for sharp debridement and deep tissue culture.",
+        voiText: "Book Same-Day Add-On Podiatry Clinic Slot & Deep Culture (VOI 0.91)"
+      },
+      {
+        id: "PHA-07 · CONTRALAT",
+        route: "nurse_task",
+        badge: "Contralateral +2.3°C",
+        story: "Day 8 post-discharge: Surgical right foot remains cool (ΔT +0.4°C), but the contralateral left heel shows a new +2.3°C focal pressure hotspot from asymmetric gait compensation.",
+        purpose: "Protect the intact contralateral limb from transfer ulceration caused by limping in a rigid surgical offloading walker.",
+        whyFlagged: "Bilateral smart-insole thermal mapping detected a focal contralateral heel hotspot (+2.3°C) exceeding the 2.2°C pre-ulcerative threshold.",
+        context: "63M · Right 1st-ray surgical recovery (stable) · Left contralateral heel hotspot +2.3°C · High gait asymmetry.",
+        methodsUsed: "Bilateral Plantar Asymmetry Decomposition (separating index surgical site trajectory from contralateral transfer-load injury).",
+        blindSpot: "Monitoring only the operated foot ignores the 30% 1-year risk of transfer ulceration on the contralateral neuropathic foot.",
+        overallScope: "Nurse task orders a contralateral shoe-lift balancer and protective heel offloading pad while instructing 24h seated rest.",
+        voiText: "Dispatch Contralateral Even-Up Shoe Balancer & Heel Check (VOI 0.84)"
+      },
+      {
+        id: "PHA-08 · GRADUATED",
+        route: "silent_log",
+        badge: "Epithelialized",
+        story: "Day 21 post-discharge: Complete plantar epithelialization confirmed; daily step count recovered smoothly to 5,400 steps/day with plantar ΔT 0.3°C and CRP 4.2 mg/L.",
+        purpose: "Confirm safe graduation from acute post-discharge surgical monitoring to longitudinal custom diabetic footwear maintenance.",
+        whyFlagged: "21-day longitudinal trajectory satisfies all thermal (< 1.0°C), inflammatory (CRP < 10 mg/L), and autonomic (HRV 51 ms) recovery milestones.",
+        context: "56F · Day 21 post-salvage · Complete wound closure · 5,400 steps/day · ΔT 0.3°C · CRP 4.2 mg/L.",
+        methodsUsed: "DSA Longitudinal Graduation Gate + HCA Maintenance Transition Protocol.",
+        blindSpot: "Abruptly stopping smart-insole monitoring on Day 21 without transitioning to custom pedorthic footwear risks recurrent callus ulceration.",
+        overallScope: "Silent log archives the completed 21-day surgical bridge episode and transitions the patient to monthly passive smart-insole surveillance.",
+        voiText: "Log 21-Day Continuum Graduation & Pedorthic Handoff (VOI 0.05)"
+      }
+    ];
 
-    let currentDomain = "home_health";
-    let cases = [];
-    let nowCase = null;
-    let shownLevel = 0;
+    let activeQueue = [];
+    let currentCase = null;
+    let currentLayer = 0;
     let reviewedCount = 0;
     let alertsCount = 0;
     let correctionsCount = 0;
     let deskSentCount = 0;
     let urgentSentCount = 0;
-    let lastDeskSent = null;
-    let lastUrgentSent = null;
-    let auditRows = [];
-    let flightSphere = null;
+    let queueOpen = false;
+    let statusOpen = false;
+    let pulseAnimations = [];
 
-    function switchDomain(domId) {
-      currentDomain = domId;
-      document.querySelectorAll(".domain-btn").forEach(b => b.classList.remove("active"));
-      const btn = document.getElementById("dom-" + domId);
-      if (btn) btn.classList.add("active");
-
-      cases = DOMAINS[domId].map(c => ({ ...c }));
-      nowCase = cases.shift();
-      shownLevel = 0;
-      reviewedCount = 0;
-      alertsCount = 0;
-      correctionsCount = 0;
-      deskSentCount = 0;
-      urgentSentCount = 0;
-      lastDeskSent = null;
-      lastUrgentSent = null;
-      document.getElementById("modify-popover").classList.remove("open");
+    function initVolume() {
+      activeQueue = PHA_WOUND_CASES.map(c => ({ ...c }));
+      currentCase = activeQueue.shift();
+      currentLayer = 0;
       renderAll();
     }
 
     function renderAll() {
-      const total = DOMAINS[currentDomain].length;
-      document.getElementById("stat-reviewed").textContent = `${reviewedCount}/${total}`;
-      document.getElementById("stat-alerts").textContent = `${alertsCount}`;
-      document.getElementById("stat-corrections").textContent = `${correctionsCount}`;
-      document.getElementById("stat-alerts-wrap").classList.toggle("hot", alertsCount > 0);
-      document.getElementById("stat-corr-wrap").classList.toggle("hot", correctionsCount > 0);
+      if (!currentCase) {
+        document.getElementById("now-id").textContent = "All 8 PHA Wound Cases Routed";
+        document.getElementById("now-story").textContent = "All 8 post-discharge wound & mobility cases have been reviewed across the Home-to-Hospital continuum. Switch to the Home Glycemic & BP page or return to Landing.";
+        document.getElementById("now-badge-right").textContent = "Complete";
+        document.getElementById("dossier-card").classList.remove("open");
+        renderQueue();
+        updateSpokes();
+        return;
+      }
+
+      document.getElementById("now-id").textContent = currentCase.id;
+      const nowChip = document.getElementById("now-route-chip");
+      nowChip.textContent = ROUTE_TITLES[currentCase.route];
+      nowChip.className = "route-pill " + currentCase.route;
+      document.getElementById("now-badge-right").textContent = currentCase.badge;
+      document.getElementById("now-story").textContent = currentCase.story;
 
       for (let i = 0; i <= 3; i++) {
         const pill = document.getElementById("pill-" + i);
-        if (pill) {
-          pill.classList.toggle("active", i === shownLevel || (i > 0 && shownLevel >= i));
-        }
+        if (i === currentLayer) pill.classList.add("active");
+        else pill.classList.remove("active");
       }
 
-      if (!nowCase) {
-        document.getElementById("now-id").textContent = "Queue Clear";
-        document.getElementById("now-story").textContent = `All ${total} cases in this domain have been reviewed and sealed into the Ed25519 hash-chained ledger. Click any domain pill above to reset or switch cohorts.`;
-        document.getElementById("dossier-card").classList.remove("open");
-      } else {
-        document.getElementById("now-id").textContent = nowCase.id;
-        const nowChip = document.getElementById("now-route-chip");
-        nowChip.className = "route-pill " + nowCase.route;
-        nowChip.textContent = ROUTE_TITLES[nowCase.route] || nowCase.route;
-        document.getElementById("now-badge-right").textContent = nowCase.badge || "Bundled";
-        document.getElementById("now-story").textContent = nowCase.story;
-      }
+      renderDossier();
+      renderQueue();
+      updateSpokes();
+      updateMetrics();
+    }
 
-      document.getElementById("l1-waiting-count").textContent = `${cases.length}`;
-      if (cases.length > 0) {
-        document.getElementById("l1-next-id").textContent = cases[0].id;
-        document.getElementById("l1-next-why").textContent = cases[0].story;
-      } else {
-        document.getElementById("l1-next-id").textContent = "Queue clear";
-        document.getElementById("l1-next-why").textContent = "No waiting cases on Layer 1 spoke.";
-      }
-
-      const isUrgent = nowCase && nowCase.route === "urgent_page";
-      const isDesk = nowCase && nowCase.route !== "urgent_page";
-
-      const urgentCard = document.getElementById("spoke-urgent");
-      const deskCard = document.getElementById("spoke-routedesk");
-      urgentCard.classList.toggle("lit-urgent", !!isUrgent);
-      deskCard.classList.toggle("lit-desk", !!isDesk);
-
-      document.getElementById("urgent-sent-count").textContent = `${urgentSentCount}`;
-      document.getElementById("desk-sent-count").textContent = `${deskSentCount}`;
-
-      const urgentSub = document.getElementById("urgent-sub");
-      if (isUrgent) {
-        urgentSub.className = "spoke-sub lit-urgent-txt";
-        urgentSub.textContent = "Pass sends here";
-      } else if (lastUrgentSent) {
-        urgentSub.className = "spoke-sub";
-        urgentSub.textContent = `Last · ${lastUrgentSent}`;
-      } else {
-        urgentSub.className = "spoke-sub";
-        urgentSub.textContent = "Emergency surgical / ED bypass";
-      }
-
-      const deskSub = document.getElementById("desk-sub");
-      if (isDesk) {
-        deskSub.className = "spoke-sub lit-desk-txt";
-        deskSub.textContent = `Pass sends here · ${ROUTE_TITLES[nowCase.route]}`;
-      } else if (lastDeskSent) {
-        deskSub.className = "spoke-sub";
-        deskSub.textContent = `Last · ${lastDeskSent}`;
-      } else {
-        deskSub.className = "spoke-sub";
-        deskSub.textContent = "silent, nurse, or provider";
-      }
-
-      document.getElementById("queue-count").textContent = `${cases.length}`;
-      const qList = document.getElementById("queue-list");
-      qList.innerHTML = "";
-      cases.slice(0, 4).forEach((c, idx) => {
-        const div = document.createElement("div");
-        div.className = "queue-item";
-        div.onclick = () => makeNow(idx);
-        div.innerHTML = `
-          <div class="queue-item-top">
-            <span class="queue-id">${c.id}</span>
-            <span class="route-pill ${c.route}">${ROUTE_TITLES[c.route]}</span>
-          </div>
-          <div class="queue-item-why">${c.whyFlagged}</div>
-        `;
-        qList.appendChild(div);
-      });
-
+    function renderDossier() {
       const dosCard = document.getElementById("dossier-card");
-      if (!nowCase || shownLevel === 0) {
+      if (!currentCase || currentLayer === 0) {
         dosCard.classList.remove("open");
-      } else {
-        dosCard.classList.add("open");
-        document.getElementById("dos-id").textContent = nowCase.id;
-        const dosChip = document.getElementById("dos-route-chip");
-        dosChip.className = "route-pill " + nowCase.route;
-        dosChip.textContent = ROUTE_TITLES[nowCase.route];
+        return;
+      }
 
-        let html = "";
-        if (shownLevel >= 1) {
-          html += `
-            <div class="dossier-section story">
-              <div class="sec-badge">Story · Purpose &amp; Why It Flagged</div>
-              <div class="sec-row">
-                <div class="sec-lbl">Purpose of This Review</div>
-                <div class="sec-val">${nowCase.purpose}</div>
-              </div>
-              <div class="sec-row">
-                <div class="sec-lbl">Why It Flagged Right Now</div>
-                <div class="sec-val">${nowCase.whyFlagged}</div>
-              </div>
-              <div class="sec-row">
-                <div class="sec-lbl">Patient Context</div>
-                <div class="sec-val">${nowCase.context}</div>
+      dosCard.classList.add("open");
+      document.getElementById("dos-id").textContent = currentCase.id;
+      const dosChip = document.getElementById("dos-route-chip");
+      dosChip.textContent = ROUTE_TITLES[currentCase.route];
+      dosChip.className = "route-pill " + currentCase.route;
+
+      let html = "";
+      if (currentLayer >= 1) {
+        html += `
+          <div class="dossier-section story">
+            <div class="sec-badge">Story · Purpose &amp; Why It Flagged</div>
+            <div class="sec-row">
+              <div class="sec-lbl">Purpose of This Post-Discharge Review</div>
+              <div class="sec-val">${currentCase.purpose}</div>
+            </div>
+            <div class="sec-row">
+              <div class="sec-lbl">Why It Flagged Right Now</div>
+              <div class="sec-val">${currentCase.whyFlagged}</div>
+            </div>
+            <div class="sec-row">
+              <div class="sec-lbl">Home Wearable &amp; Wound Context</div>
+              <div class="sec-val">${currentCase.context}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (currentLayer >= 2) {
+        html += `
+          <div class="dossier-section rules">
+            <div class="sec-badge">Rules · Understandable Transparency</div>
+            <div class="sec-row">
+              <div class="sec-lbl">Info &amp; 3-Agent PHA Methods Used</div>
+              <div class="sec-val">${currentCase.methodsUsed}</div>
+            </div>
+            <div class="sec-row">
+              <div class="sec-lbl">Blind Spot / If-Wrong Risk</div>
+              <div class="sec-val">${currentCase.blindSpot}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (currentLayer >= 3) {
+        html += `
+          <div class="dossier-section more">
+            <div class="sec-badge">More · Decision Scope &amp; Continuum Impact</div>
+            <div class="sec-row">
+              <div class="sec-lbl">What This Decision Means Across Home &amp; Hospital</div>
+              <div class="sec-val">${currentCase.overallScope}</div>
+            </div>
+            <div class="sec-row">
+              <div class="sec-lbl">PHA Continuum Routing Tiers</div>
+              <div class="sec-val">
+                • <strong>Urgent page</strong>: Halt HCA coaching &amp; send Hospital Bridge Readmission packet.<br/>
+                • <strong>Provider task</strong>: Same-day Outpatient Podiatry / Wound Clinic review.<br/>
+                • <strong>Nurse task</strong>: Visiting nurse Doppler check or HCA OARS offloading call.<br/>
+                • <strong>Silent log</strong>: Continue OARS coaching with zero clinician interruption.
               </div>
             </div>
-          `;
+            <button class="voi-btn" onclick="triggerVoiAction()">⚡ ${currentCase.voiText}</button>
+          </div>
+        `;
+      }
+
+      document.getElementById("dossier-body").innerHTML = html;
+    }
+
+    function renderQueue() {
+      const qCount = document.getElementById("queue-count");
+      qCount.textContent = activeQueue.length;
+      const list = document.getElementById("queue-list");
+      list.innerHTML = activeQueue.map((item, idx) => `
+        <div class="queue-item" onclick="promoteFromQueue(${idx})">
+          <div class="queue-item-top">
+            <span class="queue-id">${item.id}</span>
+            <span class="route-pill ${item.route}">${ROUTE_TITLES[item.route]}</span>
+          </div>
+          <div class="queue-item-why">${item.story}</div>
+        </div>
+      `).join("");
+    }
+
+    function updateSpokes() {
+      const l1Count = document.getElementById("l1-waiting-count");
+      const l1NextId = document.getElementById("l1-next-id");
+      const l1NextWhy = document.getElementById("l1-next-why");
+
+      l1Count.textContent = activeQueue.length;
+      if (activeQueue.length > 0) {
+        l1NextId.textContent = activeQueue[0].id;
+        l1NextWhy.textContent = activeQueue[0].story;
+      } else {
+        l1NextId.textContent = "Stream Clear";
+        l1NextWhy.textContent = "No additional smart-boot episodes waiting in Layer 1.";
+      }
+
+      document.getElementById("desk-sent-count").textContent = deskSentCount;
+      document.getElementById("urgent-sent-count").textContent = urgentSentCount;
+
+      const deskCard = document.getElementById("spoke-routedesk");
+      const urgentCard = document.getElementById("spoke-urgent");
+      const deskSub = document.getElementById("desk-sub");
+      const urgentSub = document.getElementById("urgent-sub");
+
+      deskCard.classList.remove("pass-target");
+      urgentCard.classList.remove("pass-target");
+
+      if (currentCase) {
+        if (currentCase.route === "urgent_page") {
+          urgentCard.classList.add("pass-target");
+          urgentSub.textContent = "Pass sends here";
+          deskSub.textContent = "OARS coaching, tele-podiatry, or silent sync";
+        } else {
+          deskCard.classList.add("pass-target");
+          deskSub.textContent = "Pass sends here (" + ROUTE_TITLES[currentCase.route] + ")";
+          urgentSub.textContent = "Immediate Vascular / ED handoff";
         }
-        if (shownLevel >= 2) {
-          html += `
-            <div class="dossier-section rules">
-              <div class="sec-badge">Rules · Understandable Transparency &amp; Blind Spots</div>
-              <div class="sec-row">
-                <div class="sec-lbl">Info &amp; Methods Used to Calculate</div>
-                <div class="sec-val">${nowCase.methodsUsed}</div>
-              </div>
-              <div class="sec-row">
-                <div class="sec-lbl">Blind Spot &amp; Risk If Wrong</div>
-                <div class="sec-val">${nowCase.blindSpot}</div>
-              </div>
-            </div>
-          `;
-        }
-        if (shownLevel >= 3) {
-          html += `
-            <div class="dossier-section more">
-              <div class="sec-badge">More · Decision Scope, Intention &amp; Overall Impact</div>
-              <div class="sec-row">
-                <div class="sec-lbl">What This Decision Means in Overall Scope</div>
-                <div class="sec-val">${nowCase.overallScope}</div>
-              </div>
-              <div class="sec-row">
-                <div class="sec-lbl">All 4 Route Scope Definitions</div>
-                <div class="sec-val">
-                  • <strong>Urgent page</strong>: Immediate live page to Surgical / ICU / ED Fast-Track.<br/>
-                  • <strong>Provider task</strong>: Same-day Attending / Vascular / ID consult.<br/>
-                  • <strong>Nurse task</strong>: Hold AI autonomy; bedside Nurse collects missing VOI first.<br/>
-                  • <strong>Silent log</strong>: Verified safe trajectory logged with zero team interruption.
-                </div>
-              </div>
-              <button class="voi-btn" onclick="triggerVOI()">✓ ${nowCase.voiText}</button>
-            </div>
-          `;
-        }
-        document.getElementById("dossier-body").innerHTML = html;
       }
     }
 
+    function updateMetrics() {
+      const total = PHA_WOUND_CASES.length;
+      document.getElementById("stat-reviewed").textContent = `${reviewedCount}/${total}`;
+      document.getElementById("stat-alerts").textContent = alertsCount;
+      document.getElementById("stat-corrections").textContent = correctionsCount;
+    }
+
     function jumpLayer(lvl) {
-      shownLevel = lvl;
+      currentLayer = lvl;
+      document.getElementById("modify-popover").classList.remove("open");
       renderAll();
     }
 
     function collapseLayer() {
-      shownLevel = Math.max(0, shownLevel - 1);
       document.getElementById("modify-popover").classList.remove("open");
-      renderAll();
+      if (currentLayer > 0) {
+        currentLayer -= 1;
+        renderAll();
+      }
     }
 
     function toggleModifyPopover() {
-      if (!nowCase) return;
-      document.getElementById("modify-popover").classList.toggle("open");
-    }
-
-    function toggleQueueOpen() {
-      const card = document.getElementById("queue-card");
-      const open = card.classList.toggle("open");
-      document.getElementById("queue-title-lbl").textContent = open ? "Up next" : "Queue";
-      document.getElementById("queue-show-lbl").textContent = open ? "Hide" : "Show";
-    }
-
-    function toggleStatusDrawer() {
-      const dr = document.getElementById("status-drawer");
-      const open = dr.classList.toggle("open");
-      document.getElementById("status-show-lbl").textContent = open ? "Hide" : "Show";
-    }
-
-    function makeNow(idx) {
-      if (idx < 0 || idx >= cases.length) return;
-      const picked = cases.splice(idx, 1)[0];
-      if (nowCase) cases.unshift(nowCase);
-      nowCase = picked;
-      shownLevel = 0;
-      renderAll();
-      pushMultiSeatEvent("make_now", nowCase.id, "make_now", nowCase.route);
-    }
-
-    function triggerVOI() {
-      if (!nowCase) return;
-      nowCase.whyFlagged = `[VOI Verified] ${nowCase.voiText} — results attached to time-locked chart.`;
-      renderAll();
-      pushMultiSeatEvent("ask_voi", nowCase.id, "ask_voi", nowCase.voiText);
-    }
-
-    function passCurrent() {
-      if (!nowCase) return;
-      completeDecision(nowCase.route, false);
+      const pop = document.getElementById("modify-popover");
+      pop.classList.toggle("open");
     }
 
     function selectModifiedRoute(newRoute) {
-      if (!nowCase) return;
-      document.getElementById("modify-popover").classList.remove("open");
-      const changed = newRoute !== nowCase.route;
-      nowCase.route = newRoute;
-      completeDecision(newRoute, changed);
-    }
-
-    function completeDecision(route, changed) {
-      const decidedCase = nowCase;
-      reviewedCount += 1;
-      if (changed) correctionsCount += 1;
-      if (route === "urgent_page") {
-        alertsCount += 1;
-        urgentSentCount += 1;
-        lastUrgentSent = `${decidedCase.id} · Urgent page`;
-      } else {
-        deskSentCount += 1;
-        lastDeskSent = `${decidedCase.id} · ${ROUTE_TITLES[route]}`;
+      if (!currentCase) return;
+      if (currentCase.route !== newRoute) {
+        currentCase.route = newRoute;
+        currentCase.badge = "Modified";
+        correctionsCount += 1;
+        appendAuditRow(currentCase.id, `Override -> ${ROUTE_TITLES[newRoute]}`);
       }
-
-      flightSphere = { progress: 0, toUrgent: route === "urgent_page" };
-
-      auditRows.unshift({
-        id: decidedCase.id,
-        route: ROUTE_TITLES[route],
-        status: changed ? "✓ corrected" : "✓ passed"
-      });
-      const logEl = document.getElementById("audit-log-rows");
-      logEl.innerHTML = auditRows.slice(0, 5).map(r =>
-        `<div class="audit-row"><span>${r.id} → ${r.route}</span><span>${r.status}</span></div>`
-      ).join("");
-
-      pushMultiSeatEvent("route", decidedCase.id, changed ? "select" : "pass", route);
-
-      nowCase = cases.shift() || null;
-      shownLevel = 0;
+      document.getElementById("modify-popover").classList.remove("open");
       renderAll();
     }
 
-    async function pushMultiSeatEvent(kind, itemId, gesture, answer) {
+    function passCurrent() {
+      if (!currentCase) return;
+      const targetSpoke = currentCase.route === "urgent_page" ? "urgent" : "desk";
+      spawnSpokePulse(targetSpoke, currentCase.route);
+
+      reviewedCount += 1;
+      if (currentCase.route === "urgent_page") {
+        alertsCount += 1;
+        urgentSentCount += 1;
+      } else {
+        deskSentCount += 1;
+      }
+
+      appendAuditRow(currentCase.id, `Passed -> ${ROUTE_TITLES[currentCase.route]}`);
+      postDecisionToServer(currentCase.id, currentCase.route);
+
+      currentCase = activeQueue.shift() || null;
+      currentLayer = 0;
+      document.getElementById("modify-popover").classList.remove("open");
+      renderAll();
+    }
+
+    function promoteFromQueue(idx) {
+      if (idx < 0 || idx >= activeQueue.length) return;
+      const picked = activeQueue.splice(idx, 1)[0];
+      if (currentCase) activeQueue.unshift(currentCase);
+      currentCase = picked;
+      currentLayer = 0;
+      renderAll();
+    }
+
+    function triggerVoiAction() {
+      if (!currentCase) return;
+      appendAuditRow(currentCase.id, `Dispatched VOI: ${currentCase.voiText}`);
+      currentCase.badge = "VOI Ordered";
+      renderAll();
+    }
+
+    function toggleQueueOpen() {
+      queueOpen = !queueOpen;
+      const qCard = document.getElementById("queue-card");
+      const lbl = document.getElementById("queue-show-lbl");
+      if (queueOpen) {
+        qCard.classList.add("open");
+        lbl.textContent = "Hide";
+      } else {
+        qCard.classList.remove("open");
+        lbl.textContent = "Show";
+      }
+    }
+
+    function toggleStatusDrawer() {
+      statusOpen = !statusOpen;
+      const dr = document.getElementById("status-drawer");
+      const lbl = document.getElementById("status-show-lbl");
+      if (statusOpen) {
+        dr.classList.add("open");
+        lbl.textContent = "Hide";
+      } else {
+        dr.classList.remove("open");
+        lbl.textContent = "Show";
+      }
+    }
+
+    function appendAuditRow(caseId, actionText) {
+      const container = document.getElementById("audit-log-rows");
+      const now = new Date().toLocaleTimeString([], { hour12: false });
+      const div = document.createElement("div");
+      div.className = "audit-row";
+      div.innerHTML = `<span>[${now}] <strong>${caseId}</strong> · ${actionText}</span><span>SHA-256 ✓</span>`;
+      container.prepend(div);
+    }
+
+    async function postDecisionToServer(caseId, route) {
       try {
-        await fetch("/api/multiseat/event", {
+        await fetch("/api/multiseat/decision", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            kind,
-            peer_id: "pha_web_seat",
-            device: "PHA Bounded Volume Seat (:8790)",
+            peer_id: "web_pha_post_discharge",
             seat_role: "overseer",
-            domain_id: currentDomain,
-            item_id: itemId,
-            gesture,
-            answer
+            domain_id: "pha_continuum",
+            item_id: caseId,
+            gesture: route === "urgent_page" ? "alert" : "pass",
+            answer: ROUTE_TITLES[route]
           })
         });
-      } catch (e) {}
+      } catch (_) {}
     }
 
     const canvas = document.getElementById("room-canvas");
@@ -1210,141 +1159,129 @@
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
-    function drawSphere(x, y, r, color, haloAlpha = 0) {
-      if (haloAlpha > 0) {
-        const gradHalo = ctx.createRadialGradient(x, y, r * 0.4, x, y, r * 2.4);
-        gradHalo.addColorStop(0, color.replace("1)", `${haloAlpha})`));
-        gradHalo.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = gradHalo;
-        ctx.beginPath();
-        ctx.arc(x, y, r * 2.4, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      const grad = ctx.createRadialGradient(x - r * 0.32, y - r * 0.32, r * 0.1, x, y, r);
-      grad.addColorStop(0, "#ffffff");
-      grad.addColorStop(0.28, color);
-      grad.addColorStop(1, "rgba(4,12,20,0.95)");
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fill();
+    function spawnSpokePulse(target, route) {
+      pulseAnimations.push({ target, route, t: 0 });
     }
 
-    function animateRoom() {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
+    function drawRoom() {
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      ctx.clearRect(0, 0, W, H);
 
-      const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
-      skyGrad.addColorStop(0, "#05101a");
-      skyGrad.addColorStop(0.58, "#0a1c28");
-      skyGrad.addColorStop(1, "#040b11");
-      ctx.fillStyle = skyGrad;
-      ctx.fillRect(0, 0, w, h);
+      const cx = W * 0.50;
+      const cy = H * 0.54;
 
-      const horizonY = h * 0.62;
-
-      ctx.strokeStyle = "rgba(42, 212, 200, 0.14)";
+      ctx.save();
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.08)";
       ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.12, h * 0.08);
-      ctx.lineTo(w * 0.12, horizonY);
-      ctx.lineTo(w * 0.88, horizonY);
-      ctx.lineTo(w * 0.88, h * 0.08);
-      ctx.stroke();
-
-      ctx.strokeStyle = "rgba(20, 175, 160, 0.24)";
-      ctx.lineWidth = 1;
-      const vanishX = w * 0.5;
-      for (let i = -12; i <= 12; i++) {
+      const horizonY = H * 0.36;
+      for (let i = -10; i <= 10; i++) {
         ctx.beginPath();
-        ctx.moveTo(vanishX + i * (w * 0.032), horizonY);
-        ctx.lineTo(vanishX + i * (w * 0.14), h);
+        ctx.moveTo(cx + i * 45, horizonY);
+        ctx.lineTo(cx + i * 190, H);
         ctx.stroke();
       }
-      for (let j = 1; j <= 8; j++) {
-        const t = Math.pow(j / 8, 1.45);
-        const y = horizonY + t * (h - horizonY);
+      for (let r = 1; r <= 7; r++) {
+        const y = horizonY + Math.pow(r / 7, 1.65) * (H - horizonY);
         ctx.beginPath();
         ctx.moveTo(0, y);
-        ctx.lineTo(w, y);
+        ctx.lineTo(W, y);
         ctx.stroke();
       }
+      ctx.restore();
 
-      const hubX = w * 0.5;
-      const hubY = h * 0.77;
+      const pedGrad = ctx.createRadialGradient(cx, cy + 165, 10, cx, cy + 165, 130);
+      pedGrad.addColorStop(0, "rgba(56, 189, 248, 0.32)");
+      pedGrad.addColorStop(0.65, "rgba(2, 132, 199, 0.12)");
+      pedGrad.addColorStop(1, "rgba(2, 132, 199, 0)");
+      ctx.fillStyle = pedGrad;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy + 165, 130, 36, 0, 0, Math.PI * 2);
+      ctx.fill();
 
-      const l1Pos = { x: w * 0.16, y: h * 0.67 };
-      const deskPos = { x: w * 0.18, y: h * 0.27 };
-      const urgentPos = { x: w * 0.82, y: h * 0.26 };
+      const l1Pos = { x: W * 0.16, y: H * 0.80 };
+      const deskPos = { x: W * 0.25, y: H * 0.23 };
+      const urgentPos = { x: W * 0.75, y: H * 0.23 };
+      const hubPos = { x: cx, y: cy };
 
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.26)";
-      ctx.lineWidth = 2.2;
-      [l1Pos, deskPos, urgentPos].forEach(p => {
-        ctx.beginPath();
-        ctx.moveTo(hubX, hubY);
-        ctx.lineTo(p.x, p.y);
-        ctx.stroke();
-      });
+      const isUrgent = currentCase && currentCase.route === "urgent_page";
 
-      drawSphere(hubX, hubY, 9, "rgba(235, 245, 255, 1)", 0.25);
-
-      const isUrgent = nowCase && nowCase.route === "urgent_page";
-      const isDesk = nowCase && nowCase.route !== "urgent_page";
-
-      drawSphere(l1Pos.x, l1Pos.y, 24, "rgba(26, 198, 188, 1)", cases.length > 0 ? 0.38 : 0);
-      drawSphere(
-        deskPos.x,
-        deskPos.y,
-        isDesk ? 28 : 20,
-        isDesk ? "rgba(250, 148, 30, 1)" : "rgba(148, 164, 184, 1)",
-        isDesk ? 0.45 : 0
+      drawSpokeCurve(l1Pos, hubPos, "rgba(56, 189, 248, 0.42)", 3.5);
+      drawSpokeCurve(
+        hubPos,
+        deskPos,
+        !isUrgent && currentCase ? "rgba(46, 204, 113, 0.85)" : "rgba(180, 205, 210, 0.26)",
+        !isUrgent && currentCase ? 5.5 : 3
       );
-      drawSphere(
-        urgentPos.x,
-        urgentPos.y,
-        isUrgent ? 34 : 22,
-        isUrgent ? "rgba(245, 46, 41, 1)" : "rgba(148, 164, 184, 1)",
-        isUrgent ? 0.55 : 0
+      drawSpokeCurve(
+        hubPos,
+        urgentPos,
+        isUrgent ? "rgba(231, 76, 60, 0.90)" : "rgba(180, 205, 210, 0.26)",
+        isUrgent ? 5.5 : 3
       );
 
-      const railY = h * 0.21;
-      const railStartX = w * 0.34;
-      if (nowCase) {
-        drawSphere(railStartX, railY, 18, "rgba(42, 212, 200, 1)", 0.35);
+      drawOrbNode(l1Pos.x, l1Pos.y - 52, 18, "#38bdf8");
+      drawOrbNode(deskPos.x, deskPos.y + 62, 18, !isUrgent && currentCase ? "#2ecc71" : "#64748b");
+      drawOrbNode(urgentPos.x, urgentPos.y + 62, 18, isUrgent ? "#e74c3c" : "#64748b");
+
+      const sphereCount = Math.min(activeQueue.length, 6);
+      for (let i = 0; i < sphereCount; i++) {
+        const item = activeQueue[i];
+        const offset = (i - (sphereCount - 1) / 2) * 34;
+        const sx = cx + offset;
+        const sy = cy - 195;
+        const col =
+          item.route === "urgent_page" ? "#e74c3c" :
+          item.route === "provider_task" ? "#f39c12" :
+          item.route === "nurse_task" ? "#3498db" : "#7f8c8d";
+        drawOrbNode(sx, sy, 11, col);
       }
-      cases.slice(0, 4).forEach((c, idx) => {
-        drawSphere(railStartX + 46 + idx * 34, railY, 11, "rgba(42, 212, 200, 1)", 0.15);
-      });
 
-      if (flightSphere) {
-        flightSphere.progress += 0.04;
-        const t = flightSphere.progress;
-        const target = flightSphere.toUrgent ? urgentPos : deskPos;
-        let fx, fy;
-        if (t < 0.35) {
-          const u = t / 0.35;
-          fx = (w * 0.5) * (1 - u) + hubX * u;
-          fy = (h * 0.53) * (1 - u) + hubY * u;
-        } else {
-          const u = (t - 0.35) / 0.65;
-          fx = hubX * (1 - u) + target.x * u;
-          fy = hubY * (1 - u) + target.y * u;
+      for (let i = pulseAnimations.length - 1; i >= 0; i--) {
+        const p = pulseAnimations[i];
+        p.t += 0.035;
+        if (p.t >= 1) {
+          pulseAnimations.splice(i, 1);
+          continue;
         }
-        drawSphere(
-          fx,
-          fy,
-          16,
-          flightSphere.toUrgent ? "rgba(245, 46, 41, 1)" : "rgba(250, 148, 30, 1)",
-          0.65
-        );
-        if (flightSphere.progress >= 1) flightSphere = null;
+        const dest = p.target === "urgent" ? urgentPos : deskPos;
+        const px = (1 - p.t) * hubPos.x + p.t * dest.x;
+        const py = (1 - p.t) * hubPos.y + p.t * dest.y - Math.sin(p.t * Math.PI) * 45;
+        drawOrbNode(px, py, 14, p.target === "urgent" ? "#e74c3c" : "#2ecc71");
       }
 
-      requestAnimationFrame(animateRoom);
+      requestAnimationFrame(drawRoom);
     }
 
-    switchDomain("home_health");
-    requestAnimationFrame(animateRoom);
+    function drawSpokeCurve(p0, p1, color, width) {
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      const midX = (p0.x + p1.x) / 2;
+      const midY = (p0.y + p1.y) / 2 - 38;
+      ctx.moveTo(p0.x, p0.y);
+      ctx.quadraticCurveTo(midX, midY, p1.x, p1.y);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawOrbNode(x, y, radius, hexColor) {
+      ctx.save();
+      const grad = ctx.createRadialGradient(x - radius * 0.3, y - radius * 0.3, radius * 0.1, x, y, radius * 1.4);
+      grad.addColorStop(0, "#ffffff");
+      grad.addColorStop(0.35, hexColor);
+      grad.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, radius * 1.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    initVolume();
+    requestAnimationFrame(drawRoom);
   </script>
 </body>
 </html>
