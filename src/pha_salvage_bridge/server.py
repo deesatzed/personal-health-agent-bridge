@@ -14,12 +14,13 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import asdict
+import hashlib
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from pathlib import Path
 import sys
 from typing import Any, Dict, List
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -149,6 +150,74 @@ def simulate_custom_pha_state(payload: Dict[str, Any]) -> Dict[str, Any]:
     return asdict(resp)
 
 
+PHA_MULTISEAT_STATE: Dict[str, Any] = {
+    "event_seq": 0,
+    "ledger_head_hash": hashlib.sha256(b"PHA_SALVAGE_GENESIS_2026").hexdigest()[:16],
+    "active_scenario_id": "PHA_G01_SILENT_SEPSIS",
+    "events": [],
+    "peers": {
+        "visionos_overseer": {
+            "peer_id": "visionos_overseer",
+            "device": "Apple Vision Pro (visionOS 27.0 Simulator)",
+            "seat_role": "overseer",
+            "domain_id": "pha_continuum",
+            "now_item_id": "PHA_EP_001",
+            "status": "CONNECTED",
+        },
+        "web_home_gate": {
+            "peer_id": "web_home_gate",
+            "device": "PHA Bridge Web Workspace (:8790)",
+            "seat_role": "nurse",
+            "domain_id": "pha_continuum",
+            "now_item_id": "PHA_G01_SILENT_SEPSIS",
+            "status": "CONNECTED",
+        },
+    },
+}
+
+
+def record_pha_multiseat_event(payload: Dict[str, Any]) -> Dict[str, Any]:
+    PHA_MULTISEAT_STATE["event_seq"] += 1
+    seq = PHA_MULTISEAT_STATE["event_seq"]
+    peer_id = payload.get("peer_id", "visionos_overseer")
+    seat_role = payload.get("seat_role", "overseer")
+    item_id = payload.get("item_id", payload.get("scenario_id", "PHA_EP_001"))
+    gesture = payload.get("gesture", payload.get("kind", "route"))
+    answer = payload.get("answer", payload.get("selected_option", "Hold Autonomy — Request Bedside ABI / Toe Pressure & Wound Photo VOI"))
+
+    prev_hash = PHA_MULTISEAT_STATE["ledger_head_hash"]
+    digest = hashlib.sha256(f"{seq}|{prev_hash}|{peer_id}|{seat_role}|{item_id}|{gesture}|{answer}".encode("utf-8")).hexdigest()[:16]
+    PHA_MULTISEAT_STATE["ledger_head_hash"] = digest
+
+    PHA_MULTISEAT_STATE["peers"][peer_id] = {
+        "peer_id": peer_id,
+        "device": payload.get(
+            "device",
+            "Apple Vision Pro (visionOS 27.0 Simulator)" if "vision" in peer_id else "PHA Bridge Web Workspace (:8790)",
+        ),
+        "seat_role": seat_role,
+        "domain_id": payload.get("domain_id", "pha_continuum"),
+        "now_item_id": item_id,
+        "status": "LIVE",
+    }
+
+    ev = {
+        "seq": seq,
+        "peer_id": peer_id,
+        "seat_role": seat_role,
+        "item_id": item_id,
+        "gesture": gesture,
+        "answer": answer,
+        "prev_hash": prev_hash,
+        "hash": digest,
+        "summary": payload.get("summary", f"[{peer_id} · {seat_role}] {gesture} {item_id} -> {answer}"),
+    }
+    PHA_MULTISEAT_STATE["events"].append(ev)
+    if len(PHA_MULTISEAT_STATE["events"]) > 100:
+        PHA_MULTISEAT_STATE["events"] = PHA_MULTISEAT_STATE["events"][-100:]
+    return ev
+
+
 class PHABridgeRequestHandler(BaseHTTPRequestHandler):
     benchmark_cache = None
 
@@ -158,8 +227,26 @@ class PHABridgeRequestHandler(BaseHTTPRequestHandler):
             cls.benchmark_cache = run_bidirectional_pha_benchmark()
         return cls.benchmark_cache
 
+    def _send_json(self, data: Any, status: int = 200) -> None:
+        body = json.dumps(data, indent=2).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_OPTIONS(self) -> None:
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
+
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
+        qs = parse_qs(parsed.query)
         if parsed.path in ("/landing", "/landing.html"):
             body = STATIC_LANDING_PATH.read_bytes()
             self.send_response(200)
@@ -175,13 +262,30 @@ class PHABridgeRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
         elif parsed.path == "/api/benchmark":
-            data = self.get_benchmark()
-            body = json.dumps(data, indent=2).encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
+            self._send_json(self.get_benchmark())
+        elif parsed.path == "/api/multiseat/sync":
+            after_seq = int(qs.get("after_seq", ["0"])[0])
+            peer_id = qs.get("peer_id", [None])[0]
+            if peer_id:
+                existing = PHA_MULTISEAT_STATE["peers"].get(peer_id, {})
+                PHA_MULTISEAT_STATE["peers"][peer_id] = {
+                    "peer_id": peer_id,
+                    "device": existing.get(
+                        "device",
+                        "Apple Vision Pro (visionOS 27.0 Simulator)" if "vision" in peer_id else "PHA Bridge Web Workspace (:8790)",
+                    ),
+                    "seat_role": qs.get("seat_role", [existing.get("seat_role", "overseer")])[0],
+                    "domain_id": qs.get("domain_id", [existing.get("domain_id", "pha_continuum")])[0],
+                    "now_item_id": qs.get("now_item_id", [existing.get("now_item_id", "PHA_EP_001")])[0],
+                    "status": "LIVE",
+                }
+            self._send_json({
+                "event_seq": PHA_MULTISEAT_STATE["event_seq"],
+                "ledger_head_hash": PHA_MULTISEAT_STATE["ledger_head_hash"],
+                "active_scenario_id": PHA_MULTISEAT_STATE["active_scenario_id"],
+                "events": [e for e in PHA_MULTISEAT_STATE["events"] if e["seq"] > after_seq],
+                "peers": list(PHA_MULTISEAT_STATE["peers"].values()),
+            })
         elif parsed.path.startswith("/api/scenario/"):
             sc_id = parsed.path.split("/api/scenario/", 1)[1].strip().upper()
             data = self.get_benchmark()
@@ -189,28 +293,35 @@ class PHABridgeRequestHandler(BaseHTTPRequestHandler):
             if match is None:
                 self.send_error(404, f"Scenario {sc_id} not found")
                 return
-            body = json.dumps(match, indent=2).encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
+            self._send_json(match)
         else:
             self.send_error(404, "Not Found")
 
     def do_POST(self) -> None:
         parsed = urlparse(self.path)
+        length = int(self.headers.get("Content-Length", "0"))
+        raw = self.rfile.read(length) if length > 0 else b"{}"
+        payload = json.loads(raw.decode("utf-8")) if raw.strip() else {}
         if parsed.path == "/api/simulate":
-            length = int(self.headers.get("Content-Length", "0"))
-            raw = self.rfile.read(length) if length > 0 else b"{}"
-            payload = json.loads(raw.decode("utf-8"))
             sim_result = simulate_custom_pha_state(payload)
-            body = json.dumps(sim_result, indent=2).encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
+            ev = record_pha_multiseat_event({
+                "peer_id": payload.get("peer_id", "web_home_gate"),
+                "seat_role": payload.get("seat_role", "nurse"),
+                "item_id": payload.get("scenario_id", "PHA_LIVE_SIM"),
+                "gesture": "simulate",
+                "answer": sim_result.get("spatial_gate_evaluation", {}).get("recommended_pathway", "routed"),
+            })
+            sim_result["multiseat_event"] = ev
+            self._send_json(sim_result)
+        elif parsed.path == "/api/multiseat/event":
+            ev = record_pha_multiseat_event(payload)
+            self._send_json({
+                "status": "synced",
+                "event": ev,
+                "event_seq": PHA_MULTISEAT_STATE["event_seq"],
+                "ledger_head_hash": PHA_MULTISEAT_STATE["ledger_head_hash"],
+                "peers": list(PHA_MULTISEAT_STATE["peers"].values()),
+            })
         else:
             self.send_error(404, "Not Found")
 

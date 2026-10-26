@@ -153,6 +153,21 @@ class TestPHASalvageBridge(unittest.TestCase):
             }
         )
         self.assertTrue(sim_flare["vision_pro_gate"]["wake_cloud_orchestrator"])
+
+        from pha_salvage_bridge.server import PHA_MULTISEAT_STATE, record_pha_multiseat_event
+
+        ev = record_pha_multiseat_event(
+            {
+                "peer_id": "visionos_overseer",
+                "seat_role": "overseer",
+                "domain_id": "pha_continuum",
+                "item_id": "PHA_EP_001",
+                "gesture": "pass",
+                "answer": "Hold Autonomy — Request Bedside ABI / Toe Pressure & Wound Photo VOI",
+            }
+        )
+        self.assertGreaterEqual(ev["seq"], 1)
+        self.assertEqual(ev["hash"], PHA_MULTISEAT_STATE["ledger_head_hash"])
         self.assertEqual(sim_flare["dsa_output"]["leakage_rows_blocked"], 3)
         self.assertEqual(sim_flare["hca_output"]["coaching_mode"], "HALTED_FOR_CLINICIAN_ESCALATION")
         self.assertIsNotNone(sim_flare["hca_output"]["clinician_nowcard_handoff"])

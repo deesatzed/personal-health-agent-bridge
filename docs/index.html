@@ -963,6 +963,28 @@
     </div>
   </header>
 
+  <!-- Live Multi-Seat Co-Presence & Shared DecisionLedger Strip (visionOS 27.0 Simulator <-> PHA Bridge :8790 <-> SALVAGE-AI :8780) -->
+  <section style="margin: 10px 24px 0 24px; padding: 8px 16px; border-radius: 12px; background: rgba(13, 21, 38, 0.85); border: 1px solid rgba(56, 189, 248, 0.40); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+      <span class="toggle-chip active-guard" style="padding:3px 10px; font-size:11px;">
+        ● LIVE MULTI-SEAT SYNC · visionOS 27.0 ↔ :8790 ↔ :8780
+      </span>
+      <span id="pha-ms-ledger" style="font-size:11.5px; font-family:monospace; color:#38bdf8;">
+        Ledger #0 · SHA-256 Verified
+      </span>
+      <div id="pha-ms-peers" style="display:flex; gap:6px; flex-wrap:wrap;">
+        <span class="toggle-chip" style="padding:2px 9px; font-size:11px;"> Vision Pro · OVERSEER (PHA_EP_001)</span>
+        <span class="toggle-chip" style="padding:2px 9px; font-size:11px;">Web :8790 · NURSE (PHA_G01_SILENT_SEPSIS)</span>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span id="pha-ms-banner" style="font-size:12px; color:#fde68a; font-weight:600;">
+        ⇄ Multi-seat co-presence active — Vision Pro Simulator &amp; Web seats share live DecisionLedger
+      </span>
+      <button class="pill-btn active" onclick="pollPhaMultiSeatSync()" style="padding:3px 10px; font-size:11px;">Sync Now</button>
+    </div>
+  </section>
+
   <!-- Overhead Shelf: Enlargeable BoardView + CategoriesStrip -->
   <section class="overhead-shelf">
     <div class="board-view" id="overhead-board">
@@ -1493,6 +1515,18 @@
       };
       state.decisionLedger.unshift(entry);
       state.optionRingOpen = false;
+      fetch("/api/multiseat/event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          peer_id: "web_home_gate",
+          seat_role: state.role,
+          domain_id: "pha_continuum",
+          item_id: sc.scenario_id,
+          gesture: categoryCode || "route",
+          answer: actionLabel
+        })
+      }).catch(() => {});
       renderAll();
     }
 
@@ -1964,7 +1998,59 @@
       renderSidePanel();
     }
 
+    let lastPhaMultiSeatSeq = 0;
+
+    async function pollPhaMultiSeatSync() {
+      try {
+        const sc = getActiveScenario();
+        const res = await fetch(
+          `/api/multiseat/sync?after_seq=${lastPhaMultiSeatSeq}&peer_id=web_home_gate&seat_role=${encodeURIComponent(state.role)}&domain_id=pha_continuum&now_item_id=${encodeURIComponent(sc.scenario_id)}`
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+        const ledgerEl = document.getElementById("pha-ms-ledger");
+        if (ledgerEl) {
+          ledgerEl.textContent = `Ledger #${data.event_seq || 0} · ${(data.ledger_head_hash || "genesis").slice(0, 12)}`;
+        }
+        const peersEl = document.getElementById("pha-ms-peers");
+        if (peersEl && Array.isArray(data.peers)) {
+          peersEl.innerHTML = data.peers
+            .map((p) => {
+              const label = (p.peer_id || "").includes("vision") ? " Vision Pro" : "Web :8790";
+              return `<span class="toggle-chip" style="padding:2px 9px; font-size:11px;">${label} · ${(p.seat_role || "seat").toUpperCase()} (${p.now_item_id || "ready"})</span>`;
+            })
+            .join("");
+        }
+        if (Array.isArray(data.events) && data.events.length > 0) {
+          for (const ev of data.events) {
+            if (ev.seq > lastPhaMultiSeatSeq) {
+              lastPhaMultiSeatSeq = ev.seq;
+              const banner = document.getElementById("pha-ms-banner");
+              if (banner && ev.summary) {
+                banner.textContent = `⇄ ${ev.summary}`;
+              }
+              if (ev.peer_id !== "web_home_gate") {
+                state.decisionLedger.unshift({
+                  ts: new Date().toISOString().slice(11, 19),
+                  episode_id: ev.item_id || "PHA_EP_001",
+                  role: ` ${(ev.seat_role || "OVERSEER").toUpperCase()}`,
+                  action: ev.answer || ev.gesture,
+                  category: ev.gesture || "VISIONOS_SYNC",
+                  storetime_lock: state.strictStoretimeLock,
+                  hash: "0x" + (ev.hash || "verified")
+                });
+                renderAll();
+              }
+            }
+          }
+        }
+      } catch (e) {
+        // Offline / GitHub Pages fallback
+      }
+    }
+
     renderAll();
+    setInterval(pollPhaMultiSeatSync, 1500);
   </script>
 </body>
 </html>
