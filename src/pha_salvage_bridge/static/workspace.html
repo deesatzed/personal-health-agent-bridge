@@ -3,2054 +3,1348 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PHA × SALVAGE-AI · Apple Vision Pro Spatial Crossroads & M0–M5 Symbiosis Console</title>
+  <title>PHA × SALVAGE-AI — Bounded Spatial Volume Workspace</title>
   <style>
     :root {
-      --bg-void: #060913;
-      --bg-glass: rgba(15, 23, 42, 0.78);
-      --bg-glass-strong: rgba(11, 18, 34, 0.92);
-      --bg-card: rgba(20, 30, 55, 0.72);
-      --border-glass: rgba(148, 163, 184, 0.22);
-      --border-highlight: rgba(56, 189, 248, 0.48);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
-      --you-orange: #f7941d;
-      --bridge-pink: #ec4899;
-      --ai-blue: #4da6ff;
-      --pass-green: #10b981;
-      --warn-amber: #f59e0b;
-      --alert-red: #ef4444;
-      --trial-purple: #a855f7;
-      --dormant-gray: #64748b;
-      --paper-bg: #f6f1e7;
-      --paper-ink: #1e293b;
-      --radius-lg: 20px;
-      --radius-md: 13px;
-      --radius-sm: 8px;
+      --bg-room: #060d14;
+      --card-bg: rgba(22, 34, 46, 0.84);
+      --card-border: rgba(255, 255, 255, 0.18);
+      --card-shadow: 0 22px 54px rgba(0, 0, 0, 0.62);
+      --text-main: #f4f8fb;
+      --text-dim: #9fb2c4;
+      --urgent-bg: #eb453d;
+      --provider-bg: #e08024;
+      --nurse-bg: #d9a624;
+      --silent-bg: #2ead9e;
+      --now-blue: #1a73e8;
+      --pass-green: #229954;
+      --cyan-glow: #2ad4c8;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      user-select: none;
     }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
-      background:
-        radial-gradient(circle at 18% 12%, rgba(77, 166, 255, 0.16), transparent 36%),
-        radial-gradient(circle at 82% 18%, rgba(236, 72, 153, 0.14), transparent 38%),
-        radial-gradient(circle at 50% 85%, rgba(247, 148, 29, 0.12), transparent 45%),
-        var(--bg-void);
+    body, html {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--bg-room);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", sans-serif;
       color: var(--text-main);
-      min-height: 100vh;
-      overflow-x: hidden;
-      line-height: 1.45;
     }
 
-    /* Top Spatial Ornament Bar */
-    .crossroads-topbar {
-      position: sticky;
-      top: 0;
-      z-index: 60;
-      display: flex;
-      flex-wrap: wrap;
+    #room-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    #spatial-volume {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .glass-card {
+      pointer-events: auto;
+      background: var(--card-bg);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: var(--card-shadow);
+      color: var(--text-main);
+      transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease, border-color 0.25s ease;
+    }
+
+    .route-pill {
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 12px 20px;
-      background: rgba(8, 13, 26, 0.88);
-      backdrop-filter: blur(22px);
-      border-bottom: 1px solid var(--border-glass);
+      justify-content: center;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
     }
+    .route-pill.urgent_page { background: var(--urgent-bg); color: #fff; }
+    .route-pill.provider_task { background: var(--provider-bg); color: #fff; }
+    .route-pill.nurse_task { background: var(--nurse-bg); color: #10161d; }
+    .route-pill.silent_log { background: var(--silent-bg); color: #0b1719; }
 
-    .brand-cluster {
+    #status-card {
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 520px;
+      max-width: 780px;
+      padding: 14px 22px;
+      z-index: 25;
+    }
+    .status-top {
       display: flex;
       align-items: center;
       gap: 12px;
+      margin-bottom: 8px;
     }
-
-    .vision-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, rgba(77, 166, 255, 0.24), rgba(168, 85, 247, 0.24));
-      border: 1px solid rgba(77, 166, 255, 0.45);
-      color: #e0f2fe;
-    }
-
-    .brand-title {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .brand-sub {
-      font-size: 11.5px;
-      color: var(--text-muted);
-    }
-
-    .top-controls {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .pill-group {
-      display: inline-flex;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-glass);
-      border-radius: 999px;
-      padding: 3px;
-      gap: 3px;
-    }
-
-    .pill-btn {
-      background: transparent;
-      color: var(--text-muted);
+    .status-title-btn {
+      background: none;
       border: none;
-      padding: 5px 11px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.16s ease;
-    }
-
-    .pill-btn:hover {
       color: var(--text-main);
-    }
-
-    .pill-btn.active {
-      background: rgba(77, 166, 255, 0.24);
-      color: #fff;
-      box-shadow: inset 0 0 0 1px rgba(77, 166, 255, 0.55);
-    }
-
-    .pill-btn.role-overseer.active {
-      background: rgba(247, 148, 29, 0.25);
-      box-shadow: inset 0 0 0 1px var(--you-orange);
-      color: #ffedd5;
-    }
-
-    .pill-btn.role-bedside.active {
-      background: rgba(77, 166, 255, 0.25);
-      box-shadow: inset 0 0 0 1px var(--ai-blue);
-      color: #e0f2fe;
-    }
-
-    .pill-btn.role-nurse.active {
-      background: rgba(236, 72, 153, 0.25);
-      box-shadow: inset 0 0 0 1px var(--bridge-pink);
-      color: #fce7f3;
-    }
-
-    .toggle-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid var(--border-glass);
-      background: rgba(15, 23, 42, 0.78);
-      color: var(--text-main);
-      text-decoration: none;
-      transition: all 0.16s ease;
-    }
-
-    .toggle-chip.active-guard {
-      border-color: rgba(16, 185, 129, 0.55);
-      background: rgba(16, 185, 129, 0.16);
-      color: #d1fae5;
-    }
-
-    .toggle-chip.active-spot {
-      border-color: rgba(247, 148, 29, 0.65);
-      background: rgba(247, 148, 29, 0.2);
-      color: #ffedd5;
-    }
-
-    /* Overhead BoardView + CategoriesStrip */
-    .overhead-shelf {
-      max-width: 1640px;
-      margin: 12px auto 0;
-      padding: 0 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .board-view {
-      background: var(--bg-glass);
-      backdrop-filter: blur(18px);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      transition: all 0.22s ease;
-    }
-
-    .board-view.enlarged {
-      padding: 18px 20px;
-      border-color: var(--border-highlight);
-      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.55);
-    }
-
-    .board-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .board-title {
-      font-size: 12px;
+      font-size: 20px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      display: flex;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
     }
-
-    .board-lanes {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
+    .status-title-btn span.show-lbl {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-dim);
     }
-
-    .board-lane {
-      background: rgba(10, 16, 30, 0.65);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      border-radius: var(--radius-sm);
-      padding: 8px 10px;
-    }
-
-    .lane-head {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .lane-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-
-    .lane-card-pill {
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: rgba(30, 41, 59, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      cursor: pointer;
-      color: var(--text-main);
-    }
-
-    .lane-card-pill.escalated {
-      border-color: rgba(239, 68, 68, 0.6);
-      background: rgba(239, 68, 68, 0.16);
-      color: #fecaca;
-    }
-
-    .lane-card-pill.suppressed {
-      border-color: rgba(16, 185, 129, 0.5);
-      background: rgba(16, 185, 129, 0.14);
-      color: #bbf7d0;
-    }
-
-    /* CategoriesStrip */
-    .categories-strip {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 8px 14px;
-      background: rgba(12, 19, 36, 0.78);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-md);
-    }
-
-    .cat-strip-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--text-muted);
-      margin-right: 4px;
-    }
-
-    .cat-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11.5px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 999px;
-      cursor: pointer;
-      border: 1px solid transparent;
-    }
-
-    .cat-pill.promoted {
-      background: rgba(16, 185, 129, 0.16);
-      border-color: rgba(16, 185, 129, 0.5);
-      color: #a7f3d0;
-    }
-
-    .cat-pill.trial {
-      background: rgba(168, 85, 247, 0.18);
-      border-color: rgba(168, 85, 247, 0.55);
-      color: #e9d5ff;
-    }
-
-    .cat-pill.dormant {
-      background: rgba(100, 116, 139, 0.16);
-      border-color: rgba(100, 116, 139, 0.4);
-      color: #94a3b8;
-      text-decoration: line-through;
-    }
-
-    /* Main 3-Wing Spatial Crossroads Stage */
-    .crossroads-stage {
-      max-width: 1640px;
-      margin: 14px auto 36px;
-      padding: 0 18px;
-      display: grid;
-      grid-template-columns: 360px minmax(0, 1fr) 330px;
-      gap: 16px;
-      align-items: start;
-    }
-
-    .crossroads-stage.side-collapsed {
-      grid-template-columns: 52px minmax(0, 1fr) 330px;
-    }
-
-    @media (max-width: 1260px) {
-      .crossroads-stage,
-      .crossroads-stage.side-collapsed {
-        grid-template-columns: 1fr;
-      }
-      .board-lanes {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    /* Left Wing: SidePanel */
-    .side-panel {
-      background: var(--bg-glass-strong);
-      backdrop-filter: blur(22px);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      transition: all 0.2s ease;
-    }
-
-    .side-panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border-glass);
-    }
-
-    .side-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      padding: 8px 10px;
-      border-bottom: 1px solid var(--border-glass);
-      background: rgba(8, 12, 24, 0.6);
-    }
-
-    .side-tab-btn {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 5px 8px;
-      border-radius: 7px;
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-    }
-
-    .side-tab-btn.active {
-      background: rgba(77, 166, 255, 0.2);
-      border-color: rgba(77, 166, 255, 0.5);
-      color: #fff;
-    }
-
-    .side-body {
-      padding: 14px;
-      max-height: 760px;
-      overflow-y: auto;
-    }
-
-    /* Center Wing: NowCard + Pop-Out OptionRing */
-    .center-crossroads {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .now-card {
-      background: var(--bg-glass-strong);
-      backdrop-filter: blur(26px);
-      border: 1.5px solid var(--border-highlight);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.6), 0 0 32px rgba(77, 166, 255, 0.1);
-      overflow: hidden;
-    }
-
-    .now-card.hard-escalation {
-      border-color: rgba(239, 68, 68, 0.78);
-      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.65), 0 0 36px rgba(239, 68, 68, 0.22);
-    }
-
-    .hard-escalation-banner {
-      background: linear-gradient(90deg, rgba(220, 38, 38, 0.92), rgba(185, 28, 28, 0.88));
-      color: #fff;
-      padding: 8px 18px;
+    .synthetic-pill {
+      background: #f5c518;
+      color: #111;
       font-size: 12px;
       font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+    }
+    .domain-pills {
+      display: inline-flex;
+      gap: 6px;
+      margin-left: 6px;
+    }
+    .domain-btn {
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: var(--text-dim);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .domain-btn.active {
+      background: rgba(42, 212, 200, 0.26);
+      border-color: var(--cyan-glow);
+      color: #fff;
+    }
+    .close-btn {
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .status-metrics {
+      display: flex;
+      align-items: baseline;
+      gap: 28px;
+    }
+    .stat-inline {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 7px;
+    }
+    .stat-inline .val {
+      font-size: 28px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-inline .lbl {
+      font-size: 15px;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+    .stat-inline.hot .val, .stat-inline.hot .lbl {
+      color: #ff9f43;
+    }
+    #status-drawer {
+      display: none;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    #status-drawer.open {
+      display: block;
+    }
+    .audit-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      color: #d8e6f2;
+    }
+
+    .spoke-card {
+      position: absolute;
+      width: 265px;
+      padding: 13px 16px;
+      border-radius: 18px;
+      z-index: 15;
+    }
+    #spoke-layer1 {
+      left: 6%;
+      bottom: 12%;
+    }
+    #spoke-routedesk {
+      left: 11%;
+      top: 20%;
+    }
+    #spoke-urgent {
+      right: 11%;
+      top: 19%;
+    }
+    .spoke-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+    .spoke-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: none;
+    }
+    .spoke-card.lit-urgent {
+      border: 2px solid var(--urgent-bg);
+      box-shadow: 0 0 28px rgba(235, 69, 61, 0.35), var(--card-shadow);
+    }
+    .spoke-card.lit-urgent .spoke-dot {
+      display: inline-block;
+      background: var(--urgent-bg);
+      box-shadow: 0 0 8px var(--urgent-bg);
+    }
+    .spoke-card.lit-desk {
+      border: 2px solid var(--provider-bg);
+      box-shadow: 0 0 28px rgba(224, 128, 36, 0.32), var(--card-shadow);
+    }
+    .spoke-card.lit-desk .spoke-dot {
+      display: inline-block;
+      background: var(--provider-bg);
+      box-shadow: 0 0 8px var(--provider-bg);
+    }
+    .spoke-name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .spoke-count {
+      margin-left: auto;
+      font-size: 14px;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-dim);
+    }
+    .spoke-count strong {
+      color: var(--text-main);
+      font-size: 16px;
+    }
+    .spoke-sub {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.35;
+    }
+    .spoke-sub.lit-urgent-txt {
+      color: #ff6b63;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .spoke-sub.lit-desk-txt {
+      color: #ffb142;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    #now-card {
+      position: absolute;
+      left: 50%;
+      top: 53%;
+      transform: translate(-50%, -50%);
+      width: 650px;
+      max-width: 90vw;
+      padding: 24px 28px;
+      z-index: 20;
+    }
+    .now-row1 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .now-badge {
+      background: var(--now-blue);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 5px 13px;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+    }
+    .now-id {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .now-right-badge {
+      margin-left: auto;
+      background: #f39c12;
+      color: #111;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+    .now-story {
+      font-size: 21px;
+      font-weight: 600;
+      line-height: 1.42;
+      color: rgba(255, 255, 255, 0.96);
+      margin-bottom: 20px;
+    }
+    .now-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .action-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 22px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.14s, filter 0.14s;
+    }
+    .action-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+    .btn-pass {
+      background: var(--pass-green);
+      color: #fff;
+    }
+    .btn-modify {
+      background: var(--now-blue);
+      color: #fff;
+    }
+    .btn-collapse {
+      background: rgba(255, 255, 255, 0.14);
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .now-layers {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .layer-pill {
+      background: rgba(255, 255, 255, 0.10);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+      padding: 7px 18px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .layer-pill.active {
+      background: rgba(42, 212, 200, 0.34);
+      border-color: var(--cyan-glow);
+      box-shadow: 0 0 16px rgba(42, 212, 200, 0.25);
+    }
+    .now-footer {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    #modify-popover {
+      display: none;
+      position: absolute;
+      left: 50%;
+      top: calc(53% + 168px);
+      transform: translateX(-50%);
+      width: 440px;
+      padding: 18px 20px;
+      z-index: 30;
+    }
+    #modify-popover.open {
+      display: block;
+    }
+    .mod-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .mod-sub {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+    .mod-opt {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      color: #fff;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s;
+    }
+    .mod-opt:hover {
+      background: rgba(42, 212, 200, 0.18);
+      border-color: var(--cyan-glow);
     }
 
-    .routine-suppressed-banner {
-      background: linear-gradient(90deg, rgba(5, 150, 105, 0.88), rgba(16, 185, 129, 0.82));
+    #queue-card {
+      position: absolute;
+      right: 3.2%;
+      top: 52%;
+      transform: translateY(-50%);
+      width: 320px;
+      padding: 18px 20px;
+      z-index: 20;
+    }
+    .queue-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      cursor: pointer;
+    }
+    .queue-title {
+      font-size: 24px;
+      font-weight: 800;
+    }
+    .queue-count-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .queue-count {
+      font-size: 28px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+    .queue-show {
+      font-size: 16px;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+    .queue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .queue-item {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 16px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.16s, transform 0.16s;
+    }
+    .queue-item:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateX(-2px);
+    }
+    .queue-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .queue-id {
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .queue-item-why {
+      display: none;
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.35;
+    }
+    #queue-card.open .queue-item-why {
+      display: block;
+    }
+
+    #dossier-card {
+      position: absolute;
+      left: 2.5%;
+      top: 53%;
+      transform: translateY(-50%) translateX(-20px);
+      width: 440px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 20px 22px;
+      z-index: 25;
+      opacity: 0;
+      pointer-events: none;
+    }
+    #dossier-card.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(-50%) translateX(0);
+    }
+    .dossier-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .dossier-id {
+      font-size: 24px;
+      font-weight: 800;
+    }
+    .dossier-collapse {
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.14);
+      border: none;
       color: #fff;
-      padding: 8px 18px;
-      font-size: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .dossier-section {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 13px 15px;
+      margin-bottom: 12px;
+    }
+    .dossier-section.story { border-color: rgba(42, 212, 200, 0.45); background: rgba(42, 212, 200, 0.09); }
+    .dossier-section.rules { border-color: rgba(243, 156, 18, 0.45); background: rgba(243, 156, 18, 0.09); }
+    .dossier-section.more  { border-color: rgba(46, 204, 113, 0.45); background: rgba(46, 204, 113, 0.09); }
+    .sec-badge {
+      font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      margin-bottom: 8px;
+      color: var(--cyan-glow);
     }
-
-    .now-body {
-      padding: 18px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .now-header-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .now-episode-tag {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--ai-blue);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .now-title {
-      font-size: 19px;
-      font-weight: 800;
-      margin-top: 2px;
-    }
-
-    .role-framing-box {
-      padding: 10px 13px;
-      border-radius: var(--radius-sm);
-      background: rgba(247, 148, 29, 0.12);
-      border-left: 3px solid var(--you-orange);
-      font-size: 12.5px;
-      color: #ffedd5;
-    }
-
-    /* WHY QUEUED & 4-State Reliability Chips */
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .row-label {
-      font-size: 10.5px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-right: 4px;
-    }
-
-    .why-chip {
-      font-size: 11.5px;
-      font-weight: 600;
-      padding: 3px 9px;
-      border-radius: 6px;
-      background: rgba(239, 68, 68, 0.16);
-      border: 1px solid rgba(239, 68, 68, 0.45);
-      color: #fecaca;
-    }
-
-    .why-chip.calm {
-      background: rgba(16, 185, 129, 0.16);
-      border-color: rgba(16, 185, 129, 0.45);
-      color: #a7f3d0;
-    }
-
-    .rel-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 9px;
-      border-radius: 6px;
-      cursor: pointer;
-      user-select: none;
-      border: 1px solid transparent;
-    }
-
-    .rel-chip.reliable {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.5);
-      color: #a7f3d0;
-    }
-
-    .rel-chip.not_said {
-      background: rgba(245, 158, 11, 0.18);
-      border-color: rgba(245, 158, 11, 0.55);
-      color: #fde68a;
-    }
-
-    .rel-chip.said_wrong {
-      background: rgba(239, 68, 68, 0.18);
-      border-color: rgba(239, 68, 68, 0.55);
-      color: #fecaca;
-    }
-
-    .rel-chip.said_differently {
-      background: rgba(168, 85, 247, 0.18);
-      border-color: rgba(168, 85, 247, 0.55);
-      color: #e9d5ff;
-    }
-
-    .if-wrong-strip {
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      background: rgba(236, 72, 153, 0.13);
-      border: 1px solid rgba(236, 72, 153, 0.45);
-      color: #fbcfe8;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    /* 4-Level Cascading Dossier (L0 -> L1 -> L2 -> L3) */
-    .cascade-dossier {
-      background: rgba(9, 14, 28, 0.72);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .cascade-bar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .level-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-
-    .level-pill {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--border-glass);
-      background: rgba(30, 41, 59, 0.7);
-      color: var(--text-muted);
-      cursor: pointer;
-    }
-
-    .level-pill.active {
-      background: rgba(77, 166, 255, 0.24);
-      border-color: var(--ai-blue);
-      color: #fff;
-    }
-
-    .cascade-layer {
-      padding: 9px 11px;
-      border-radius: 8px;
-      background: rgba(15, 23, 42, 0.82);
-      border-left: 3px solid var(--ai-blue);
-      font-size: 12.5px;
-    }
-
-    .cascade-layer.l2 {
-      border-left-color: var(--bridge-pink);
-    }
-
-    .cascade-layer.l3 {
-      border-left-color: var(--you-orange);
-    }
-
-    /* One-Section-at-a-Time Accordion inside L3 */
-    .chart-accordion {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 6px;
-    }
-
-    .acc-item {
-      border: 1px solid var(--border-glass);
-      border-radius: 8px;
-      background: rgba(12, 19, 36, 0.85);
-      overflow: hidden;
-    }
-
-    .acc-header {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 12px;
-      background: transparent;
-      border: none;
-      color: var(--text-main);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      text-align: left;
-    }
-
-    .acc-header:hover {
-      background: rgba(77, 166, 255, 0.08);
-    }
-
-    .acc-content {
-      padding: 10px 12px;
-      border-top: 1px solid var(--border-glass);
-      font-size: 12px;
-      color: #cbd5e1;
-    }
-
-    /* SymbiosisPanel 3-Column Division of Labor */
-    .symbiosis-panel {
-      background: rgba(10, 16, 31, 0.78);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-    }
-
-    .symbiosis-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .symbiosis-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .sym-col {
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 11.5px;
-    }
-
-    .sym-col.you-col {
-      background: rgba(247, 148, 29, 0.11);
-      border: 1px solid rgba(247, 148, 29, 0.42);
-    }
-
-    .sym-col.bridge-col {
-      background: rgba(236, 72, 153, 0.11);
-      border: 1px solid rgba(236, 72, 153, 0.42);
-    }
-
-    .sym-col.ai-col {
-      background: rgba(77, 166, 255, 0.11);
-      border: 1px solid rgba(77, 166, 255, 0.42);
-    }
-
-    .sym-col-title {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .sym-col ul {
-      padding-left: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    /* M2 Earned-Autonomy Dials + Sparkline */
-    .dials-strip {
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 12px;
-      align-items: center;
-      padding: 10px 14px;
-      background: rgba(12, 20, 38, 0.78);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-md);
-    }
-
-    .dial-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .dial-meta {
-      font-size: 11.5px;
-    }
-
-    .dial-meta strong {
-      display: block;
-      font-size: 12px;
-    }
-
-    /* M3 YourCallFirst Blinded Spot-Check */
-    .your-call-first {
-      padding: 12px 14px;
-      border-radius: var(--radius-md);
-      background: linear-gradient(135deg, rgba(247, 148, 29, 0.18), rgba(236, 72, 153, 0.15));
-      border: 1.5px solid var(--you-orange);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    /* Primary Routing Action Bar + Pop-Out OptionRing */
-    .routing-bar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding-top: 6px;
-      border-top: 1px solid var(--border-glass);
-    }
-
-    .route-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .route-btn {
-      padding: 9px 15px;
-      border-radius: 10px;
-      font-size: 12.5px;
-      font-weight: 700;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: all 0.16s ease;
-    }
-
-    .route-btn.pass {
-      background: rgba(16, 185, 129, 0.22);
-      border-color: var(--pass-green);
-      color: #d1fae5;
-    }
-
-    .route-btn.modify {
-      background: rgba(236, 72, 153, 0.22);
-      border-color: var(--bridge-pink);
-      color: #fce7f3;
-    }
-
-    .route-btn.escalate {
-      background: rgba(239, 68, 68, 0.25);
-      border-color: var(--alert-red);
-      color: #fee2e2;
-    }
-
-    .route-btn.defer {
-      background: rgba(148, 163, 184, 0.16);
-      border-color: var(--border-glass);
-      color: var(--text-muted);
-    }
-
-    /* Pop-Out Categorical OptionRing */
-    .option-ring-popout {
-      background: rgba(14, 21, 40, 0.95);
-      backdrop-filter: blur(24px);
-      border: 1.5px solid var(--bridge-pink);
-      border-radius: var(--radius-lg);
-      padding: 16px 18px;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .option-ring-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .ring-card {
-      padding: 11px 13px;
-      border-radius: 10px;
-      border: 1px solid var(--border-glass);
-      background: rgba(20, 30, 55, 0.8);
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .ring-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--ai-blue);
-    }
-
-    .ring-card.trial {
-      border-color: rgba(168, 85, 247, 0.6);
-      background: rgba(168, 85, 247, 0.12);
-    }
-
-    .ring-card.dormant {
-      opacity: 0.6;
-      border-style: dashed;
-    }
-
-    /* Right Wing: UpNextStrip Queue */
-    .up-next-strip {
-      background: var(--bg-glass-strong);
-      backdrop-filter: blur(22px);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-lg);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .queue-card {
-      padding: 11px 12px;
-      border-radius: 11px;
-      background: rgba(18, 27, 49, 0.82);
-      border: 1px solid var(--border-glass);
-      cursor: pointer;
-      transition: all 0.16s ease;
-    }
-
-    .queue-card:hover {
-      border-color: var(--ai-blue);
-      transform: translateX(-2px);
-    }
-
-    .queue-card.active-now {
-      border-color: var(--you-orange);
-      background: rgba(247, 148, 29, 0.13);
-    }
-
-    .queue-card.hard-esc {
-      border-left: 4px solid var(--alert-red);
-    }
-
-    .queue-card.suppressed-sync {
-      border-left: 4px solid var(--pass-green);
-    }
-
-    /* Paper/Ink M5 Lineage Card */
-    .paper-lineage-card {
-      background: var(--paper-bg);
-      color: var(--paper-ink);
-      border-radius: 10px;
-      padding: 12px;
-      font-family: "SF Mono", "Menlo", monospace;
-      font-size: 11.5px;
-      border: 1px solid #d6cbb5;
-    }
-
-    .slider-row {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    .dossier-section.rules .sec-badge { color: #f39c12; }
+    .dossier-section.more .sec-badge { color: #2ecc71; }
+    .sec-row {
       margin-bottom: 8px;
     }
-
-    .slider-row label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11.5px;
-      color: var(--text-muted);
+    .sec-row:last-child {
+      margin-bottom: 0;
+    }
+    .sec-lbl {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .sec-val {
+      font-size: 13.5px;
+      line-height: 1.42;
+      color: rgba(255, 255, 255, 0.86);
+    }
+    .voi-btn {
+      margin-top: 8px;
+      width: 100%;
+      background: rgba(42, 212, 200, 0.25);
+      border: 1px solid var(--cyan-glow);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Spatial Ornament Bar -->
-  <header class="crossroads-topbar">
-    <div class="brand-cluster">
-      <span class="vision-badge">visionOS 27.0 · Spatial Crossroads</span>
-      <div>
-        <div class="brand-title">PHA × SALVAGE-AI · Inpatient-to-Home Spatial Decision Router</div>
-        <div class="brand-sub">3-Agent Personal Health Agent (DSA + DEA + HCA) · 4D Storetime Lock · M0–M5 Symbiosis Gating</div>
-      </div>
-    </div>
+  <canvas id="room-canvas"></canvas>
 
-    <div class="top-controls">
-      <!-- 3-Seat Role Switcher -->
-      <div class="pill-group" title="3-Seat Role Switcher">
-        <button class="pill-btn role-overseer active" onclick="setRole('overseer')" id="role-overseer">Overseer Seat</button>
-        <button class="pill-btn role-bedside" onclick="setRole('bedside')" id="role-bedside">Bedside Clinic</button>
-        <button class="pill-btn role-nurse" onclick="setRole('nurse')" id="role-nurse">Home-Health Nurse HITM</button>
-      </div>
+  <div id="spatial-volume">
 
-      <!-- Domain Filter -->
-      <div class="pill-group">
-        <button class="pill-btn active" onclick="setDomainFilter('ALL')" id="dom-ALL">All (6)</button>
-        <button class="pill-btn" onclick="setDomainFilter('POST_DFI_SALVAGE')" id="dom-POST_DFI_SALVAGE">4DMFEET Salvage</button>
-        <button class="pill-btn" onclick="setDomainFilter('POST_SEPSIS_CARDIORENAL')" id="dom-POST_SEPSIS_CARDIORENAL">4D-Sepsis Cardiorenal</button>
-      </div>
-
-      <!-- 4D Storetime Lock Toggle -->
-      <button class="toggle-chip active-guard" id="storetime-toggle" onclick="toggleStoretimeLock()">
-        🔒 4D Storetime Lock: ON
-      </button>
-
-      <!-- M3 Blinded Spot-Check Toggle -->
-      <button class="toggle-chip" id="spotcheck-toggle" onclick="toggleSpotCheck()">
-        🎯 M3 Your Call First: OFF
-      </button>
-
-      <a class="toggle-chip" href="/landing">✦ 3D Architecture Overview</a>
-    </div>
-  </header>
-
-  <!-- Live Multi-Seat Co-Presence & Shared DecisionLedger Strip (visionOS 27.0 Simulator <-> PHA Bridge :8790 <-> SALVAGE-AI :8780) -->
-  <section style="margin: 10px 24px 0 24px; padding: 8px 16px; border-radius: 12px; background: rgba(13, 21, 38, 0.85); border: 1px solid rgba(56, 189, 248, 0.40); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-      <span class="toggle-chip active-guard" style="padding:3px 10px; font-size:11px;">
-        ● LIVE MULTI-SEAT SYNC · visionOS 27.0 ↔ :8790 ↔ :8780
-      </span>
-      <span id="pha-ms-ledger" style="font-size:11.5px; font-family:monospace; color:#38bdf8;">
-        Ledger #0 · SHA-256 Verified
-      </span>
-      <div id="pha-ms-peers" style="display:flex; gap:6px; flex-wrap:wrap;">
-        <span class="toggle-chip" style="padding:2px 9px; font-size:11px;"> Vision Pro · OVERSEER (PHA_EP_001)</span>
-        <span class="toggle-chip" style="padding:2px 9px; font-size:11px;">Web :8790 · NURSE (PHA_G01_SILENT_SEPSIS)</span>
-      </div>
-    </div>
-    <div style="display:flex; align-items:center; gap:10px;">
-      <span id="pha-ms-banner" style="font-size:12px; color:#fde68a; font-weight:600;">
-        ⇄ Multi-seat co-presence active — Vision Pro Simulator &amp; Web seats share live DecisionLedger
-      </span>
-      <button class="pill-btn active" onclick="pollPhaMultiSeatSync()" style="padding:3px 10px; font-size:11px;">Sync Now</button>
-    </div>
-  </section>
-
-  <!-- Overhead Shelf: Enlargeable BoardView + CategoriesStrip -->
-  <section class="overhead-shelf">
-    <div class="board-view" id="overhead-board">
-      <div class="board-header">
-        <div class="board-title">
-          <span>Overhead Spatial BoardView · N=160 Benchmark (AUROC 0.8110 Strict vs 1.0000 Leaked · 100% Routine Sync Suppression)</span>
+    <!-- Top-Center Compact Status Card -->
+    <div id="status-card" class="glass-card">
+      <div class="status-top">
+        <button class="status-title-btn" onclick="toggleStatusDrawer()">
+          <span>Status</span>
+          <span class="show-lbl" id="status-show-lbl">Show</span>
+        </button>
+        <span class="synthetic-pill">SYNTHETIC</span>
+        <div class="domain-pills">
+          <button class="domain-btn active" id="dom-home_health" onclick="switchDomain('home_health')">PHA Home-Bridge</button>
+          <button class="domain-btn" id="dom-salvage_dfi" onclick="switchDomain('salvage_dfi')">4DMFEET Salvage</button>
+          <button class="domain-btn" id="dom-sepsis_cardiorenal" onclick="switchDomain('sepsis_cardiorenal')">4D-SEPSIS ICU</button>
         </div>
-        <button class="pill-btn active" onclick="toggleBoardSize()" id="board-size-btn">Enlarge Board ⤢</button>
+        <a href="/landing" class="close-btn">Landing</a>
       </div>
-      <div class="board-lanes" id="board-lanes-container"></div>
+      <div class="status-metrics">
+        <div class="stat-inline">
+          <span class="val" id="stat-reviewed">0/6</span>
+          <span class="lbl">Reviewed</span>
+        </div>
+        <div class="stat-inline" id="stat-alerts-wrap">
+          <span class="val" id="stat-alerts">0</span>
+          <span class="lbl">Alerts</span>
+        </div>
+        <div class="stat-inline" id="stat-corr-wrap">
+          <span class="val" id="stat-corrections">0</span>
+          <span class="lbl">Corrections</span>
+        </div>
+      </div>
+      <div id="status-drawer">
+        <div style="margin-bottom:6px; font-weight:700; color:#fff;">
+          PHA × SALVAGE-AI Continuum Ledger · 0.0% False Reassurance (<span id="sync-indicator">LIVE :8790</span>)
+        </div>
+        <div id="audit-log-rows">
+          <div class="audit-row"><span>Waiting for first decision...</span><span>Epistemic Abstention Active</span></div>
+        </div>
+      </div>
     </div>
 
-    <div class="categories-strip" id="categories-strip-container"></div>
-  </section>
-
-  <!-- Main 3-Wing Spatial Crossroads Stage -->
-  <main class="crossroads-stage" id="crossroads-stage">
-
-    <!-- Left Wing: Collapsible SidePanel -->
-    <aside class="side-panel" id="left-side-panel">
-      <div class="side-panel-header">
-        <span style="font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);" id="side-panel-title">
-          Left Wing · Deep Inspection
-        </span>
-        <button class="pill-btn" onclick="toggleSidePanel()" id="side-collapse-btn" title="Collapse/Expand SidePanel">◀</button>
+    <!-- Lower-Left Spoke Card: Layer 1 Intake -->
+    <div id="spoke-layer1" class="glass-card spoke-card">
+      <div class="spoke-header">
+        <span class="spoke-name">Layer 1</span>
+        <span class="spoke-count"><strong id="l1-waiting-count">5</strong> waiting</span>
       </div>
-      <div id="side-panel-inner">
-        <div class="side-tabs">
-          <button class="side-tab-btn active" onclick="setSideTab('agents')" id="stab-agents">3-Agent PHA</button>
-          <button class="side-tab-btn" onclick="setSideTab('trust')" id="stab-trust">Rate Trust (R/N/W/D)</button>
-          <button class="side-tab-btn" onclick="setSideTab('voi')" id="stab-voi">Ask Next (VOI)</button>
-          <button class="side-tab-btn" onclick="setSideTab('m4')" id="stab-m4">M4 Promote ★</button>
-          <button class="side-tab-btn" onclick="setSideTab('m5')" id="stab-m5">M5 Lineage</button>
+      <div id="l1-next-id" style="font-size:17px; font-weight:800; margin-bottom:2px;">HK6-007</div>
+      <div class="spoke-sub" id="l1-next-why">Day 5 07:45: Home oral temp 38.9°C with resting HR 108 bpm (+28 bpm).</div>
+    </div>
+
+    <!-- Upper-Left Spoke Card: Route Desk -->
+    <div id="spoke-routedesk" class="glass-card spoke-card">
+      <div class="spoke-header">
+        <span class="spoke-dot"></span>
+        <span class="spoke-name">Route desk</span>
+        <span class="spoke-count"><strong id="desk-sent-count">0</strong> sent</span>
+      </div>
+      <div class="spoke-sub" id="desk-sub">silent, nurse, or provider</div>
+    </div>
+
+    <!-- Upper-Right Spoke Card: Urgent Page -->
+    <div id="spoke-urgent" class="glass-card spoke-card">
+      <div class="spoke-header">
+        <span class="spoke-dot"></span>
+        <span class="spoke-name">Urgent page</span>
+        <span class="spoke-count"><strong id="urgent-sent-count">0</strong> sent</span>
+      </div>
+      <div class="spoke-sub" id="urgent-sub">Pass sends here</div>
+    </div>
+
+    <!-- Mid-Left Peel-Back Dossier Card (Hidden at Awareness Level 0) -->
+    <div id="dossier-card" class="glass-card">
+      <div class="dossier-top">
+        <span class="dossier-id" id="dos-id">HK6-006</span>
+        <span id="dos-route-chip" class="route-pill urgent_page">Urgent page</span>
+        <button class="dossier-collapse" onclick="collapseLayer()">Collapse</button>
+      </div>
+      <div id="dossier-body"></div>
+    </div>
+
+    <!-- Center NOW Card -->
+    <div id="now-card" class="glass-card">
+      <div class="now-row1">
+        <span class="now-badge">NOW</span>
+        <span class="now-id" id="now-id">HK6-006</span>
+        <span id="now-route-chip" class="route-pill urgent_page">Urgent page</span>
+        <span class="now-right-badge" id="now-badge-right">Bundled</span>
+      </div>
+      <div class="now-story" id="now-story">
+        Day 4 08:12: Finger-stick glucose 54 mg/dL before breakfast, repeated 58 mg/dL 15m later after juice. Lives alone, reports shakiness.
+      </div>
+      <div class="now-actions">
+        <button class="action-btn btn-pass" onclick="passCurrent()">Pass ✓</button>
+        <button class="action-btn btn-modify" onclick="toggleModifyPopover()">Modify...</button>
+        <button class="action-btn btn-collapse" onclick="collapseLayer()">Collapse</button>
+      </div>
+      <div class="now-layers">
+        <button class="layer-pill active" id="pill-0" onclick="jumpLayer(0)">Awareness</button>
+        <button class="layer-pill" id="pill-1" onclick="jumpLayer(1)">Story</button>
+        <button class="layer-pill" id="pill-2" onclick="jumpLayer(2)">Rules</button>
+        <button class="layer-pill" id="pill-3" onclick="jumpLayer(3)">More</button>
+      </div>
+      <div class="now-footer">
+        Collapse peels one layer. Awareness keeps Pass and Modify.
+      </div>
+    </div>
+
+    <!-- Modify Route Popover -->
+    <div id="modify-popover" class="glass-card">
+      <div class="mod-title">Change route</div>
+      <div class="mod-sub">Select destination tier. Logs human override to the signed ledger.</div>
+      <button class="mod-opt" onclick="selectModifiedRoute('urgent_page')">
+        <span><strong>Urgent page</strong> · Immediate OR / ICU / ED escalation</span>
+        <span class="route-pill urgent_page">Urgent page</span>
+      </button>
+      <button class="mod-opt" onclick="selectModifiedRoute('provider_task')">
+        <span><strong>Provider task</strong> · Same-day Attending / Vascular consult</span>
+        <span class="route-pill provider_task">Provider task</span>
+      </button>
+      <button class="mod-opt" onclick="selectModifiedRoute('nurse_task')">
+        <span><strong>Nurse task</strong> · Hold autonomy &amp; collect bedside VOI first</span>
+        <span class="route-pill nurse_task">Nurse task</span>
+      </button>
+      <button class="mod-opt" onclick="selectModifiedRoute('silent_log')">
+        <span><strong>Silent log</strong> · Record verified stability with zero alert</span>
+        <span class="route-pill silent_log">Silent log</span>
+      </button>
+    </div>
+
+    <!-- Mid-Right Compact Queue Card -->
+    <div id="queue-card" class="glass-card">
+      <div class="queue-header" onclick="toggleQueueOpen()">
+        <span class="queue-title" id="queue-title-lbl">Queue</span>
+        <div class="queue-count-wrap">
+          <span class="queue-count" id="queue-count">4</span>
+          <span class="queue-show" id="queue-show-lbl">Show</span>
         </div>
-        <div class="side-body" id="side-panel-content"></div>
       </div>
-    </aside>
+      <div class="queue-list" id="queue-list"></div>
+    </div>
 
-    <!-- Center Wing: Central NowCard + Pop-Out Categorical OptionRing -->
-    <section class="center-crossroads">
-      <div class="now-card" id="now-card-container"></div>
-      <div id="option-ring-wrapper" style="display:none;"></div>
-    </section>
-
-    <!-- Right Wing: UpNextStrip Priority Queue -->
-    <aside class="up-next-strip">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);">
-          Right Wing · Up-Next Queue
-        </span>
-        <span style="font-size:11px;color:var(--ai-blue);" id="queue-count-label">6 Episodes</span>
-      </div>
-      <p style="font-size:11.5px;color:var(--text-muted);">
-        Click any card to pull into the central <strong>NowCard</strong> crossroads (`makeNow`).
-      </p>
-      <div id="up-next-list" style="display:flex;flex-direction:column;gap:8px;"></div>
-    </aside>
-
-  </main>
+  </div>
 
   <script>
-    const SCENARIOS = [
-      {
-        scenario_id: "PHA-01",
-        title: "Post-DFI Plantar Thermal Flare (+2.6°C) + Pending Wound Culture (4D Storetime Trap)",
-        cohort_domain: "POST_DFI_SALVAGE",
-        patient_id: "PHA_PT_DFI01",
-        t_landmark_hours: 168.0,
-        spatial_crossroads_mode: "NOW_CARD_HARD_ESCALATION",
-        urgency: "STAT_PROVIDER_CROSSROADS",
-        drift_z_score: 3.06,
-        wake_cloud_orchestrator: true,
-        suppress_cloud_wakeup: false,
-        predicted_risk: 0.432,
-        leaked_risk: 0.948,
-        leakage_rows_blocked: 2,
-        red_flags: [
-          "PLANTAR_THERMAL_FLARE (+2.6°C >= 2.2°C)",
-          "SUBOPTIMAL_BOOT_OFFLOADING (52% < 70%)",
-          "AUTONOMIC_TACHYCARDIA (RHR 88 bpm, +17 bpm)",
-          "AUTONOMIC_HRV_SUPPRESSION (RMSSD 24 ms, -18 ms)"
-        ],
-        role_seat_framings: {
-          overseer: "Limb Salvage Podiatry/Vascular Overseer: ΔT=+2.6°C plantar asymmetry (drift z=3.06); 4D storetime lock holds 2 pending lab/culture records (CRP drawn 164h/posts 172h; MRSA culture posts 212h).",
-          bedside: "Wound Clinic Provider: Inspect plantar ulcer depth, verify TCC/boot offloading (52%), and confirm STAT CRP + deep probe-to-bone before escalating antibiotics.",
-          nurse: "Home-Health Triage Nurse (HITM): Pause autonomous walking progression immediately, perform OARS check-in on boot wear (52%), and book same-day limb-salvage clinic slot."
-        },
-        cascading_dossier: {
-          L0_awareness: "[PHA-01] NOW_CARD_HARD_ESCALATION · Drift z=3.06 · Red Flags=4 · Held-Back 4D Labs=2 (CRP, Deep Culture)",
-          L1_trends: "7d Wearable Trajectory: Plantar ΔT +0.7°C → +2.6°C, RHR 71 → 88 bpm (Z=+1.89), HRV 42 → 24 ms (Z=-1.80), Smart-Boot Adherence 92% → 52%.",
-          L2_storetime_target_trial: "4D Storetime Lock: Outpatient CRP (94 mg/L, storetime 172h) & MRSA Culture (storetime 212h) are MASKED at t=168h. Target-Trial Gate PHA_TT1 fails closed (NOT_IDENTIFIABLE, overlap 31.4% < 70%).",
-          L3_full_chart: "3-Agent PHA Synthesis: DSA blocks look-ahead leakage; DEA ranks Hallux Toe Pressure (VOI 0.95) & Deep Culture (VOI 0.95); HCA halts exercise coaching and routes signed sdr.decision.v1 NowCard."
-        },
-        field_reliability: {
-          plantar_temp_asymmetry_c: "reliable",
-          boot_offloading_adherence_pct: "said_differently",
-          crp_mg_l: "not_said",
-          wound_probe_or_culture: "not_said",
-          pedal_doppler_toe_pressure_mmhg: "not_said"
-        },
-        if_wrong_risk_range: "If empirical step progression continues during +2.6°C flare: [23.8%, 76.9%] 30-day relapse / osteomyelitis amputation risk.",
-        voi_workup: [
-          { feature_key: "pedal_doppler_toe_pressure_mmhg", label: "Outpatient Hallux Toe Pressure / Perfusion", status: "MISSING_UNORDERED", voi: 0.95, range: "[0.238, 0.755]" },
-          { feature_key: "wound_probe_or_culture", label: "Deep Wound / Bone Culture Speciation", status: "PENDING_AT_LANDMARK", voi: 0.95, range: "[0.238, 0.755]" },
-          { feature_key: "crp_mg_l", label: "Outpatient C-Reactive Protein (CRP)", status: "PENDING_AT_LANDMARK", voi: 0.92, range: "[0.238, 0.745]" }
-        ],
-        oars: {
-          mode: "HALTED_FOR_CLINICIAN_ESCALATION",
-          open_q: "I noticed a +2.6°C warmth spike on your smart-boot mat today—have you felt new throbbing or chills over the past 12 hours?",
-          affirmation: "Thank you for syncing your smart-boot sensor every morning; catching this thermal shift early protects your foot.",
-          reflection: "When plantar asymmetry exceeds 2.2°C and outpatient culture results are still pending in the lab, autonomous step coaching is paused.",
-          summary: "Offload strictly for 24h, complete same-day hallux perfusion & CRP check, and await your provider's signed NowCard."
-        }
-      },
-      {
-        scenario_id: "PHA-05",
-        title: "Post-Sepsis Acute +2.5 kg Fluid Surge + Unordered Urine Sodium (Fail-Closed Gate)",
-        cohort_domain: "POST_SEPSIS_CARDIORENAL",
-        patient_id: "PHA_PT_SEP02",
-        t_landmark_hours: 168.0,
-        spatial_crossroads_mode: "NOW_CARD_HARD_ESCALATION",
-        urgency: "STAT_PROVIDER_CROSSROADS",
-        drift_z_score: 3.85,
-        wake_cloud_orchestrator: true,
-        suppress_cloud_wakeup: false,
-        predicted_risk: 0.449,
-        leaked_risk: 0.912,
-        leakage_rows_blocked: 2,
-        red_flags: [
-          "ACUTE_FLUID_WEIGHT_GAIN (+2.5 kg >= 2.0 kg)",
-          "AUTONOMIC_TACHYCARDIA (RHR 101 bpm, +22 bpm)",
-          "AUTONOMIC_HRV_SUPPRESSION (RMSSD 18 ms, -15 ms)"
-        ],
-        role_seat_framings: {
-          overseer: "Cardiorenal HF/Nephrology Overseer: ΔWeight=+2.5kg in 72h (drift z=3.85); 4D storetime lock masks pending NT-proBNP (174h) & Cr (171h).",
-          bedside: "Cardiorenal Day-Unit Provider: Perform bedside VExUS venous congestion scan + STAT Spot Urine Sodium before IV vs oral loop diuretic titration.",
-          nurse: "Home-Health Cardiorenal Nurse (HITM): Pause autonomous fluid/step targets, assess orthopnea, and arrange STAT BMP + Urine Na draw."
-        },
-        cascading_dossier: {
-          L0_awareness: "[PHA-05] NOW_CARD_HARD_ESCALATION · Drift z=3.85 · Red Flags=3 · Held-Back 4D Labs=2 (Serum Cr, NT-proBNP)",
-          L1_trends: "7d Wearable Trajectory: Weight 88.0 → 90.5 kg (+2.5 kg), RHR 79 → 101 bpm, HRV 33 → 18 ms, Sleep 6.9 → 4.9h.",
-          L2_storetime_target_trial: "4D Storetime Lock masks Cr 2.45 mg/dL (storetime 171h) & NT-proBNP 4850 pg/mL (storetime 174h). Target-Trial PHA_SEPSIS_TT1 fails closed (overlap 28.5% < 70%).",
-          L3_full_chart: "3-Agent PHA Synthesis: Autonomous diuretic adjustment without verified Spot Urine Na & potassium violates positivity; STAT NowCard escalated."
-        },
-        field_reliability: {
-          body_weight_kg: "reliable",
-          spot_urine_sodium_mmol_l: "not_said",
-          serum_creatinine_mg_dl: "not_said",
-          venous_pocus_vexus_grade: "not_said"
-        },
-        if_wrong_risk_range: "Blindly doubling loop diuretic vs missing acute cardiorenal decompensation: [24.7%, 77.9%] 30d readmission/AKI risk.",
-        voi_workup: [
-          { feature_key: "serum_creatinine_mg_dl", label: "Outpatient Serum Creatinine (BMP)", status: "PENDING_AT_LANDMARK", voi: 0.97, range: "[0.247, 0.779]" },
-          { feature_key: "spot_urine_sodium_mmol_l", label: "Spot Urine Sodium (Natriuresis Check)", status: "MISSING_UNORDERED", voi: 0.96, range: "[0.247, 0.776]" },
-          { feature_key: "venous_pocus_vexus_grade", label: "Point-of-Care VExUS Congestion Grade", status: "MISSING_UNORDERED", voi: 0.91, range: "[0.247, 0.759]" }
-        ],
-        oars: {
-          mode: "HALTED_FOR_CLINICIAN_ESCALATION",
-          open_q: "Your morning scale logged a +2.5 kg increase over 3 days—have you noticed ankle swelling or needing extra pillows to sleep?",
-          affirmation: "Logging your morning weight and wearing your ring daily caught this fluid shift before an emergency room visit.",
-          reflection: "Because your BMP and Spot Urine Sodium are still unverified, self-adjusting diuretics at home is unsafe.",
-          summary: "Hold autonomous fluid changes, complete today's STAT BMP + Spot Urine Sodium draw, and join the same-day cardiorenal clinic review."
-        }
-      },
-      {
-        scenario_id: "PHA-03",
-        title: "Post-DFI Unmeasured Outpatient Perfusion (Unavailable != Negative VOI Routing)",
-        cohort_domain: "POST_DFI_SALVAGE",
-        patient_id: "PHA_PT_DFI03",
-        t_landmark_hours: 240.0,
-        spatial_crossroads_mode: "NOW_CARD_STANDARD_REVIEW",
-        urgency: "SAME_DAY_CLINIC_REVIEW",
-        drift_z_score: 2.12,
-        wake_cloud_orchestrator: true,
-        suppress_cloud_wakeup: false,
-        predicted_risk: 0.236,
-        leaked_risk: 0.236,
-        leakage_rows_blocked: 0,
-        red_flags: [],
-        role_seat_framings: {
-          overseer: "Limb Salvage Overseer: Prior inpatient ABI 1.42 (calcified); Day 10 hallux toe pressure is MISSING_UNORDERED (VOI=0.95).",
-          bedside: "Wound Clinic Provider: Obtain bedside Doppler hallux toe pressure + TcPO2 before clearing patient for increased weight-bearing.",
-          nurse: "Home-Health Nurse (HITM): Reinforce 85%+ smart-boot adherence (currently 72%) and schedule non-invasive vascular lab slot."
-        },
-        cascading_dossier: {
-          L0_awareness: "[PHA-03] NOW_CARD_STANDARD_REVIEW · Drift z=2.12 · Unmeasured Hallux Toe Pressure Flagged (VOI=0.95)",
-          L1_trends: "7d Wearable Trajectory: ΔT +1.3°C → +1.8°C, Boot Adherence 81% → 72%, HbA1c verified at 8.4%.",
-          L2_storetime_target_trial: "240-KC VOI Router blocks zero-imputation of missing hallux toe pressure (Unavailable != Negative). Target-Trial TT2 feasible with Manski bounds [-0.42, +0.38].",
-          L3_full_chart: "3-Agent PHA Synthesis: DEA prioritizes hallux toe pressure (VOI 0.95) & deep wound probe (VOI 0.92) before step progression."
-        },
-        field_reliability: {
-          plantar_temp_asymmetry_c: "reliable",
-          boot_offloading_adherence_pct: "reliable",
-          hba1c_pct: "reliable",
-          pedal_doppler_toe_pressure_mmhg: "not_said"
-        },
-        if_wrong_risk_range: "Assuming normal perfusion under medial arterial calcinosis: [13.0%, 55.9%] occult ischemic ulcer relapse risk.",
-        voi_workup: [
-          { feature_key: "pedal_doppler_toe_pressure_mmhg", label: "Outpatient Hallux Toe Pressure / Perfusion", status: "MISSING_UNORDERED", voi: 0.95, range: "[0.130, 0.559]" },
-          { feature_key: "wound_probe_or_culture", label: "Deep Wound / Bone Culture Speciation", status: "MISSING_UNORDERED", voi: 0.92, range: "[0.130, 0.549]" },
-          { feature_key: "crp_mg_l", label: "Outpatient C-Reactive Protein (CRP)", status: "MISSING_UNORDERED", voi: 0.89, range: "[0.130, 0.539]" }
-        ],
-        oars: {
-          mode: "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-          open_q: "You've been wearing the offloading boot 72% of the time—what moments during the day make the boot hardest to keep on?",
-          affirmation: "Your honesty and daily sensor syncs give us an accurate picture of how the foot is tolerating household walking.",
-          reflection: "Raising boot wear above 85% lowers 90-day re-ulceration by 16.4%, while we verify hallux perfusion in clinic.",
-          summary: "Aim for >=85% boot adherence indoors this week and complete the ordered hallux toe-pressure Doppler study."
-        }
-      },
-      {
-        scenario_id: "PHA-04",
-        title: "Post-Sepsis Cardiorenal Decongestion with Permissive Hypercreatininemia (UNa > 70)",
-        cohort_domain: "POST_SEPSIS_CARDIORENAL",
-        patient_id: "PHA_PT_SEP01",
-        t_landmark_hours: 120.0,
-        spatial_crossroads_mode: "SUPPRESSED_ROUTINE_SYNC",
-        urgency: "ROUTINE_COACHING",
-        drift_z_score: 1.45,
-        wake_cloud_orchestrator: false,
-        suppress_cloud_wakeup: true,
-        predicted_risk: 0.057,
-        leaked_risk: 0.057,
-        leakage_rows_blocked: 0,
-        red_flags: [],
-        role_seat_framings: {
-          overseer: "Cardiorenal Overseer: Cr 1.82 mg/dL with brisk Spot UNa 84 mmol/L & -1.8 kg weight loss = benign hemoconcentration (Anti-Reward-Hacking +2.85).",
-          bedside: "Cardiorenal Clinic Provider: Do NOT halt torsemide/SGLT2i; mild Cr rise reflects successful intravascular decongestion (RD = -13.1%).",
-          nurse: "Home-Health Nurse (HITM): Reinforce daily morning dry weight & OARS hydration coaching; routine sync suppressed from STAT interruption."
-        },
-        cascading_dossier: {
-          L0_awareness: "[PHA-04] SUPPRESSED_ROUTINE_SYNC · Permissive Hypercreatininemia Guard Active (Spot UNa 84 mmol/L > 70)",
-          L1_trends: "5d Trajectory: Weight 82.4 → 80.6 kg (-1.8 kg), RHR 82 → 73 bpm, HRV 29 → 38 ms, Cr 1.82 mg/dL, Spot UNa 84 mmol/L.",
-          L2_storetime_target_trial: "Target-Trial PHA_SEPSIS_TT2 feasible (overlap 96.0%, |SMD|=0.038): continuing decongestion reduces 30d HF/sepsis readmission by -13.1% (E-value 3.12).",
-          L3_full_chart: "3-Agent PHA Synthesis: Prevents naive AKI reward-hacking (which would falsely stop diuretics); HCA continues active OARS coaching."
-        },
-        field_reliability: {
-          body_weight_kg: "reliable",
-          serum_creatinine_mg_dl: "reliable",
-          spot_urine_sodium_mmol_l: "reliable",
-          venous_pocus_vexus_grade: "not_said"
-        },
-        if_wrong_risk_range: "Falsely stopping diuresis for benign hemoconcentration increases rebound congestion risk by +13.1%.",
-        voi_workup: [
-          { feature_key: "venous_pocus_vexus_grade", label: "Outpatient VExUS Congestion Grade", status: "MISSING_UNORDERED", voi: 0.91, range: "[0.031, 0.367]" },
-          { feature_key: "nt_probnp_pg_ml", label: "Outpatient NT-proBNP Trend", status: "MISSING_UNORDERED", voi: 0.86, range: "[0.031, 0.350]" }
-        ],
-        oars: {
-          mode: "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-          open_q: "Your breathing and HRV have improved steadily as 1.8 kg of fluid came off—how is your energy level during morning walks?",
-          affirmation: "Consistent morning weight checks and prescribed torsemide adherence are driving textbook cardiorenal recovery.",
-          reflection: "Your slight creatinine bump alongside strong urine sodium (84 mmol/L) shows effective fluid removal, not kidney injury.",
-          summary: "Continue current decongestive regimen and daily weight log; no urgent clinician interrupt needed."
-        }
-      },
-      {
-        scenario_id: "PHA-02",
-        title: "Post-DFI Minor Ray Resection Remission (Anti-Reward-Hacking + Active OARS Coaching)",
-        cohort_domain: "POST_DFI_SALVAGE",
-        patient_id: "PHA_PT_DFI02",
-        t_landmark_hours: 336.0,
-        spatial_crossroads_mode: "SUPPRESSED_ROUTINE_SYNC",
-        urgency: "ROUTINE_COACHING",
-        drift_z_score: 0.59,
-        wake_cloud_orchestrator: false,
-        suppress_cloud_wakeup: true,
-        predicted_risk: 0.119,
-        leaked_risk: 0.119,
-        leakage_rows_blocked: 0,
-        red_flags: [],
-        role_seat_framings: {
-          overseer: "Limb Salvage Overseer: Planned 2nd-toe minor ray resection with intact heel arch = +3.00 Functional Salvage Utility (NOT penalized as major amputation).",
-          bedside: "Wound Clinic Provider: Granulating wound bed, CRP 8.5 mg/L, Hallux Toe Pressure 58 mmHg; continue transition to custom offloading footwear.",
-          nurse: "Home-Health Nurse (HITM): Celebrate 94% smart-boot adherence via OARS Affirmation; routine wearable sync suppressed at Vision Pro Gate."
-        },
-        cascading_dossier: {
-          L0_awareness: "[PHA-02] SUPPRESSED_ROUTINE_SYNC · Drift z=0.59 · Functional Salvage Utility +3.00 · 94% Boot Adherence",
-          L1_trends: "14d Trajectory: Plantar ΔT 0.5°C, RHR 68 bpm, HRV 46 ms, Smart-Boot Adherence 94%, CRP 8.5 mg/L, Toe Pressure 58 mmHg.",
-          L2_storetime_target_trial: "Target-Trial PHA_TT2 feasible (94.2% overlap): >=85% boot adherence reduces 90d re-ulceration by -16.4% (E-value 2.84).",
-          L3_full_chart: "3-Agent PHA Synthesis: Zero red flags; Vision Pro Spatial Gate suppresses unnecessary provider alert while HCA delivers OARS coaching."
-        },
-        field_reliability: {
-          plantar_temp_asymmetry_c: "reliable",
-          boot_offloading_adherence_pct: "reliable",
-          crp_mg_l: "reliable",
-          pedal_doppler_toe_pressure_mmhg: "reliable"
-        },
-        if_wrong_risk_range: "Premature transition out of offloading boot before full epithelialization: [6.5%, 43.2%] relapse risk.",
-        voi_workup: [
-          { feature_key: "wound_probe_or_culture", label: "Routine Surveillance Wound Check", status: "MISSING_UNORDERED", voi: 0.92, range: "[0.065, 0.432]" },
-          { feature_key: "hba1c_pct", label: "Quarterly Glycated Hemoglobin (HbA1c)", status: "MISSING_UNORDERED", voi: 0.74, range: "[0.065, 0.371]" }
-        ],
-        oars: {
-          mode: "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-          open_q: "You've held 94% smart-boot adherence for two full weeks—what routine helped you stay so consistent?",
-          affirmation: "Maintaining 94% offloading and 7.9 hours of sleep is directly protecting your healing plantar arch.",
-          reflection: "Aligned Functional Salvage Utility (+3.00) recognizes your successful ray preservation and steady perfusion (58 mmHg).",
-          summary: "Keep >=88% boot adherence over the next 7 days as we prepare for custom orthotic fitting."
-        }
-      },
-      {
-        scenario_id: "PHA-06",
-        title: "Post-Sepsis Stable Euvolemic Recovery (Routine Wearable Sync Suppressed at Spatial Gate)",
-        cohort_domain: "POST_SEPSIS_CARDIORENAL",
-        patient_id: "PHA_PT_SEP03",
-        t_landmark_hours: 240.0,
-        spatial_crossroads_mode: "SUPPRESSED_ROUTINE_SYNC",
-        urgency: "ROUTINE_COACHING",
-        drift_z_score: 0.35,
-        wake_cloud_orchestrator: false,
-        suppress_cloud_wakeup: true,
-        predicted_risk: 0.104,
-        leaked_risk: 0.104,
-        leakage_rows_blocked: 0,
-        red_flags: [],
-        role_seat_framings: {
-          overseer: "Cardiorenal Overseer: Euvolemic weight (76.1 kg), RHR 66 bpm, HRV 48 ms, Cr 0.95 mg/dL; 0 interrupts.",
-          bedside: "Outpatient Primary/Cardiorenal Clinic: Routine 30-day follow-up; no acute medication changes required.",
-          nurse: "Home-Health Nurse (HITM): Automated OARS maintenance check-in; Vision Pro Spatial Gate suppresses cloud/provider wake-up."
-        },
-        cascading_dossier: {
-          L0_awareness: "[PHA-06] SUPPRESSED_ROUTINE_SYNC · Drift z=0.35 · Euvolemic Recovery (Cr 0.95 mg/dL)",
-          L1_trends: "10d Trajectory: Weight 76.2 → 76.1 kg, RHR 68 → 66 bpm, HRV 45 → 48 ms, Steps 4500 → 5800/day.",
-          L2_storetime_target_trial: "All verified labs within normal limits under strict storetime lock; Target-Trial TT2 feasible.",
-          L3_full_chart: "3-Agent PHA Synthesis: Demonstrates 100% benign sync suppression at the Vision Pro Spatial Gate."
-        },
-        field_reliability: {
-          body_weight_kg: "reliable",
-          serum_creatinine_mg_dl: "reliable",
-          spot_urine_sodium_mmol_l: "not_said"
-        },
-        if_wrong_risk_range: "Low baseline readmission risk band: [5.7%, 39.6%].",
-        voi_workup: [
-          { feature_key: "spot_urine_sodium_mmol_l", label: "Optional Baseline Spot Urine Sodium", status: "MISSING_UNORDERED", voi: 0.96, range: "[0.057, 0.431]" }
-        ],
-        oars: {
-          mode: "ACTIVE_MOTIVATIONAL_INTERVIEWING",
-          open_q: "You're back up to 5,800 steps a day with steady 8-hour sleep—what recovery milestone are you looking forward to next?",
-          affirmation: "Your steady hydration, sleep, and gradual walking progression have restored your HRV to 48 ms.",
-          reflection: "With verified kidney function (Cr 0.95 mg/dL) and stable weight, your recovery is right on track.",
-          summary: "Continue daily morning weight check and progressive walking routine."
-        }
-      }
-    ];
+    const ROUTE_TITLES = {
+      urgent_page: "Urgent page",
+      provider_task: "Provider task",
+      nurse_task: "Nurse task",
+      silent_log: "Silent log"
+    };
 
-    const state = {
-      activeScenarioId: "PHA-01",
-      role: "overseer",
-      domainFilter: "ALL",
-      strictStoretimeLock: true,
-      spotCheckMode: false,
-      spotCheckCommitted: {},
-      boardEnlarged: false,
-      sideCollapsed: false,
-      sideTab: "agents",
-      cascadeLevel: 2,
-      openAccordion: "dsa",
-      showAiDepth: false,
-      optionRingOpen: false,
-      hoveredOptionPreview: null,
-      autonomyDelta: 0,
-      lastAutonomyDelta: 0,
-      splitRating: {},
-      decisionLedger: [],
-      categories: [
-        { code: "ACCEPT_PATHWAY", label: "Accept VOI + OARS Pathway", lifecycle: "promoted", badge: "★ Promoted", preview: "Orders top-VOI diagnostic test + updates HCA OARS coaching state." },
-        { code: "STAT_CLINIC_SLOT", label: "Fast-Track 24h Limb/Cardiorenal Clinic", lifecycle: "promoted", badge: "★ Promoted", preview: "Books same-day vascular/cardiorenal clinic slot + holds empirical IV escalation." },
-        { code: "TRIAL_VIDEO_BOOT_12H", label: "trial: 12h Video Offload & Thermal Re-Check", lifecycle: "trial", runs: 5, agree: 92, badge: "trial (5/5 runs · 92% agree)", preview: "Schedules 12h nurse video check + repeat smart-mat thermal scan." },
-        { code: "DORMANT_EMPIRICAL_ABX", label: "Dormant: Empirical Home Antibiotic Escalation", lifecycle: "dormant", badge: "⌀ Dormant", preview: "Blocked by Target-Trial stewardship guard until culture/CRP storetime." }
+    const DOMAINS = {
+      home_health: [
+        {
+          id: "HK6-006",
+          route: "urgent_page",
+          badge: "Bundled",
+          story: "Day 4 08:12: Finger-stick glucose 54 mg/dL before breakfast, repeated 58 mg/dL 15m later after juice. Lives alone, reports shakiness.",
+          purpose: "Trigger immediate live outreach for persistent symptomatic hypoglycemia in a solo-living post-discharge patient.",
+          whyFlagged: "Two consecutive blood glucose readings < 60 mg/dL failed to recover after oral fast-acting carbohydrate.",
+          context: "72F Post-Discharge Day 4 · Solo living · Persistent hypoglycemia despite rescue carb.",
+          methodsUsed: "Home Glycemic Safety Gate (persistent < 60 mg/dL after rescue carb + solo-living risk factor).",
+          blindSpot: "Unresolved hypoglycemia in a patient living alone risks neuroglycopenic syncope or seizure.",
+          overallScope: "Urgent page initiates an immediate live clinician call and holds morning basal/bolus insulin.",
+          voiText: "Verify Glucagon Kit & Live Voice Contact (VOI 0.96)"
+        },
+        {
+          id: "HK6-007",
+          route: "urgent_page",
+          badge: "4D Live",
+          story: "Day 5 07:45: Home oral temp 38.9°C with resting heart rate 108 bpm (+28 bpm above baseline) and foul drainage on post-debridement dressing.",
+          purpose: "Bypass outpatient clinic queues and route directly to the Emergency Department / Surgical team for wet gangrene sepsis.",
+          whyFlagged: "Systemic fever (38.9°C) + tachycardia (108 bpm) + purulent plantar drainage triggers the non-bypassable M0 home-sepsis alarm.",
+          context: "63M Post-Ray Resection Day 5 · Fever 38.9°C, HR 108, foul purulence -> Direct ED/OR Bypass.",
+          methodsUsed: "M0 Home-to-ED Direct Escalation Rule (SIRS + Post-Op Wound Breakdown).",
+          blindSpot: "Waiting for a routine outpatient podiatry appointment risks life-threatening bacteremia and limb loss.",
+          overallScope: "Urgent page pages the Limb-Salvage On-Call & ED Fast-Track Desk immediately.",
+          voiText: "Dispatch EMS Transport & Alert ED Triage (VOI 0.98)"
+        },
+        {
+          id: "LX4-009",
+          route: "nurse_task",
+          badge: "VOI Gate",
+          story: "Day 9 08:30: Smart-sock plantar temperature rose +3.1°C at right 1st MTP over 48 hours while resting HRV dropped -31%. Patient reports 0/10 foot pain.",
+          purpose: "Block the consumer Personal Health Agent (PHA) from giving false self-care reassurance when diabetic neuropathy masks pain and blood flow is unmeasured.",
+          whyFlagged: "Sustained +3.1°C plantar heat + autonomic stress (-31% HRV) signals silent diabetic foot ulcer recurrence, even though pain is 0/10.",
+          context: "69F Post-Discharge Day 9 · Smart-sock +3.1°C & HRV -31% · Perfusion unverified at home.",
+          methodsUsed: "PHA × SALVAGE-AI Epistemic Abstention Gate (0.0% false reassurance vs 51.8% ungated) + 14-Day Wearable Trend Fusion.",
+          blindSpot: "If 0/10 pain is trusted as 'safe to watch at home' (51.8% ungated failure mode), silent ischemia progresses to deep infection.",
+          overallScope: "Nurse task holds consumer AI reassurance and dispatches a home-health nurse for handheld Doppler toe pressure & wound photo today.",
+          voiText: "Dispatch Home-Health Nurse for Handheld Doppler Toe Pressure (VOI 0.94)"
+        },
+        {
+          id: "M82-004",
+          route: "provider_task",
+          badge: "4D Live",
+          story: "Day 11 10:05: Continuous glucose monitor Time-in-Range fell from 74% to 44% over 5 days alongside a +1.8°C plantar warm spot.",
+          purpose: "Arrange same-day multidisciplinary limb-salvage & endocrine review for early inflammatory stress hyperglycemia.",
+          whyFlagged: "Parallel glycemic deterioration (-30% TIR) and focal plantar warming (+1.8°C) precede overt ulcer breakdown by 4–7 days.",
+          context: "66M Post-Discharge Day 11 · Coupled glycemic & plantar thermal drift.",
+          methodsUsed: "Multi-Stream Wearable Coupling Detector (CGM TIR + Smart-Sock ΔT cross-correlation).",
+          blindSpot: "Treating high glucose alone without inspecting the foot misses occult pre-ulcerative callus hemorrhage.",
+          overallScope: "Provider task books a same-day Limb-Salvage & Endocrine telehealth + offloading boot adjustment.",
+          voiText: "Request Patient Plantar Photo & Offloading Boot Log (VOI 0.88)"
+        },
+        {
+          id: "N19-001",
+          route: "silent_log",
+          badge: "Bundled",
+          story: "Day 14 08:00: Smart-sock ΔT +0.4°C (symmetric), resting HRV 41 ms (+8% recovery), CGM Time-in-Range 79%, offloading adherence 94%.",
+          purpose: "Confirm stable 14-day post-discharge recovery and allow the consumer PHA to continue routine coaching.",
+          whyFlagged: "Scheduled Day-14 transition milestone; all thermal, autonomic, glycemic, and offloading thresholds are green.",
+          context: "58F Post-Discharge Day 14 · Symmetric thermal profile & 94% offloading adherence.",
+          methodsUsed: "14-Day Post-Discharge Positivity Gate (verified symmetric plantar thermal profile + stable autonomic baseline).",
+          blindSpot: "Low risk (<2%); continuous passive smart-sock and CGM monitoring remains active.",
+          overallScope: "Silent log signs the Day-14 clearance into the hash-chained ledger and permits routine PHA wellness coaching.",
+          voiText: "Log Day-14 Milestone Clearance (VOI 0.30)"
+        },
+        {
+          id: "P41-002",
+          route: "nurse_task",
+          badge: "VOI Gate",
+          story: "Day 7 09:20: Home blood pressure cuff reads 168/96 mmHg with mild ankle swelling, but daily weight scale has not synced for 3 days.",
+          purpose: "Verify dry-weight trend and cuff technique before adjusting outpatient diuretic or antihypertensive dosing.",
+          whyFlagged: "Elevated home BP + edema with 72 hours of missing weight telemetry (Unavailable != Negative).",
+          context: "74M Post-Discharge Day 7 · Weight telemetry missing 72h (Unavailable != Negative).",
+          methodsUsed: "Epistemic Abstention Gate (missing weight telemetry blocks automatic medication titration).",
+          blindSpot: "Increasing diuretics without verifying weight and orthostatic vitals risks acute prerenal azotemia.",
+          overallScope: "Nurse task schedules a same-day nurse check to reconcile scale weight, orthostatic BP, and basic metabolic panel.",
+          voiText: "Reconcile Home Scale Sync & Check Orthostatic BP (VOI 0.90)"
+        }
+      ],
+      salvage_dfi: [
+        {
+          id: "G06-MTP",
+          route: "provider_task",
+          badge: "4D Live",
+          story: "Day 0 08:15: Ankle cuff ABI 1.45 with calcified tibial vessels (false-normal flag). Day 0 08:24: Hallux toe pressure 22 mmHg on a damped waveform with bone exposed at 1st MTP.",
+          purpose: "Prevent local foot debridement on an ischemic limb before arterial blood flow is restored.",
+          whyFlagged: "Ankle cuff ABI reads 1.45 (falsely high from calcified arteries), contradicting the critically low 22 mmHg toe pressure.",
+          context: "68M T2DM/CKD3 · Right plantar 1st MTP ulcer · 4 future post-T0 records held back.",
+          methodsUsed: "4D Time-Locked EHR Gate (storetime <= T0) + WIfI Perfusion Discrepancy Check + 240-KC Sparse Case Memory.",
+          blindSpot: "If ABI 1.45 is trusted as normal perfusion (30–68% risk), local debridement fails to heal and leads to major below-knee amputation.",
+          overallScope: "Provider task routes directly to Vascular Surgery for same-day duplex/angiography before foot resection.",
+          voiText: "Order Bedside Hallux Toe Pressure & Arterial Duplex (VOI 0.94)"
+        },
+        {
+          id: "G03-GAS",
+          route: "urgent_page",
+          badge: "Hard Gate",
+          story: "Day 0 06:40: Plantar forefoot crepitus with subcutaneous gas on plain film. Day 0 06:52: Arterial lactate 4.2 mmol/L and spreading erythema.",
+          purpose: "Trigger immediate surgical source control for life- and limb-threatening necrotizing infection.",
+          whyFlagged: "Subcutaneous gas + systemic lactic acidosis (4.2 mmol/L) exceeds the non-bypassable M0 emergency safety threshold.",
+          context: "59M T2DM · Left plantar crepitus, Lactate 4.2 mmol/L · Non-bypassable OR escalation.",
+          methodsUsed: "M0 Clinical Hard-Lock Rule (IDSA Grade 4 + Radiographic Gas + Lactate >= 4.0).",
+          blindSpot: "Every hour of operative delay increases necrotizing fasciitis mortality and proximal amputation risk (>75%).",
+          overallScope: "Urgent page alerts the Acute Surgical & ICU Shock Team immediately for operating room debridement.",
+          voiText: "Confirm Operating Room & Anesthesia Stat Availability (VOI 0.98)"
+        },
+        {
+          id: "G08-VOI",
+          route: "nurse_task",
+          badge: "VOI Gate",
+          story: "Day 0 09:10: Deep 2nd-toe ulcer queued for bedside debridement with zero arterial perfusion studies on file (ABI and toe pressure unmeasured).",
+          purpose: "Resolve missing arterial perfusion data before committing to surgical tissue resection.",
+          whyFlagged: "Perfusion is unmeasured at T0 (Unavailable != Negative).",
+          context: "71F T2DM · Perfusion unordered at T0 · Epistemic abstention active.",
+          methodsUsed: "Epistemic Abstention Gate (Unavailable != Negative) + Value-of-Information calculator (VOI = 0.94).",
+          blindSpot: "Operating without verifying toe pressure carries a 28–64% risk of unmasking occult ischemia.",
+          overallScope: "Nurse task dispatches a 10-minute bedside handheld Doppler & toe-pressure check before releasing the surgical order.",
+          voiText: "Dispatch Bedside Nurse for Handheld Doppler & Hallux Toe Pressure (VOI 0.94)"
+        }
+      ],
+      sepsis_cardiorenal: [
+        {
+          id: "SEP-02",
+          route: "urgent_page",
+          badge: "4D Live",
+          story: "Hr 0 10:12: Arm cuff blood pressure reads 118/76 mmHg (looks normal), but invasive radial arterial line MAP is 55 mmHg with lactate 4.6 mmol/L.",
+          purpose: "Expose cryptic septic shock hidden by an inaccurate arm cuff reading and start vasopressors immediately.",
+          whyFlagged: "Oscillometric arm cuff overestimates blood pressure by 28 mmHg compared to the invasive radial arterial line.",
+          context: "MIMIC-IV #10014354 · 62M pneumonia with mottled extremities & cryptic vasoplegic shock.",
+          methodsUsed: "4D MIMIC-IV Storetime Gate (8 future charttime records blocked; ΔAUROC +0.062 inflation prevented).",
+          blindSpot: "Trusting the 118/76 arm cuff (28–69% risk) leaves true MAP at 55 mmHg, causing acute kidney injury.",
+          overallScope: "Urgent page alerts the ICU Shock Team to titrate norepinephrine strictly by radial arterial line MAP >= 65 mmHg.",
+          voiText: "Zero Radial Arterial Transducer & Reconcile Cuff Artifact (VOI 0.94)"
+        },
+        {
+          id: "SEP-03",
+          route: "provider_task",
+          badge: "4D Live",
+          story: "Hr 24 08:30: Hepatic and portal vein ultrasound shows severe venous congestion (VExUS Grade 3); creatinine rose +0.4 mg/dL during brisk diuresis (urine Na 88 mmol/L).",
+          purpose: "Continue de-resuscitation (fluid removal) for venous congestion instead of mistakenly giving IV fluids.",
+          whyFlagged: "Rising creatinine (+0.4) during high urine sodium (88 mmol/L) reflects hemoconcentration, not kidney tubular injury.",
+          context: "MIMIC-IV #10018081 · Hemoconcentration Cr +0.4 mg/dL during brisk natriuresis (UNa 88 mmol/L).",
+          methodsUsed: "Cardiorenal VExUS + Natriuresis Gate under 4D storetime lock.",
+          blindSpot: "Stopping diuretics and giving IV fluids worsens right-ventricular congestion and renal venous back-pressure.",
+          overallScope: "Provider task routes to the ICU Attending for continued IV loop diuretic de-resuscitation.",
+          voiText: "Repeat Bedside Portal Vein Pulsatility & Spot Urine Na (VOI 0.89)"
+        }
       ]
     };
 
-    function getActiveScenario() {
-      return SCENARIOS.find(s => s.scenario_id === state.activeScenarioId) || SCENARIOS[0];
-    }
+    let currentDomain = "home_health";
+    let cases = [];
+    let nowCase = null;
+    let shownLevel = 0;
+    let reviewedCount = 0;
+    let alertsCount = 0;
+    let correctionsCount = 0;
+    let deskSentCount = 0;
+    let urgentSentCount = 0;
+    let lastDeskSent = null;
+    let lastUrgentSent = null;
+    let auditRows = [];
+    let flightSphere = null;
 
-    function getFilteredScenarios() {
-      if (state.domainFilter === "ALL") return SCENARIOS;
-      return SCENARIOS.filter(s => s.cohort_domain === state.domainFilter);
-    }
+    function switchDomain(domId) {
+      currentDomain = domId;
+      document.querySelectorAll(".domain-btn").forEach(b => b.classList.remove("active"));
+      const btn = document.getElementById("dom-" + domId);
+      if (btn) btn.classList.add("active");
 
-    function setRole(role) {
-      state.role = role;
-      ["overseer", "bedside", "nurse"].forEach(r => {
-        document.getElementById("role-" + r).classList.toggle("active", r === role);
-      });
+      cases = DOMAINS[domId].map(c => ({ ...c }));
+      nowCase = cases.shift();
+      shownLevel = 0;
+      reviewedCount = 0;
+      alertsCount = 0;
+      correctionsCount = 0;
+      deskSentCount = 0;
+      urgentSentCount = 0;
+      lastDeskSent = null;
+      lastUrgentSent = null;
+      document.getElementById("modify-popover").classList.remove("open");
       renderAll();
-    }
-
-    function setDomainFilter(dom) {
-      state.domainFilter = dom;
-      ["ALL", "POST_DFI_SALVAGE", "POST_SEPSIS_CARDIORENAL"].forEach(d => {
-        document.getElementById("dom-" + d).classList.toggle("active", d === dom);
-      });
-      const list = getFilteredScenarios();
-      if (!list.some(s => s.scenario_id === state.activeScenarioId) && list.length) {
-        state.activeScenarioId = list[0].scenario_id;
-      }
-      renderAll();
-    }
-
-    function toggleStoretimeLock() {
-      state.strictStoretimeLock = !state.strictStoretimeLock;
-      const btn = document.getElementById("storetime-toggle");
-      btn.textContent = state.strictStoretimeLock
-        ? "🔒 4D Storetime Lock: ON"
-        : "⚠ Naive charttime Leakage: EXPOSED";
-      btn.classList.toggle("active-guard", state.strictStoretimeLock);
-      renderAll();
-    }
-
-    function toggleSpotCheck() {
-      state.spotCheckMode = !state.spotCheckMode;
-      const btn = document.getElementById("spotcheck-toggle");
-      btn.textContent = state.spotCheckMode
-        ? "🎯 M3 Your Call First: ACTIVE"
-        : "🎯 M3 Your Call First: OFF";
-      btn.classList.toggle("active-spot", state.spotCheckMode);
-      renderAll();
-    }
-
-    function commitSpotCheck(choice) {
-      const sc = getActiveScenario();
-      state.spotCheckCommitted[sc.scenario_id] = choice;
-      renderAll();
-    }
-
-    function toggleBoardSize() {
-      state.boardEnlarged = !state.boardEnlarged;
-      document.getElementById("overhead-board").classList.toggle("enlarged", state.boardEnlarged);
-      document.getElementById("board-size-btn").textContent = state.boardEnlarged ? "Shrink Board ⤡" : "Enlarge Board ⤢";
-      renderBoardAndCategories();
-    }
-
-    function toggleSidePanel() {
-      state.sideCollapsed = !state.sideCollapsed;
-      document.getElementById("crossroads-stage").classList.toggle("side-collapsed", state.sideCollapsed);
-      document.getElementById("side-panel-inner").style.display = state.sideCollapsed ? "none" : "block";
-      document.getElementById("side-panel-title").style.display = state.sideCollapsed ? "none" : "inline";
-      document.getElementById("side-collapse-btn").textContent = state.sideCollapsed ? "▶" : "◀";
-    }
-
-    function setSideTab(tab) {
-      state.sideTab = tab;
-      ["agents", "trust", "voi", "m4", "m5"].forEach(t => {
-        document.getElementById("stab-" + t).classList.toggle("active", t === tab);
-      });
-      renderSidePanel();
-    }
-
-    function makeNow(scenarioId) {
-      state.activeScenarioId = scenarioId;
-      state.optionRingOpen = false;
-      renderAll();
-    }
-
-    function cycleRelChip(featureKey) {
-      const sc = getActiveScenario();
-      const order = ["reliable", "not_said", "said_wrong", "said_differently"];
-      const cur = sc.field_reliability[featureKey] || "reliable";
-      const next = order[(order.indexOf(cur) + 1) % order.length];
-      sc.field_reliability[featureKey] = next;
-      renderAll();
-    }
-
-    function setCascadeLevel(lvl) {
-      state.cascadeLevel = lvl;
-      renderNowCard();
-    }
-
-    function toggleAccordion(sec) {
-      state.openAccordion = state.openAccordion === sec ? "" : sec;
-      renderNowCard();
-    }
-
-    function adjustAutonomy(delta) {
-      state.lastAutonomyDelta = state.autonomyDelta;
-      state.autonomyDelta = Math.max(-15, Math.min(25, state.autonomyDelta + delta));
-      renderNowCard();
-    }
-
-    function undoAutonomyMove() {
-      state.autonomyDelta = state.lastAutonomyDelta;
-      renderNowCard();
-    }
-
-    function toggleOptionRing() {
-      state.optionRingOpen = !state.optionRingOpen;
-      renderOptionRing();
-    }
-
-    function createTrialCategory() {
-      const name = prompt("Enter new Trial Category label for OptionRing (M0 -> M4 lifecycle):", "12h Home Point-of-Care CRP Fingerstick");
-      if (!name) return;
-      state.categories.push({
-        code: "TRIAL_" + Date.now().toString().slice(-4),
-        label: "trial: " + name,
-        lifecycle: "trial",
-        runs: 1,
-        agree: 100,
-        badge: "trial (1/5 runs · 100% agree)",
-        preview: "Logs trial category decision into M4 Promotion Engine."
-      });
-      renderBoardAndCategories();
-      renderOptionRing();
-    }
-
-    function promoteTrialCategory(code) {
-      const cat = state.categories.find(c => c.code === code);
-      if (cat) {
-        cat.lifecycle = "promoted";
-        cat.label = cat.label.replace(/^trial:\s*/i, "");
-        cat.badge = "★ Promoted (Overseer Signed)";
-      }
-      renderAll();
-    }
-
-    function recordDecision(actionLabel, categoryCode) {
-      const sc = getActiveScenario();
-      const entry = {
-        ts: new Date().toISOString().slice(11, 19),
-        episode_id: sc.scenario_id,
-        role: state.role.toUpperCase(),
-        action: actionLabel,
-        category: categoryCode || "PRIMARY_ROUTE",
-        storetime_lock: state.strictStoretimeLock,
-        hash: "0x" + Math.random().toString(16).slice(2, 10) + sc.scenario_id.replace("-", "").toLowerCase()
-      };
-      state.decisionLedger.unshift(entry);
-      state.optionRingOpen = false;
-      fetch("/api/multiseat/event", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          peer_id: "web_home_gate",
-          seat_role: state.role,
-          domain_id: "pha_continuum",
-          item_id: sc.scenario_id,
-          gesture: categoryCode || "route",
-          answer: actionLabel
-        })
-      }).catch(() => {});
-      renderAll();
-    }
-
-    function renderBoardAndCategories() {
-      const lanes = [
-        { title: "1. Hard Escalation Crossroads", items: SCENARIOS.filter(s => s.spatial_crossroads_mode === "NOW_CARD_HARD_ESCALATION"), cls: "escalated" },
-        { title: "2. Standard VOI Clinic Review", items: SCENARIOS.filter(s => s.spatial_crossroads_mode === "NOW_CARD_STANDARD_REVIEW"), cls: "" },
-        { title: "3. Active OARS / Gate Suppressed", items: SCENARIOS.filter(s => s.spatial_crossroads_mode === "SUPPRESSED_ROUTINE_SYNC"), cls: "suppressed" },
-        { title: "4. M5 Signed Decision Ledger", items: state.decisionLedger.map(d => ({ scenario_id: d.episode_id, title: d.action })), cls: "" }
-      ];
-
-      document.getElementById("board-lanes-container").innerHTML = lanes.map(lane => `
-        <div class="board-lane">
-          <div class="lane-head">
-            <span>${lane.title}</span>
-            <span>${lane.items.length}</span>
-          </div>
-          <div class="lane-chips">
-            ${lane.items.length === 0 ? `<span style="font-size:11px;color:var(--text-dim);">None yet</span>` :
-              lane.items.map(it => `
-                <span class="lane-card-pill ${lane.cls}" onclick="makeNow('${it.scenario_id}')">
-                  <strong>${it.scenario_id}</strong> ${state.boardEnlarged ? "· " + it.title.slice(0, 34) + "…" : ""}
-                </span>
-              `).join("")}
-          </div>
-        </div>
-      `).join("");
-
-      document.getElementById("categories-strip-container").innerHTML = `
-        <span class="cat-strip-label">M0 Category Registry (Trial → Promoted ★ → Dormant ⌀):</span>
-        ${state.categories.map(c => `
-          <span class="cat-pill ${c.lifecycle}" onclick="state.optionRingOpen=true;renderOptionRing();" title="${c.preview}">
-            ${c.label} <small style="opacity:0.8;">(${c.badge})</small>
-          </span>
-        `).join("")}
-        <button class="pill-btn active" onclick="createTrialCategory()">+ New Trial Category</button>
-      `;
-    }
-
-    function renderNowCard() {
-      const sc = getActiveScenario();
-      const container = document.getElementById("now-card-container");
-      const isHard = sc.spatial_crossroads_mode === "NOW_CARD_HARD_ESCALATION";
-      const isSuppressed = sc.spatial_crossroads_mode === "SUPPRESSED_ROUTINE_SYNC";
-      container.className = "now-card" + (isHard ? " hard-escalation" : "");
-
-      const rawAutonomy = isHard ? 18 : (isSuppressed ? 36 : 28);
-      const effAutonomy = Math.min(40, Math.max(5, rawAutonomy + state.autonomyDelta));
-      const effDeference = Math.max(80, 100 - effAutonomy);
-      const riskShown = state.strictStoretimeLock ? sc.predicted_risk : sc.leaked_risk;
-      const spotPending = state.spotCheckMode && !state.spotCheckCommitted[sc.scenario_id];
-
-      const bannerHtml = isHard ? `
-        <div class="hard-escalation-banner">
-          <span>⚠ HARD ESCALATION — ${sc.urgency} · AUTONOMOUS OARS COACHING HALTED</span>
-          <span>DRIFT Z = ${sc.drift_z_score.toFixed(2)} · 90 Hz VISION PRO GATE</span>
-        </div>
-      ` : (isSuppressed ? `
-        <div class="routine-suppressed-banner">
-          <span>✓ ROUTINE WEARABLE SYNC SUPPRESSED AT SPATIAL GATE · ACTIVE OARS COACHING</span>
-          <span>DRIFT Z = ${sc.drift_z_score.toFixed(2)} · ZERO PROVIDER INTERRUPT</span>
-        </div>
-      ` : "");
-
-      const relEntries = Object.entries(sc.field_reliability);
-
-      container.innerHTML = `
-        ${bannerHtml}
-        <div class="now-body">
-          <div class="now-header-row">
-            <div>
-              <div class="now-episode-tag">${sc.scenario_id} · ${sc.cohort_domain} · Landmark t=${sc.t_landmark_hours}h</div>
-              <h2 class="now-title">${sc.title}</h2>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:11px;color:var(--text-muted);">30d Relapse / Readmission Risk</div>
-              <div style="font-size:22px;font-weight:900;color:${riskShown >= 0.4 ? 'var(--alert-red)' : 'var(--pass-green)'};">
-                ${(riskShown * 100).toFixed(1)}%
-                <span style="font-size:11px;font-weight:600;color:var(--text-muted);">
-                  (${state.strictStoretimeLock ? "Strict storetime" : "LEAKED charttime"})
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Active Seat Framing -->
-          <div class="role-framing-box">
-            <strong>Active Seat (${state.role.toUpperCase()}):</strong> ${sc.role_seat_framings[state.role]}
-          </div>
-
-          <!-- WHY QUEUED Severity Chips -->
-          <div class="chip-row">
-            <span class="row-label">WHY QUEUED:</span>
-            ${sc.red_flags.length ? sc.red_flags.map(rf => `<span class="why-chip">${rf}</span>`).join("") :
-              `<span class="why-chip calm">No Acute Red Flags · ${sc.urgency}</span>`}
-            ${sc.leakage_rows_blocked > 0 ? `<span class="why-chip">${sc.leakage_rows_blocked} Future EHR Lab/Culture Rows Masked (storetime > ${sc.t_landmark_hours}h)</span>` : ""}
-          </div>
-
-          <!-- 4-State Reliability Chips (Click to cycle R/N/W/D) -->
-          <div class="chip-row">
-            <span class="row-label">4-STATE RELIABILITY (Click to cycle):</span>
-            ${relEntries.map(([k, status]) => `
-              <span class="rel-chip ${status}" onclick="cycleRelChip('${k}')" title="Click to cycle: reliable -> not_said -> said_wrong -> said_differently">
-                ${k}: <strong>${status.toUpperCase()}</strong>
-              </span>
-            `).join("")}
-          </div>
-
-          <!-- Pink IF WRONG Counterfactual Risk Strip -->
-          <div class="if-wrong-strip">
-            <span><strong>IF WRONG COUNTERFACTUAL BAND:</strong> ${sc.if_wrong_risk_range}</span>
-            <span style="font-weight:700;white-space:nowrap;">Unavailable ≠ Negative</span>
-          </div>
-
-          <!-- M3 Blinded Spot-Check ('Your Call First') -->
-          ${state.spotCheckMode ? `
-            <div class="your-call-first">
-              <div style="display:flex;justify-content:space-between;align-items:center;">
-                <strong style="color:#ffedd5;font-size:12.5px;">🎯 M3 BLINDED SPOT-CHECK ("Your Call First")</strong>
-                <span style="font-size:11px;color:#fed7aa;">
-                  ${spotPending ? "AI synthesis masked until you commit your initial clinical call" : "✓ SpotReveal Unlocked — Calibrated against 3-Agent PHA"}
-                </span>
-              </div>
-              ${spotPending ? `
-                <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                  <button class="pill-btn active" onclick="commitSpotCheck('STAT_ESCALATE')">My Call: Escalate STAT + Order VOI Labs</button>
-                  <button class="pill-btn active" onclick="commitSpotCheck('SAME_DAY_VOI')">My Call: Same-Day Clinic VOI Check</button>
-                  <button class="pill-btn active" onclick="commitSpotCheck('ROUTINE_OARS')">My Call: Continue Active OARS Coaching</button>
-                </div>
-              ` : `
-                <div style="font-size:12px;color:#d1fae5;">
-                  Your Blinded Call: <strong>${state.spotCheckCommitted[sc.scenario_id]}</strong> · PHA Recommendation: <strong>${sc.urgency}</strong> (Calibration recorded in M2 Dials).
-                </div>
-              `}
-            </div>
-          ` : ""}
-
-          <!-- 4-Level Cascading Progressive Dossier (L0 -> L1 -> L2 -> L3) -->
-          <div class="cascade-dossier">
-            <div class="cascade-bar">
-              <span class="row-label">4-LEVEL CASCADING DOSSIER (Progressive Disclosure):</span>
-              <div class="level-pills">
-                <button class="level-pill ${state.cascadeLevel >= 0 ? 'active' : ''}" onclick="setCascadeLevel(0)">L0 Awareness</button>
-                <button class="level-pill ${state.cascadeLevel >= 1 ? 'active' : ''}" onclick="setCascadeLevel(1)">L1 7d Trends</button>
-                <button class="level-pill ${state.cascadeLevel >= 2 ? 'active' : ''}" onclick="setCascadeLevel(2)">L2 4D & Target-Trial</button>
-                <button class="level-pill ${state.cascadeLevel >= 3 ? 'active' : ''}" onclick="setCascadeLevel(3)">L3 Full Chart Accordion</button>
-              </div>
-            </div>
-
-            <div class="cascade-layer">
-              <strong>L0 Awareness:</strong> ${sc.cascading_dossier.L0_awareness}
-            </div>
-            ${state.cascadeLevel >= 1 ? `
-              <div class="cascade-layer">
-                <strong>L1 7d Wearable & Lab Trajectory:</strong> ${sc.cascading_dossier.L1_trends}
-              </div>
-            ` : ""}
-            ${state.cascadeLevel >= 2 ? `
-              <div class="cascade-layer l2">
-                <strong>L2 4D Storetime Lock & Target-Trial Positivity Gate:</strong> ${spotPending ? "<em>[Masked until M3 YourCallFirst selection]</em>" : sc.cascading_dossier.L2_storetime_target_trial}
-              </div>
-            ` : ""}
-            ${state.cascadeLevel >= 3 ? `
-              <div class="cascade-layer l3">
-                <strong>L3 Full 3-Agent Clinical Chart (One-Section-at-a-Time Accordion):</strong>
-                <div class="chart-accordion">
-                  <div class="acc-item">
-                    <button class="acc-header" onclick="toggleAccordion('dsa')">
-                      <span>${state.openAccordion === 'dsa' ? '▾' : '▸'} 1. Data Science Agent (DSA) — Trajectory Z-Scores & Target-Trial Gate</span>
-                      <span style="font-size:11px;color:var(--ai-blue);">${state.openAccordion === 'dsa' ? 'Hide' : 'Show'}</span>
-                    </button>
-                    ${state.openAccordion === 'dsa' ? `
-                      <div class="acc-content">
-                        ${sc.cascading_dossier.L2_storetime_target_trial}<br/>
-                        <strong>Blocked Future Rows:</strong> ${sc.leakage_rows_blocked} records held back by strict <code>t_store &lt;= ${sc.t_landmark_hours}h</code> lock.
-                      </div>
-                    ` : ""}
-                  </div>
-
-                  <div class="acc-item">
-                    <button class="acc-header" onclick="toggleAccordion('dea')">
-                      <span>${state.openAccordion === 'dea' ? '▾' : '▸'} 2. Domain Expert Agent (DEA) — 240-KC VOI Router & Anti-Reward-Hacking</span>
-                      <span style="font-size:11px;color:var(--ai-blue);">${state.openAccordion === 'dea' ? 'Hide' : 'Show'}</span>
-                    </button>
-                    ${state.openAccordion === 'dea' ? `
-                      <div class="acc-content">
-                        ${sc.voi_workup.map(v => `<div>• <strong>${v.label}</strong> (${v.status}) · VOI=${v.voi} · If-Wrong=${v.range}</div>`).join("")}
-                      </div>
-                    ` : ""}
-                  </div>
-
-                  <div class="acc-item">
-                    <button class="acc-header" onclick="toggleAccordion('hca')">
-                      <span>${state.openAccordion === 'hca' ? '▾' : '▸'} 3. Health Coach Agent (HCA) — OARS Motivational Interviewing</span>
-                      <span style="font-size:11px;color:var(--ai-blue);">${state.openAccordion === 'hca' ? 'Hide' : 'Show'}</span>
-                    </button>
-                    ${state.openAccordion === 'hca' ? `
-                      <div class="acc-content">
-                        <div><strong>Mode:</strong> ${sc.oars.mode}</div>
-                        <div>• <strong>Open Question:</strong> ${sc.oars.open_q}</div>
-                        <div>• <strong>Affirmation:</strong> ${sc.oars.affirmation}</div>
-                        <div>• <strong>Reflection:</strong> ${sc.oars.reflection}</div>
-                        <div>• <strong>Summary / SMART Goal:</strong> ${sc.oars.summary}</div>
-                      </div>
-                    ` : ""}
-                  </div>
-                </div>
-              </div>
-            ` : ""}
-          </div>
-
-          <!-- SymbiosisPanel: 3-Column Division of Labor (YOU HOLD / BRIDGE / AI HOLDS) -->
-          <div class="symbiosis-panel">
-            <div class="symbiosis-top">
-              <span class="row-label">SYMBIOSIS DIVISION OF LABOR (YOU HOLD · BRIDGE · AI HOLDS):</span>
-              <button class="pill-btn active" onclick="state.showAiDepth=!state.showAiDepth;renderNowCard();">
-                ${state.showAiDepth ? "Hide AI depth ▴" : "Show AI depth ▾"}
-              </button>
-            </div>
-            <div class="symbiosis-grid">
-              <div class="sym-col you-col">
-                <div class="sym-col-title" style="color:var(--you-orange);">YOU HOLD (Clinician Principal)</div>
-                <ul>
-                  <li>Final prescription & escalation sign-off (Autonomy Cap ≤ 40%)</li>
-                  <li>Physical wound probe / bedside VExUS verification</li>
-                  <li>M4 Promotion sign-off (n ≥ 5 runs, ≥ 80% agreement)</li>
-                </ul>
-              </div>
-              <div class="sym-col bridge-col">
-                <div class="sym-col-title" style="color:var(--bridge-pink);">BRIDGE (Shared Crossroads)</div>
-                <ul>
-                  <li>Pop-out OptionRing modification & trial routing</li>
-                  <li>4-state field reliability tagging (R / N / W / D)</li>
-                  <li>M3 Blinded Spot-Check ("Your Call First")</li>
-                </ul>
-              </div>
-              <div class="sym-col ai-col">
-                <div class="sym-col-title" style="color:var(--ai-blue);">AI HOLDS (3-Agent PHA + 4D Gate)</div>
-                <ul>
-                  <li>7d wearable drift Z-score & circadian HRV tracking</li>
-                  <li>4D bitemporal storetime lock (${sc.leakage_rows_blocked} future rows masked)</li>
-                  ${state.showAiDepth ? `
-                    <li>240-KC sparse olfactory VOI ranking (95% sparsity)</li>
-                    <li>Hernán-Robins Target-Trial positivity & Manski bounds</li>
-                  ` : ""}
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- M2 Earned-Autonomy Dials + Sparkline -->
-          <div class="dials-strip">
-            <div class="dial-box">
-              <svg width="48" height="48" viewBox="0 0 48 48">
-                <circle cx="24" cy="24" r="19" fill="none" stroke="rgba(148,163,184,0.2)" stroke-width="5"/>
-                <circle cx="24" cy="24" r="19" fill="none" stroke="#4da6ff" stroke-width="5"
-                  stroke-dasharray="${(effAutonomy / 100) * 119.4} 119.4" transform="rotate(-90 24 24)"/>
-                <text x="24" y="28" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">${effAutonomy}%</text>
-              </svg>
-              <div class="dial-meta">
-                <strong style="color:var(--ai-blue);">M2 Earned Autonomy Dial</strong>
-                <span style="color:var(--text-muted);">Hard Clinical Safety Cap: ≤ 40%</span>
-              </div>
-            </div>
-
-            <div class="dial-box">
-              <svg width="48" height="48" viewBox="0 0 48 48">
-                <circle cx="24" cy="24" r="19" fill="none" stroke="rgba(148,163,184,0.2)" stroke-width="5"/>
-                <circle cx="24" cy="24" r="19" fill="none" stroke="#f7941d" stroke-width="5"
-                  stroke-dasharray="${(effDeference / 100) * 119.4} 119.4" transform="rotate(-90 24 24)"/>
-                <text x="24" y="28" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">${effDeference}%</text>
-              </svg>
-              <div class="dial-meta">
-                <strong style="color:var(--you-orange);">Clinician Deference Floor</strong>
-                <span style="color:var(--text-muted);">Hard Safety Floor: ≥ 80%</span>
-              </div>
-            </div>
-
-            <div style="display:flex;gap:6px;align-items:center;">
-              <button class="pill-btn active" onclick="adjustAutonomy(5)" title="Test hard 40% autonomy cap">+5% Autonomy (Test Cap)</button>
-              <button class="pill-btn" onclick="undoAutonomyMove()">Undo move</button>
-            </div>
-          </div>
-
-          <!-- Primary Routing Action Bar + SplitRatingRow -->
-          <div class="routing-bar">
-            <div class="route-buttons">
-              <button class="route-btn pass" onclick="recordDecision('Pass: Dispatch Top-VOI Order + OARS Plan', 'ACCEPT_PATHWAY')">
-                ✓ Pass & Dispatch VOI/OARS
-              </button>
-              <button class="route-btn modify" onclick="toggleOptionRing()">
-                ◎ Modify… (Pop-Out OptionRing)
-              </button>
-              <button class="route-btn escalate" onclick="recordDecision('STAT Provider Crossroads Escalation', 'STAT_CLINIC_SLOT')">
-                ⚠ Escalate STAT Clinic
-              </button>
-              <button class="route-btn defer" onclick="recordDecision('Hold for Pending 4D Storetime Release', 'DEFER_STORETIME')">
-                ⏸ Hold for Lab Storetime
-              </button>
-            </div>
-
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span style="font-size:11px;color:var(--text-muted);">Split Rating:</span>
-              <button class="pill-btn ${state.splitRating[sc.scenario_id]==='sound'?'active':''}" onclick="state.splitRating['${sc.scenario_id}']='sound';renderNowCard();">👍 Sound Call</button>
-              <button class="pill-btn ${state.splitRating[sc.scenario_id]==='flawed'?'active':''}" onclick="state.splitRating['${sc.scenario_id}']='flawed';renderNowCard();">👎 Override</button>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderOptionRing() {
-      const wrapper = document.getElementById("option-ring-wrapper");
-      if (!state.optionRingOpen) {
-        wrapper.style.display = "none";
-        return;
-      }
-      wrapper.style.display = "block";
-      wrapper.innerHTML = `
-        <div class="option-ring-popout">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div>
-              <span style="font-size:11px;font-weight:800;text-transform:uppercase;color:var(--bridge-pink);letter-spacing:0.07em;">
-                POP-OUT CATEGORICAL OPTION RING · M0–M4 LIFECYCLE
-              </span>
-              <div style="font-size:14px;font-weight:700;">Select a categorical modification or create a purple <code>trial:</code> option</div>
-            </div>
-            <div style="display:flex;gap:6px;">
-              <button class="pill-btn active" onclick="createTrialCategory()">+ New Trial Category</button>
-              <button class="pill-btn" onclick="toggleOptionRing()">Close ✕</button>
-            </div>
-          </div>
-
-          <div class="option-ring-grid">
-            ${state.categories.map(cat => `
-              <div class="ring-card ${cat.lifecycle}" onclick="recordDecision('${cat.label}', '${cat.code}')">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-                  <strong style="font-size:12.5px;">${cat.label}</strong>
-                  <span class="cat-pill ${cat.lifecycle}" style="font-size:10px;padding:2px 7px;">${cat.badge}</span>
-                </div>
-                <div style="font-size:11.5px;color:var(--text-muted);">
-                  <strong>WHAT HAPPENS NEXT:</strong> ${cat.preview}
-                </div>
-              </div>
-            `).join("")}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderUpNextQueue() {
-      const filtered = getFilteredScenarios();
-      document.getElementById("queue-count-label").textContent = filtered.length + " Episodes";
-      document.getElementById("up-next-list").innerHTML = filtered.map(sc => {
-        const isCurrent = sc.scenario_id === state.activeScenarioId;
-        const modeCls = sc.spatial_crossroads_mode === "NOW_CARD_HARD_ESCALATION"
-          ? "hard-esc"
-          : (sc.spatial_crossroads_mode === "SUPPRESSED_ROUTINE_SYNC" ? "suppressed-sync" : "");
-        return `
-          <div class="queue-card ${isCurrent ? 'active-now' : ''} ${modeCls}" onclick="makeNow('${sc.scenario_id}')">
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);">
-              <strong>${sc.scenario_id} · ${sc.cohort_domain === 'POST_DFI_SALVAGE' ? '4DMFEET' : '4D-SEPSIS'}</strong>
-              <span>Drift z=${sc.drift_z_score.toFixed(2)}</span>
-            </div>
-            <div style="font-size:12.5px;font-weight:700;margin:3px 0;">${sc.title}</div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
-              <span style="color:${sc.wake_cloud_orchestrator ? '#fca5a5' : '#86efac'};">
-                ${sc.spatial_crossroads_mode}
-              </span>
-              <span style="color:var(--ai-blue);font-weight:700;">${isCurrent ? "● ACTIVE NOW" : "Pull to Now →"}</span>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function renderSidePanel() {
-      const sc = getActiveScenario();
-      const box = document.getElementById("side-panel-content");
-
-      if (state.sideTab === "agents") {
-        box.innerHTML = `
-          <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
-            <div style="padding:10px;border-radius:8px;background:rgba(77,166,255,0.12);border:1px solid rgba(77,166,255,0.35);">
-              <strong style="color:var(--ai-blue);">1. Data Science Agent (DSA)</strong>
-              <p style="margin-top:4px;color:#cbd5e1;">${sc.cascading_dossier.L1_trends}</p>
-              <p style="margin-top:4px;color:#93c5fd;">${sc.cascading_dossier.L2_storetime_target_trial}</p>
-            </div>
-            <div style="padding:10px;border-radius:8px;background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.35);">
-              <strong style="color:var(--bridge-pink);">2. Domain Expert Agent (DEA)</strong>
-              <p style="margin-top:4px;color:#cbd5e1;">240-KC Olfactory VOI Router (${sc.voi_workup.length} missing/pending tests ranked).</p>
-            </div>
-            <div style="padding:10px;border-radius:8px;background:rgba(247,148,29,0.12);border:1px solid rgba(247,148,29,0.35);">
-              <strong style="color:var(--you-orange);">3. Health Coach Agent (HCA · OARS)</strong>
-              <p style="margin-top:4px;color:#cbd5e1;"><strong>${sc.oars.mode}:</strong> "${sc.oars.open_q}"</p>
-            </div>
-          </div>
-        `;
-      } else if (state.sideTab === "trust") {
-        box.innerHTML = `
-          <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
-            <p style="color:var(--text-muted);">Click any field chip to cycle 4-state epistemic reliability (<strong>Reliable</strong>, <strong>Not said</strong>, <strong>Said wrong</strong>, <strong>Said differently</strong>):</p>
-            ${Object.entries(sc.field_reliability).map(([k, v]) => `
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 9px;background:rgba(15,23,42,0.8);border-radius:7px;">
-                <span>${k}</span>
-                <span class="rel-chip ${v}" onclick="cycleRelChip('${k}')">${v.toUpperCase()}</span>
-              </div>
-            `).join("")}
-          </div>
-        `;
-      } else if (state.sideTab === "voi") {
-        box.innerHTML = `
-          <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
-            <p style="color:var(--text-muted);">Top Expected Value-of-Information (EVOI) diagnostic queries before empirical prescription:</p>
-            ${sc.voi_workup.map(v => `
-              <div style="padding:9px;border-radius:8px;background:rgba(15,23,42,0.85);border:1px solid var(--border-glass);">
-                <div style="display:flex;justify-content:space-between;font-weight:700;">
-                  <span>${v.label}</span>
-                  <span style="color:var(--ai-blue);">VOI ${v.voi}</span>
-                </div>
-                <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">
-                  Status: <code>${v.status}</code> · If-Wrong Band: <strong>${v.range}</strong>
-                </div>
-              </div>
-            `).join("")}
-          </div>
-        `;
-      } else if (state.sideTab === "m4") {
-        const trialCats = state.categories.filter(c => c.lifecycle === "trial");
-        box.innerHTML = `
-          <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
-            <div style="font-weight:800;color:var(--trial-purple);">M4 Promotion PrincipalCard (n ≥ 5 runs · ≥ 80% agreement)</div>
-            ${trialCats.length === 0 ? `<p style="color:var(--text-muted);">All current trial categories have been promoted to ★ Promoted!</p>` :
-              trialCats.map(tc => `
-                <div style="padding:11px;border-radius:9px;background:rgba(168,85,247,0.14);border:1px solid rgba(168,85,247,0.5);">
-                  <div style="font-weight:700;">${tc.label}</div>
-                  <div style="font-size:11px;color:#e9d5ff;margin:4px 0;">Runs: ${tc.runs || 5}/5 · Clinician Agreement: ${tc.agree || 92}% (Threshold ≥ 80%)</div>
-                  <button class="pill-btn active" onclick="promoteTrialCategory('${tc.code}')">★ Sign & Promote to OptionRing</button>
-                </div>
-              `).join("")}
-          </div>
-        `;
-      } else {
-        box.innerHTML = `
-          <div class="paper-lineage-card">
-            <div style="font-weight:800;border-bottom:1px solid #cbd5e1;padding-bottom:6px;margin-bottom:8px;">
-              M5 CRYPTOGRAPHIC DECISION LINEAGE (sdr.decision.v1)
-            </div>
-            <div>• <strong>M0 Registry:</strong> ${state.categories.length} OptionRing categories active</div>
-            <div>• <strong>M1 4D Gate:</strong> Strict Storetime=${state.strictStoretimeLock} (${sc.leakage_rows_blocked} masked)</div>
-            <div>• <strong>M2 Dials:</strong> Safety Cap ≤ 40% / Deference ≥ 80% enforced</div>
-            <div>• <strong>M3 Calibration:</strong> Blinded Spot-Check ${state.spotCheckMode ? 'ON' : 'OFF'}</div>
-            <hr style="margin:8px 0;border:none;border-top:1px dashed #94a3b8;"/>
-            <div style="font-weight:700;margin-bottom:4px;">Signed Clinician Actions (${state.decisionLedger.length}):</div>
-            ${state.decisionLedger.length === 0 ? `<div>No signed actions yet in this session.</div>` :
-              state.decisionLedger.slice(0, 5).map(d => `
-                <div style="margin-bottom:4px;">[${d.ts}] <strong>${d.episode_id}</strong> (${d.role}): ${d.action} <code>${d.hash}</code></div>
-              `).join("")}
-          </div>
-        `;
-      }
     }
 
     function renderAll() {
-      renderBoardAndCategories();
-      renderNowCard();
-      renderOptionRing();
-      renderUpNextQueue();
-      renderSidePanel();
-    }
+      const total = DOMAINS[currentDomain].length;
+      document.getElementById("stat-reviewed").textContent = `${reviewedCount}/${total}`;
+      document.getElementById("stat-alerts").textContent = `${alertsCount}`;
+      document.getElementById("stat-corrections").textContent = `${correctionsCount}`;
+      document.getElementById("stat-alerts-wrap").classList.toggle("hot", alertsCount > 0);
+      document.getElementById("stat-corr-wrap").classList.toggle("hot", correctionsCount > 0);
 
-    let lastPhaMultiSeatSeq = 0;
+      for (let i = 0; i <= 3; i++) {
+        const pill = document.getElementById("pill-" + i);
+        if (pill) {
+          pill.classList.toggle("active", i === shownLevel || (i > 0 && shownLevel >= i));
+        }
+      }
 
-    async function pollPhaMultiSeatSync() {
-      try {
-        const sc = getActiveScenario();
-        const res = await fetch(
-          `/api/multiseat/sync?after_seq=${lastPhaMultiSeatSeq}&peer_id=web_home_gate&seat_role=${encodeURIComponent(state.role)}&domain_id=pha_continuum&now_item_id=${encodeURIComponent(sc.scenario_id)}`
-        );
-        if (!res.ok) return;
-        const data = await res.json();
-        const ledgerEl = document.getElementById("pha-ms-ledger");
-        if (ledgerEl) {
-          ledgerEl.textContent = `Ledger #${data.event_seq || 0} · ${(data.ledger_head_hash || "genesis").slice(0, 12)}`;
+      if (!nowCase) {
+        document.getElementById("now-id").textContent = "Queue Clear";
+        document.getElementById("now-story").textContent = `All ${total} cases in this domain have been reviewed and sealed into the Ed25519 hash-chained ledger. Click any domain pill above to reset or switch cohorts.`;
+        document.getElementById("dossier-card").classList.remove("open");
+      } else {
+        document.getElementById("now-id").textContent = nowCase.id;
+        const nowChip = document.getElementById("now-route-chip");
+        nowChip.className = "route-pill " + nowCase.route;
+        nowChip.textContent = ROUTE_TITLES[nowCase.route] || nowCase.route;
+        document.getElementById("now-badge-right").textContent = nowCase.badge || "Bundled";
+        document.getElementById("now-story").textContent = nowCase.story;
+      }
+
+      document.getElementById("l1-waiting-count").textContent = `${cases.length}`;
+      if (cases.length > 0) {
+        document.getElementById("l1-next-id").textContent = cases[0].id;
+        document.getElementById("l1-next-why").textContent = cases[0].story;
+      } else {
+        document.getElementById("l1-next-id").textContent = "Queue clear";
+        document.getElementById("l1-next-why").textContent = "No waiting cases on Layer 1 spoke.";
+      }
+
+      const isUrgent = nowCase && nowCase.route === "urgent_page";
+      const isDesk = nowCase && nowCase.route !== "urgent_page";
+
+      const urgentCard = document.getElementById("spoke-urgent");
+      const deskCard = document.getElementById("spoke-routedesk");
+      urgentCard.classList.toggle("lit-urgent", !!isUrgent);
+      deskCard.classList.toggle("lit-desk", !!isDesk);
+
+      document.getElementById("urgent-sent-count").textContent = `${urgentSentCount}`;
+      document.getElementById("desk-sent-count").textContent = `${deskSentCount}`;
+
+      const urgentSub = document.getElementById("urgent-sub");
+      if (isUrgent) {
+        urgentSub.className = "spoke-sub lit-urgent-txt";
+        urgentSub.textContent = "Pass sends here";
+      } else if (lastUrgentSent) {
+        urgentSub.className = "spoke-sub";
+        urgentSub.textContent = `Last · ${lastUrgentSent}`;
+      } else {
+        urgentSub.className = "spoke-sub";
+        urgentSub.textContent = "Emergency surgical / ED bypass";
+      }
+
+      const deskSub = document.getElementById("desk-sub");
+      if (isDesk) {
+        deskSub.className = "spoke-sub lit-desk-txt";
+        deskSub.textContent = `Pass sends here · ${ROUTE_TITLES[nowCase.route]}`;
+      } else if (lastDeskSent) {
+        deskSub.className = "spoke-sub";
+        deskSub.textContent = `Last · ${lastDeskSent}`;
+      } else {
+        deskSub.className = "spoke-sub";
+        deskSub.textContent = "silent, nurse, or provider";
+      }
+
+      document.getElementById("queue-count").textContent = `${cases.length}`;
+      const qList = document.getElementById("queue-list");
+      qList.innerHTML = "";
+      cases.slice(0, 4).forEach((c, idx) => {
+        const div = document.createElement("div");
+        div.className = "queue-item";
+        div.onclick = () => makeNow(idx);
+        div.innerHTML = `
+          <div class="queue-item-top">
+            <span class="queue-id">${c.id}</span>
+            <span class="route-pill ${c.route}">${ROUTE_TITLES[c.route]}</span>
+          </div>
+          <div class="queue-item-why">${c.whyFlagged}</div>
+        `;
+        qList.appendChild(div);
+      });
+
+      const dosCard = document.getElementById("dossier-card");
+      if (!nowCase || shownLevel === 0) {
+        dosCard.classList.remove("open");
+      } else {
+        dosCard.classList.add("open");
+        document.getElementById("dos-id").textContent = nowCase.id;
+        const dosChip = document.getElementById("dos-route-chip");
+        dosChip.className = "route-pill " + nowCase.route;
+        dosChip.textContent = ROUTE_TITLES[nowCase.route];
+
+        let html = "";
+        if (shownLevel >= 1) {
+          html += `
+            <div class="dossier-section story">
+              <div class="sec-badge">Story · Purpose &amp; Why It Flagged</div>
+              <div class="sec-row">
+                <div class="sec-lbl">Purpose of This Review</div>
+                <div class="sec-val">${nowCase.purpose}</div>
+              </div>
+              <div class="sec-row">
+                <div class="sec-lbl">Why It Flagged Right Now</div>
+                <div class="sec-val">${nowCase.whyFlagged}</div>
+              </div>
+              <div class="sec-row">
+                <div class="sec-lbl">Patient Context</div>
+                <div class="sec-val">${nowCase.context}</div>
+              </div>
+            </div>
+          `;
         }
-        const peersEl = document.getElementById("pha-ms-peers");
-        if (peersEl && Array.isArray(data.peers)) {
-          peersEl.innerHTML = data.peers
-            .map((p) => {
-              const label = (p.peer_id || "").includes("vision") ? " Vision Pro" : "Web :8790";
-              return `<span class="toggle-chip" style="padding:2px 9px; font-size:11px;">${label} · ${(p.seat_role || "seat").toUpperCase()} (${p.now_item_id || "ready"})</span>`;
-            })
-            .join("");
+        if (shownLevel >= 2) {
+          html += `
+            <div class="dossier-section rules">
+              <div class="sec-badge">Rules · Understandable Transparency &amp; Blind Spots</div>
+              <div class="sec-row">
+                <div class="sec-lbl">Info &amp; Methods Used to Calculate</div>
+                <div class="sec-val">${nowCase.methodsUsed}</div>
+              </div>
+              <div class="sec-row">
+                <div class="sec-lbl">Blind Spot &amp; Risk If Wrong</div>
+                <div class="sec-val">${nowCase.blindSpot}</div>
+              </div>
+            </div>
+          `;
         }
-        if (Array.isArray(data.events) && data.events.length > 0) {
-          for (const ev of data.events) {
-            if (ev.seq > lastPhaMultiSeatSeq) {
-              lastPhaMultiSeatSeq = ev.seq;
-              const banner = document.getElementById("pha-ms-banner");
-              if (banner && ev.summary) {
-                banner.textContent = `⇄ ${ev.summary}`;
-              }
-              if (ev.peer_id !== "web_home_gate") {
-                state.decisionLedger.unshift({
-                  ts: new Date().toISOString().slice(11, 19),
-                  episode_id: ev.item_id || "PHA_EP_001",
-                  role: ` ${(ev.seat_role || "OVERSEER").toUpperCase()}`,
-                  action: ev.answer || ev.gesture,
-                  category: ev.gesture || "VISIONOS_SYNC",
-                  storetime_lock: state.strictStoretimeLock,
-                  hash: "0x" + (ev.hash || "verified")
-                });
-                renderAll();
-              }
-            }
-          }
+        if (shownLevel >= 3) {
+          html += `
+            <div class="dossier-section more">
+              <div class="sec-badge">More · Decision Scope, Intention &amp; Overall Impact</div>
+              <div class="sec-row">
+                <div class="sec-lbl">What This Decision Means in Overall Scope</div>
+                <div class="sec-val">${nowCase.overallScope}</div>
+              </div>
+              <div class="sec-row">
+                <div class="sec-lbl">All 4 Route Scope Definitions</div>
+                <div class="sec-val">
+                  • <strong>Urgent page</strong>: Immediate live page to Surgical / ICU / ED Fast-Track.<br/>
+                  • <strong>Provider task</strong>: Same-day Attending / Vascular / ID consult.<br/>
+                  • <strong>Nurse task</strong>: Hold AI autonomy; bedside Nurse collects missing VOI first.<br/>
+                  • <strong>Silent log</strong>: Verified safe trajectory logged with zero team interruption.
+                </div>
+              </div>
+              <button class="voi-btn" onclick="triggerVOI()">✓ ${nowCase.voiText}</button>
+            </div>
+          `;
         }
-      } catch (e) {
-        // Offline / GitHub Pages fallback
+        document.getElementById("dossier-body").innerHTML = html;
       }
     }
 
-    renderAll();
-    setInterval(pollPhaMultiSeatSync, 1500);
+    function jumpLayer(lvl) {
+      shownLevel = lvl;
+      renderAll();
+    }
+
+    function collapseLayer() {
+      shownLevel = Math.max(0, shownLevel - 1);
+      document.getElementById("modify-popover").classList.remove("open");
+      renderAll();
+    }
+
+    function toggleModifyPopover() {
+      if (!nowCase) return;
+      document.getElementById("modify-popover").classList.toggle("open");
+    }
+
+    function toggleQueueOpen() {
+      const card = document.getElementById("queue-card");
+      const open = card.classList.toggle("open");
+      document.getElementById("queue-title-lbl").textContent = open ? "Up next" : "Queue";
+      document.getElementById("queue-show-lbl").textContent = open ? "Hide" : "Show";
+    }
+
+    function toggleStatusDrawer() {
+      const dr = document.getElementById("status-drawer");
+      const open = dr.classList.toggle("open");
+      document.getElementById("status-show-lbl").textContent = open ? "Hide" : "Show";
+    }
+
+    function makeNow(idx) {
+      if (idx < 0 || idx >= cases.length) return;
+      const picked = cases.splice(idx, 1)[0];
+      if (nowCase) cases.unshift(nowCase);
+      nowCase = picked;
+      shownLevel = 0;
+      renderAll();
+      pushMultiSeatEvent("make_now", nowCase.id, "make_now", nowCase.route);
+    }
+
+    function triggerVOI() {
+      if (!nowCase) return;
+      nowCase.whyFlagged = `[VOI Verified] ${nowCase.voiText} — results attached to time-locked chart.`;
+      renderAll();
+      pushMultiSeatEvent("ask_voi", nowCase.id, "ask_voi", nowCase.voiText);
+    }
+
+    function passCurrent() {
+      if (!nowCase) return;
+      completeDecision(nowCase.route, false);
+    }
+
+    function selectModifiedRoute(newRoute) {
+      if (!nowCase) return;
+      document.getElementById("modify-popover").classList.remove("open");
+      const changed = newRoute !== nowCase.route;
+      nowCase.route = newRoute;
+      completeDecision(newRoute, changed);
+    }
+
+    function completeDecision(route, changed) {
+      const decidedCase = nowCase;
+      reviewedCount += 1;
+      if (changed) correctionsCount += 1;
+      if (route === "urgent_page") {
+        alertsCount += 1;
+        urgentSentCount += 1;
+        lastUrgentSent = `${decidedCase.id} · Urgent page`;
+      } else {
+        deskSentCount += 1;
+        lastDeskSent = `${decidedCase.id} · ${ROUTE_TITLES[route]}`;
+      }
+
+      flightSphere = { progress: 0, toUrgent: route === "urgent_page" };
+
+      auditRows.unshift({
+        id: decidedCase.id,
+        route: ROUTE_TITLES[route],
+        status: changed ? "✓ corrected" : "✓ passed"
+      });
+      const logEl = document.getElementById("audit-log-rows");
+      logEl.innerHTML = auditRows.slice(0, 5).map(r =>
+        `<div class="audit-row"><span>${r.id} → ${r.route}</span><span>${r.status}</span></div>`
+      ).join("");
+
+      pushMultiSeatEvent("route", decidedCase.id, changed ? "select" : "pass", route);
+
+      nowCase = cases.shift() || null;
+      shownLevel = 0;
+      renderAll();
+    }
+
+    async function pushMultiSeatEvent(kind, itemId, gesture, answer) {
+      try {
+        await fetch("/api/multiseat/event", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            kind,
+            peer_id: "pha_web_seat",
+            device: "PHA Bounded Volume Seat (:8790)",
+            seat_role: "overseer",
+            domain_id: currentDomain,
+            item_id: itemId,
+            gesture,
+            answer
+          })
+        });
+      } catch (e) {}
+    }
+
+    const canvas = document.getElementById("room-canvas");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth * window.devicePixelRatio;
+      canvas.height = window.innerHeight * window.devicePixelRatio;
+      ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function drawSphere(x, y, r, color, haloAlpha = 0) {
+      if (haloAlpha > 0) {
+        const gradHalo = ctx.createRadialGradient(x, y, r * 0.4, x, y, r * 2.4);
+        gradHalo.addColorStop(0, color.replace("1)", `${haloAlpha})`));
+        gradHalo.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = gradHalo;
+        ctx.beginPath();
+        ctx.arc(x, y, r * 2.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      const grad = ctx.createRadialGradient(x - r * 0.32, y - r * 0.32, r * 0.1, x, y, r);
+      grad.addColorStop(0, "#ffffff");
+      grad.addColorStop(0.28, color);
+      grad.addColorStop(1, "rgba(4,12,20,0.95)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function animateRoom() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+      skyGrad.addColorStop(0, "#05101a");
+      skyGrad.addColorStop(0.58, "#0a1c28");
+      skyGrad.addColorStop(1, "#040b11");
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      const horizonY = h * 0.62;
+
+      ctx.strokeStyle = "rgba(42, 212, 200, 0.14)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.12, h * 0.08);
+      ctx.lineTo(w * 0.12, horizonY);
+      ctx.lineTo(w * 0.88, horizonY);
+      ctx.lineTo(w * 0.88, h * 0.08);
+      ctx.stroke();
+
+      ctx.strokeStyle = "rgba(20, 175, 160, 0.24)";
+      ctx.lineWidth = 1;
+      const vanishX = w * 0.5;
+      for (let i = -12; i <= 12; i++) {
+        ctx.beginPath();
+        ctx.moveTo(vanishX + i * (w * 0.032), horizonY);
+        ctx.lineTo(vanishX + i * (w * 0.14), h);
+        ctx.stroke();
+      }
+      for (let j = 1; j <= 8; j++) {
+        const t = Math.pow(j / 8, 1.45);
+        const y = horizonY + t * (h - horizonY);
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      const hubX = w * 0.5;
+      const hubY = h * 0.77;
+
+      const l1Pos = { x: w * 0.16, y: h * 0.67 };
+      const deskPos = { x: w * 0.18, y: h * 0.27 };
+      const urgentPos = { x: w * 0.82, y: h * 0.26 };
+
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.26)";
+      ctx.lineWidth = 2.2;
+      [l1Pos, deskPos, urgentPos].forEach(p => {
+        ctx.beginPath();
+        ctx.moveTo(hubX, hubY);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+      });
+
+      drawSphere(hubX, hubY, 9, "rgba(235, 245, 255, 1)", 0.25);
+
+      const isUrgent = nowCase && nowCase.route === "urgent_page";
+      const isDesk = nowCase && nowCase.route !== "urgent_page";
+
+      drawSphere(l1Pos.x, l1Pos.y, 24, "rgba(26, 198, 188, 1)", cases.length > 0 ? 0.38 : 0);
+      drawSphere(
+        deskPos.x,
+        deskPos.y,
+        isDesk ? 28 : 20,
+        isDesk ? "rgba(250, 148, 30, 1)" : "rgba(148, 164, 184, 1)",
+        isDesk ? 0.45 : 0
+      );
+      drawSphere(
+        urgentPos.x,
+        urgentPos.y,
+        isUrgent ? 34 : 22,
+        isUrgent ? "rgba(245, 46, 41, 1)" : "rgba(148, 164, 184, 1)",
+        isUrgent ? 0.55 : 0
+      );
+
+      const railY = h * 0.21;
+      const railStartX = w * 0.34;
+      if (nowCase) {
+        drawSphere(railStartX, railY, 18, "rgba(42, 212, 200, 1)", 0.35);
+      }
+      cases.slice(0, 4).forEach((c, idx) => {
+        drawSphere(railStartX + 46 + idx * 34, railY, 11, "rgba(42, 212, 200, 1)", 0.15);
+      });
+
+      if (flightSphere) {
+        flightSphere.progress += 0.04;
+        const t = flightSphere.progress;
+        const target = flightSphere.toUrgent ? urgentPos : deskPos;
+        let fx, fy;
+        if (t < 0.35) {
+          const u = t / 0.35;
+          fx = (w * 0.5) * (1 - u) + hubX * u;
+          fy = (h * 0.53) * (1 - u) + hubY * u;
+        } else {
+          const u = (t - 0.35) / 0.65;
+          fx = hubX * (1 - u) + target.x * u;
+          fy = hubY * (1 - u) + target.y * u;
+        }
+        drawSphere(
+          fx,
+          fy,
+          16,
+          flightSphere.toUrgent ? "rgba(245, 46, 41, 1)" : "rgba(250, 148, 30, 1)",
+          0.65
+        );
+        if (flightSphere.progress >= 1) flightSphere = null;
+      }
+
+      requestAnimationFrame(animateRoom);
+    }
+
+    switchDomain("home_health");
+    requestAnimationFrame(animateRoom);
   </script>
 </body>
 </html>
