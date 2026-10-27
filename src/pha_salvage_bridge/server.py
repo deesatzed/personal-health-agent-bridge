@@ -271,6 +271,33 @@ class PHABridgeRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(body)
         elif parsed.path == "/api/benchmark":
             self._send_json(self.get_benchmark())
+        elif parsed.path == "/api/home_dm_cohort":
+            self._send_json({
+                "cohort_id": "SOTA_HOME_DM_WOUND_CARE_2026",
+                "n_cases": 12,
+                "case_ids": [f"HDFU-{i:02d}" for i in range(1, 13)],
+                "input_nodes": [
+                    "foot_vac_boot",
+                    "rn_opat_iv",
+                    "glycemic_ketone",
+                    "cardiorenal_hemo",
+                    "labs_voi",
+                ],
+                "output_role_queues": [
+                    "home_rn",
+                    "wound_specialist",
+                    "opat_id",
+                    "podiatry_visit",
+                    "hospital_admit",
+                    "silent_oars",
+                ],
+                "podiatry_modalities": [
+                    "Modality 4A · Podiatry Home / Tele-Co-Visit",
+                    "Modality 4B · Podiatry Office Visit (Toe-and-Flow Hot-Foot Clinic)",
+                    "Modality 4C · Inpatient Podiatry/Vascular OR Consult",
+                ],
+                "multimorbidity_domains": ["Sepsis", "UTI / SGLT2i euDKA", "Silent CAD", "CRF / OPAT AKI"],
+            })
         elif parsed.path == "/api/multiseat/sync":
             after_seq = int(qs.get("after_seq", ["0"])[0])
             peer_id = qs.get("peer_id", [None])[0]
@@ -321,7 +348,7 @@ class PHABridgeRequestHandler(BaseHTTPRequestHandler):
             })
             sim_result["multiseat_event"] = ev
             self._send_json(sim_result)
-        elif parsed.path == "/api/multiseat/event":
+        elif parsed.path in ("/api/multiseat/event", "/api/multiseat/decision"):
             ev = record_pha_multiseat_event(payload)
             self._send_json({
                 "status": "synced",

@@ -3,19 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PHA × SALVAGE-AI Bridge · Apple Vision Pro Spatial Crossroads & 3-Agent Personal Health Architecture</title>
+  <title>Home DM Wound Care & Multimorbidity Showpiece · 5-Input → 6-Role Bounded 3D Spatial Router</title>
   <style>
     :root {
-      --bg-void: #050811;
-      --bg-glass: rgba(15, 23, 42, 0.78);
+      --bg-void: #050d16;
+      --bg-glass: rgba(16, 28, 44, 0.82);
       --border-glass: rgba(148, 163, 184, 0.24);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --you-orange: #f7941d;
-      --bridge-pink: #ec4899;
-      --ai-blue: #4da6ff;
+      --input-teal: #2dd4bf;
+      --now-blue: #0284c7;
+      --cyan-glow: #38bdf8;
       --pass-green: #10b981;
-      --trial-purple: #a855f7;
+      --hospital-red: #ef4444;
+      --podiatry-amber: #f59e0b;
+      --opat-purple: #a855f7;
+      --specialist-pink: #ec4899;
+      --rn-blue: #3b82f6;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,12 +27,13 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
       background:
-        radial-gradient(circle at 20% 15%, rgba(77, 166, 255, 0.16), transparent 38%),
-        radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.14), transparent 38%),
-        radial-gradient(circle at 50% 85%, rgba(247, 148, 29, 0.12), transparent 45%),
+        radial-gradient(circle at 18% 15%, rgba(45, 212, 191, 0.16), transparent 38%),
+        radial-gradient(circle at 82% 20%, rgba(56, 189, 248, 0.15), transparent 38%),
+        radial-gradient(circle at 50% 85%, rgba(168, 85, 247, 0.12), transparent 45%),
         var(--bg-void);
       color: var(--text-main);
       line-height: 1.55;
+      padding-bottom: 60px;
     }
 
     .topbar {
@@ -38,8 +43,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
       padding: 14px 28px;
-      background: rgba(6, 10, 22, 0.88);
+      background: rgba(5, 13, 22, 0.9);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border-glass);
     }
@@ -52,9 +59,9 @@
       border-radius: 999px;
       font-size: 11.5px;
       font-weight: 700;
-      background: rgba(77, 166, 255, 0.18);
-      border: 1px solid rgba(77, 166, 255, 0.5);
-      color: #e0f2fe;
+      background: rgba(45, 212, 191, 0.18);
+      border: 1px solid rgba(45, 212, 191, 0.5);
+      color: #99f6e4;
     }
 
     .cta-btn {
@@ -66,37 +73,59 @@
       font-size: 13px;
       font-weight: 700;
       text-decoration: none;
-      background: linear-gradient(135deg, #4da6ff, #ec4899);
+      background: linear-gradient(135deg, #10b981, #0284c7);
       color: #fff;
-      box-shadow: 0 8px 25px rgba(77, 166, 255, 0.35);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.32);
+      transition: transform 0.15s;
+    }
+    .cta-btn:hover { transform: translateY(-1px); }
+
+    .filter-pill-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #e2e8f0;
+      transition: all 0.15s;
+    }
+    .filter-pill-link:hover {
+      background: rgba(56, 189, 248, 0.22);
+      border-color: var(--cyan-glow);
+      color: #fff;
     }
 
     .hero {
-      max-width: 1360px;
-      margin: 36px auto;
+      max-width: 1380px;
+      margin: 32px auto;
       padding: 0 24px;
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.05fr 0.95fr;
       gap: 28px;
       align-items: center;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1080px) {
       .hero { grid-template-columns: 1fr; }
     }
 
     .hero h1 {
-      font-size: 38px;
+      font-size: 36px;
       font-weight: 800;
       line-height: 1.15;
-      margin: 14px 0;
+      margin: 12px 0;
       letter-spacing: -0.02em;
     }
 
     .hero p {
-      font-size: 16px;
+      font-size: 15.5px;
       color: var(--text-muted);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .canvas-card {
@@ -109,172 +138,293 @@
 
     canvas {
       width: 100%;
-      height: 360px;
+      height: 390px;
       display: block;
       border-radius: 14px;
-      background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.9), rgba(5, 8, 17, 0.98));
+      background: radial-gradient(circle at 50% 50%, rgba(15, 29, 46, 0.94), rgba(5, 11, 20, 0.99));
+    }
+
+    .section-title {
+      max-width: 1380px;
+      margin: 36px auto 14px;
+      padding: 0 24px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #e2e8f0;
     }
 
     .grid-section {
-      max-width: 1360px;
-      margin: 32px auto 60px;
+      max-width: 1380px;
+      margin: 0 auto 28px;
       padding: 0 24px;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+      gap: 16px;
     }
 
-    @media (max-width: 960px) {
-      .grid-section { grid-template-columns: 1fr; }
+    .grid-4 {
+      max-width: 1380px;
+      margin: 0 auto 28px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-section, .grid-4 { grid-template-columns: 1fr; }
     }
 
     .feature-card {
       background: var(--bg-glass);
       border: 1px solid var(--border-glass);
       border-radius: 18px;
-      padding: 20px;
+      padding: 18px;
     }
 
     .feature-card h3 {
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
 
     .feature-card p {
-      font-size: 13.5px;
+      font-size: 13px;
       color: var(--text-muted);
+      line-height: 1.48;
     }
   </style>
 </head>
 <body>
   <header class="topbar">
     <div style="display:flex;align-items:center;gap:12px;">
-      <span class="badge">visionOS 27.0 · Bounded 3D Spatial Volume</span>
-      <strong>PHA × SALVAGE-AI Bidirectional Bridge</strong>
+      <span class="badge">SOTA Home DM Wound Care Showpiece</span>
+      <strong>Home_DM_Wound_Care · 5 Home Inputs → NOW Crossroads → 6 Role Queues</strong>
     </div>
-    <div style="display:flex;gap:12px;align-items:center;">
-      <a href="/workspace" class="cta-btn">Page 1: Post-Discharge Wound &amp; Mobility →</a>
-      <a href="/cardiometabolic" class="cta-btn" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);">Page 2: Home Glycemic, BP &amp; Sensor Safety →</a>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <a href="/workspace" class="cta-btn">Launch Bounded 3D Spatial Workspace (HDFU-01..12) →</a>
     </div>
   </header>
 
   <section class="hero">
     <div>
-      <span class="badge">Nature 2026 Personal Health Agent × Bounded 3D Spatial Volume</span>
-      <h1>Closing the Inpatient-to-Home Clinical Loop on Apple Vision Pro (`visionOS 27.0`)</h1>
+      <span class="badge">2023–2026 IWGDF / IDSA / SVS × Nature 2026 Personal Health Agent</span>
+      <h1>SOTA Post-Discharge Home Diabetic Foot &amp; Multimorbidity Spatial Router</h1>
       <p>
-        Each outpatient Personal Health Agent topic runs on its own <strong>dedicated Bounded 3D Spatial Volume page</strong> with tailored spokes, domain-specific routing tiers, and progressive disclosure (<code>Awareness · Story · Rules · More</code>):
-        <br/>• <strong>Page 1 (<code>/workspace</code> — Post-Discharge Wound &amp; Mobility Recovery)</strong>: 8 smart-offloading boot thermal flare, outpatient culture <code>storetime</code> lock, and OARS Motivational Interviewing cases (<code>PHA-01..PHA-08</code>).
-        <br/>• <strong>Page 2 (<code>/cardiometabolic</code> — Home Glycemic, Cardiorenal &amp; Sensor Safety)</strong>: 8 persistent hypoglycemia rescue, post-sepsis weight surge, permissive hypercreatininemia, and wrist SpO2 artifact abstention cases (<code>HK6-001..HK6-008</code>).
+        Designed specifically for the high-risk <strong>post-discharge diabetic foot limb-salvage continuum</strong>, where 30-day readmissions and limb loss are driven by the intersection of <strong>local wound/NPWT/offloading failures</strong> and <strong>systemic multimorbidity decompensations (<code>Sepsis</code> · <code>Occult UTI / SGLT2i euDKA</code> · <code>Silent CAD</code> · <code>CRF / OPAT AKI</code>)</strong>.
       </p>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;">
-        <a href="/workspace" class="cta-btn">Open Page 1: Post-Discharge Wound &amp; Mobility (PHA-01..08) →</a>
-        <a href="/cardiometabolic" class="cta-btn" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);">Open Page 2: Home Glycemic, BP &amp; Sensor Safety (HK6-001..008) →</a>
+      <p style="font-size:14px;">
+        • <strong>Left Column (5 SOTA Home Input Nodes)</strong>: Fuses Plantar $\Delta T$ &amp; Smart Boot adherence, NPWT/Wound VAC seal &amp; canister telemetry, PICC Home IV Antibiotics (OPAT Vancomycin AUC/trough) &amp; urine dipstick, CGM &amp; capillary blood ketones ($\beta\text{-HB}$), wearable ECG/orthostatics/daily weight/Cr/$\text{K}^+$, and 4D <code>storetime</code> cultures + Hallux Toe Pressure VOI.<br/>
+        • <strong>Center Stage (<code>NOW</code> Causal Crossroads)</strong>: Transparent differential diagnosis gate explaining <em>purpose</em>, <em>why it flagged</em>, <em>blind spot prevented</em>, and <em>VOI verification</em>.<br/>
+        • <strong>Right Column (6 Role-Specific Output Queues &amp; Visit Modalities)</strong>: Routes directly to <strong>Home Health RN</strong>, <strong>Visiting Wound Specialist (CWOCN/NP)</strong>, <strong>OPAT / ID Pharmacy</strong>, <strong>Podiatry (4A Home Visit · 4B Office Hot-Foot Clinic · 4C Inpatient OR)</strong>, <strong>Hospital Direct Escalation</strong>, or <strong>Silent Remission &amp; OARS Coaching</strong>.
+      </p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+        <a href="/workspace" class="cta-btn">Open All 12 SOTA Home DM Cases →</a>
+        <a href="/workspace?filter=WOUND_VAC" class="filter-pill-link">🦶 Wound · NPWT (VAC) · Smart Boot</a>
+        <a href="/workspace?filter=OPAT_IV" class="filter-pill-link">💉 Home IV Antibiotics (OPAT / OVIVA)</a>
+        <a href="/workspace?filter=SEPSIS_UTI" class="filter-pill-link">🧭 Sepsis vs. Occult UTI / euDKA</a>
+        <a href="/workspace?filter=CAD_CRF" class="filter-pill-link">❤️ Silent CAD &amp; Cardiorenal (CRF)</a>
+        <a href="/workspace?filter=PODIATRY_MODALITY" class="filter-pill-link">🏥 Podiatry: Home · Office · Hospital</a>
       </div>
     </div>
 
     <div class="canvas-card">
-      <canvas id="spatial-orbital-canvas" width="600" height="360"></canvas>
-      <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);margin-top:10px;">
-        <span>● Center: <strong>NowCard Crossroads</strong></span>
-        <span style="color:var(--you-orange);">● YOU HOLD (≤40% AI Cap)</span>
-        <span style="color:var(--bridge-pink);">● BRIDGE (OptionRing)</span>
-        <span style="color:var(--ai-blue);">● AI HOLDS (DSA/DEA/HCA)</span>
+      <canvas id="spatial-flow-canvas" width="640" height="390"></canvas>
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);margin-top:10px;flex-wrap:wrap;gap:8px;">
+        <span style="color:var(--input-teal);">● Left: <strong>5 SOTA Home Input Nodes</strong></span>
+        <span style="color:var(--cyan-glow);">● Center: <strong>NOW Differential Crossroads</strong></span>
+        <span style="color:var(--pass-green);">● Right: <strong>6 Role Task Queues &amp; Modalities</strong></span>
       </div>
     </div>
   </section>
 
+  <div class="section-title">1. Six Role-Specific Output Queues &amp; Explicit Podiatry Visit Modalities</div>
   <section class="grid-section">
-    <div class="feature-card" style="border-top:3px solid var(--you-orange);">
-      <h3 style="color:var(--you-orange);">1. Central NowCard &amp; 3-Seat Role Switcher</h3>
+    <div class="feature-card" style="border-top:3px solid var(--rn-blue);">
+      <h3 style="color:#93c5fd;">Role 1 · Home Health RN Visit Queue</h3>
       <p>
-        Switch dynamically between <strong>Overseer</strong>, <strong>Bedside Clinic</strong>, and
-        <strong>Home-Health Nurse HITM</strong> seats. Red-flag thermal or cardiorenal weight surges trigger
-        <code>NOW_CARD_HARD_ESCALATION</code> while routine euvolemic syncs are suppressed (100% specificity).
+        Rapid 2–12h in-home nursing dispatches: re-sealing leaking <strong>NPWT (Wound VAC)</strong> drapes within the 4-hour desiccation window (<code>HDFU-05</code>), STAT home blood/urine/ketone draws, 12-lead home ECGs, decongestive compression-safe elevation (<code>HDFU-09</code>), and nocturnal hypoglycemia basal insulin de-escalation (<code>HDFU-10</code>).
       </p>
     </div>
 
-    <div class="feature-card" style="border-top:3px solid var(--bridge-pink);">
-      <h3 style="color:var(--bridge-pink);">2. Pop-Out Categorical OptionRing &amp; 4-Level Cascade</h3>
+    <div class="feature-card" style="border-top:3px solid var(--specialist-pink);">
+      <h3 style="color:#f9a8d4;">Role 2 · Visiting Wound Care Specialist (CWOCN / NP)</h3>
       <p>
-        Progressive <code>L0 → L1 → L2 → L3</code> cascading disclosure with a one-section-at-a-time chart accordion,
-        4-state epistemic reliability chips (<code>R / N / W / D</code>), pink <code>IF WRONG</code> risk intervals,
-        and pop-out categorical routing (<code>Trial → Promoted ★ → Dormant ⌀</code>).
+        Specialized mobile bedside wound procedures: conservative sharp paring of hyperkeratotic periwound callus rings at home (<code>HDFU-07</code>), post-debridement Levine deep tissue swabs, CAMP graft surveillance, and <strong>portable handheld PPG Hallux Toe Pressure ($\text{TP}$) VOI checks</strong> when brachial ABI is calcified (<code>HDFU-06</code>).
       </p>
     </div>
 
-    <div class="feature-card" style="border-top:3px solid var(--ai-blue);">
-      <h3 style="color:var(--ai-blue);">3. M0–M5 Symbiosis Decision-Model Gating</h3>
+    <div class="feature-card" style="border-top:3px solid var(--opat-purple);">
+      <h3 style="color:#d8b4fe;">Role 3 · Home IV Antibiotics (OPAT &amp; ID Stewardship)</h3>
       <p>
-        Enforces hard clinical safety caps on <strong>M2 Earned-Autonomy Dials</strong> (<code>Autonomy ≤ 40%</code>,
-        <code>Deference ≥ 80%</code>), <strong>M3 Blinded Spot-Checks ("Your Call First")</strong>,
-        <strong>M4 Promotion PrincipalCards</strong>, and <strong>M5 Cryptographic Lineage</strong>.
+        Manages PICC/Midline parenteral antimicrobials: immediately holds nephrotoxic IV Vancomycin during acute-on-chronic renal failure (<code>HDFU-03</code>, trough $26.4\text{ }\mu\text{g/mL}$, $\text{Cr } 2.9$, $\text{K}^+ 5.8$), executes <strong>OVIVA IV-to-oral osteomyelitis transitions</strong> to remove PICC lines early (<code>HDFU-11</code>), and holds SGLT2i during infection/ketonemia (<code>HDFU-02</code>).
+      </p>
+    </div>
+
+    <div class="feature-card" style="border-top:3px solid var(--podiatry-amber);">
+      <h3 style="color:#fcd34d;">Role 4 · Podiatry Queue (3 Explicit Visit Modalities)</h3>
+      <p>
+        Assigns the exact clinical setting needed:<br/>
+        • <strong>4A Podiatry Home / Tele-Co-Visit</strong> for wheelchair/homebound patients (<code>HDFU-07</code>, <code>HDFU-09</code>).<br/>
+        • <strong>4B Podiatry Office Visit ("Toe-and-Flow" 24–48h Clinic)</strong> for weight-bearing X-rays, sterile Probe-to-Bone, arterial duplex, or non-removable <strong>TCC-EZ</strong> casting (<code>HDFU-06</code>, <code>HDFU-08</code>).<br/>
+        • <strong>4C Inpatient Surgical Consult</strong> for deep abscess I&amp;D (<code>HDFU-01</code>).
+      </p>
+    </div>
+
+    <div class="feature-card" style="border-top:3px solid var(--hospital-red);">
+      <h3 style="color:#fca5a5;">Role 5 · Hospital / ED / Cardiology-Nephrology Admit</h3>
+      <p>
+        Bypasses outpatient delays for life- or limb-threatening emergencies: normothermic ascending foot sepsis (<code>HDFU-01</code>), occult urosepsis + SGLT2i euglycemic DKA (<code>HDFU-02</code>), silent NSTEMI on wearable ECG patch (<code>HDFU-04</code>), or refractory hyperkalemic CRF crisis.
+      </p>
+    </div>
+
+    <div class="feature-card" style="border-top:3px solid var(--pass-green);">
+      <h3 style="color:#6ee7b7;">Role 6 · Silent Remission &amp; HCA OARS Coaching</h3>
+      <p>
+        Suppresses 100% of benign recovery syncs from interrupting clinicians (<code>HDFU-12</code>) while delivering non-judgmental <strong>Motivational Interviewing (OARS)</strong> to patients and family caregivers for smart-boot adherence, contralateral shoe-lift balancing, and custom footwear graduation.
+      </p>
+    </div>
+  </section>
+
+  <div class="section-title">2. High-Risk Multimorbidity Monitoring in the Post-Discharge Diabetic Foot Population</div>
+  <section class="grid-4">
+    <div class="feature-card">
+      <h3 style="color:#f87171;">1. Normothermic Sepsis Differential</h3>
+      <p>
+        CKD and diabetes blunt classic fever ($>40\%$ normothermic). Detects early sepsis via <strong>stress CGM surges ($>260\text{ mg/dL}$), RHR jumps, and HRV collapse</strong>, while distinguishing <em>Foot Sepsis</em> (<code>HDFU-01</code>) from <em>Non-Foot Sepsis</em> (<code>HDFU-02</code>).
+      </p>
+    </div>
+    <div class="feature-card">
+      <h3 style="color:#c084fc;">2. Occult UTI &amp; SGLT2i Euglycemic DKA</h3>
+      <p>
+        Diabetic cystopathy + SGLT2i glycosuria trigger ascending urosepsis and <strong>euglycemic DKA ($\text{BHB } 2.6\text{ mmol/L}$ at $\text{BG } 204\text{ mg/dL}$)</strong>. Quiet foot telemetry ($\Delta T +0.4^\circ\text{C}$) prevents unnecessary foot surgery (<code>HDFU-02</code>).
+      </p>
+    </div>
+    <div class="feature-card">
+      <h3 style="color:#38bdf8;">3. Silent CAD &amp; Autonomic Neuropathy</h3>
+      <p>
+        Cardiac Autonomic Neuropathy masks angina in $>40\%$ of diabetic MIs. Pairs normoglycemic cold diaphoresis/dyspnea and orthostatic drops with <strong>wearable ECG patch ST-depression ($-1.8\text{ mm}$)</strong> to catch silent NSTEMI (<code>HDFU-04</code>).
+      </p>
+    </div>
+    <div class="feature-card">
+      <h3 style="color:#fbbf24;">4. CRF, OPAT AKI &amp; Venous Edema</h3>
+      <p>
+        Separates <strong>OPAT Vancomycin nephrotoxic AKI-on-CRF</strong> ($\text{U}_{\text{Na}} 24$, $\text{K}^+ 5.8$, <code>HDFU-03</code>) from <strong>suture-splitting congestive edema</strong> ($+2.4\text{ kg}$) with benign permissive hypercreatininemia ($\text{U}_{\text{Na}} 84$, <code>HDFU-09</code>).
       </p>
     </div>
   </section>
 
   <script>
-    const canvas = document.getElementById("spatial-orbital-canvas");
+    const canvas = document.getElementById("spatial-flow-canvas");
     const ctx = canvas.getContext("2d");
     let t = 0;
+
+    const inputs = [
+      { label: "1. Foot ΔT · VAC · Boot", y: 55, color: "#2dd4bf" },
+      { label: "2. Home RN · PICC OPAT", y: 125, color: "#2dd4bf" },
+      { label: "3. CGM · BHB Ketones", y: 195, color: "#2dd4bf" },
+      { label: "4. ECG · BP · Cr/K+ · Wt", y: 265, color: "#2dd4bf" },
+      { label: "5. 4D Labs · Hallux TP VOI", y: 335, color: "#2dd4bf" }
+    ];
+
+    const outputs = [
+      { label: "Role 1 · Home RN Visit", y: 42, color: "#3b82f6" },
+      { label: "Role 2 · Wound Specialist", y: 103, color: "#ec4899" },
+      { label: "Role 3 · OPAT IV / ID Rx", y: 164, color: "#a855f7" },
+      { label: "Role 4 · Podiatry (4A/4B/4C)", y: 225, color: "#f59e0b" },
+      { label: "Role 5 · Hospital Admit", y: 286, color: "#ef4444" },
+      { label: "Role 6 · Silent / OARS", y: 347, color: "#10b981" }
+    ];
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
 
-      // Orbit rings
-      [75, 130].forEach((r, idx) => {
+      // Spokes Left -> Center
+      inputs.forEach((inp, idx) => {
         ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = idx === 0 ? "rgba(236, 72, 153, 0.35)" : "rgba(77, 166, 255, 0.28)";
+        ctx.moveTo(155, inp.y);
+        ctx.quadraticCurveTo(235, (inp.y + cy) / 2 - 12, cx - 64, cy);
+        ctx.strokeStyle = "rgba(45, 212, 191, 0.45)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Moving pulse
+        const p = (t * 0.7 + idx * 0.2) % 1;
+        const px = (1 - p) * 155 + p * (cx - 64);
+        const py = (1 - p) * inp.y + p * cy;
+        ctx.beginPath();
+        ctx.arc(px, py, 4, 0, Math.PI * 2);
+        ctx.fillStyle = "#2dd4bf";
+        ctx.fill();
+
+        // Node pill
+        ctx.beginPath();
+        ctx.roundRect(14, inp.y - 16, 142, 32, 8);
+        ctx.fillStyle = "rgba(15, 23, 42, 0.9)";
+        ctx.fill();
+        ctx.strokeStyle = inp.color;
         ctx.lineWidth = 1.5;
         ctx.stroke();
+        ctx.fillStyle = "#e2e8f0";
+        ctx.font = "bold 10.5px -apple-system, sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(inp.label, 22, inp.y + 4);
       });
 
-      // Central NowCard node
-      ctx.beginPath();
-      ctx.roundRect(cx - 58, cy - 28, 116, 56, 12);
-      ctx.fillStyle = "rgba(247, 148, 29, 0.22)";
-      ctx.fill();
-      ctx.strokeStyle = "#f7941d";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.fillStyle = "#fff";
-      ctx.font = "bold 12px -apple-system, sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("NOW CARD", cx, cy - 4);
-      ctx.font = "10px -apple-system, sans-serif";
-      ctx.fillStyle = "#ffedd5";
-      ctx.fillText("M0–M5 Crossroads", cx, cy + 12);
-
-      // 3 Specialist Agent nodes
-      const agents = [
-        { label: "DSA · 4D Storetime", color: "#4da6ff", angle: t + 0 },
-        { label: "DEA · 240-KC VOI", color: "#ec4899", angle: t + (Math.PI * 2) / 3 },
-        { label: "HCA · OARS Coach", color: "#10b981", angle: t + (Math.PI * 4) / 3 }
-      ];
-
-      agents.forEach(a => {
-        const x = cx + Math.cos(a.angle) * 130;
-        const y = cy + Math.sin(a.angle) * 130;
+      // Spokes Center -> Right
+      outputs.forEach((out, idx) => {
         ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(x, y);
-        ctx.strokeStyle = "rgba(148, 163, 184, 0.25)";
+        ctx.moveTo(cx + 64, cy);
+        ctx.quadraticCurveTo(410, (out.y + cy) / 2 - 12, 478, out.y);
+        ctx.strokeStyle = "rgba(56, 189, 248, 0.42)";
+        ctx.lineWidth = 2;
         ctx.stroke();
 
+        const p = (t * 0.65 + idx * 0.17) % 1;
+        const px = (1 - p) * (cx + 64) + p * 478;
+        const py = (1 - p) * cy + p * out.y;
         ctx.beginPath();
-        ctx.arc(x, y, 18, 0, Math.PI * 2);
-        ctx.fillStyle = a.color;
+        ctx.arc(px, py, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = out.color;
         ctx.fill();
+
+        ctx.beginPath();
+        ctx.roundRect(478, out.y - 15, 148, 30, 8);
+        ctx.fillStyle = "rgba(15, 23, 42, 0.9)";
+        ctx.fill();
+        ctx.strokeStyle = out.color;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
         ctx.fillStyle = "#f8fafc";
-        ctx.font = "bold 11px -apple-system, sans-serif";
-        ctx.fillText(a.label, x, y + 32);
+        ctx.font = "bold 10px -apple-system, sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(out.label, 486, out.y + 4);
       });
 
-      t += 0.008;
+      // Center NOW Card
+      ctx.beginPath();
+      ctx.roundRect(cx - 64, cy - 36, 128, 72, 14);
+      ctx.fillStyle = "rgba(2, 132, 199, 0.28)";
+      ctx.fill();
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 2.2;
+      ctx.stroke();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 13px -apple-system, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("NOW CARD", cx, cy - 10);
+      ctx.font = "10px -apple-system, sans-serif";
+      ctx.fillStyle = "#bae6fd";
+      ctx.fillText("Sepsis · UTI · CAD · CRF", cx, cy + 6);
+      ctx.fillStyle = "#6ee7b7";
+      ctx.fillText("4D Storetime + VOI Gate", cx, cy + 21);
+
+      t += 0.012;
       requestAnimationFrame(draw);
     }
     draw();

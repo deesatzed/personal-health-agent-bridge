@@ -3,25 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PHA Post-Discharge Diabetic Limb Wound & Glycemic Continuum — Bounded 3D Spatial Volume</title>
+  <title>Home DM Wound Care & Multimorbidity Router — Bounded 3D Spatial Volume</title>
   <style>
     :root {
       --bg-top: #0f2537;
       --bg-mid: #0a1926;
       --bg-bot: #050d14;
-      --glass-bg: rgba(20, 33, 46, 0.84);
+      --glass-bg: rgba(20, 33, 46, 0.86);
       --glass-border: rgba(255, 255, 255, 0.17);
       --glass-highlight: rgba(255, 255, 255, 0.26);
       --now-blue: #0284c7;
-      --pass-green: #2ecc71;
-      --urgent-red: #e74c3c;
-      --provider-amber: #f39c12;
-      --nurse-blue: #3498db;
+      --pass-green: #10b981;
+      --hospital-red: #ef4444;
+      --podiatry-amber: #f59e0b;
+      --opat-purple: #a855f7;
+      --specialist-pink: #ec4899;
+      --rn-blue: #3b82f6;
       --silent-gray: #64748b;
       --cyan-glow: #38bdf8;
       --input-teal: #2dd4bf;
       --text-main: #f5f9fa;
-      --text-dim: rgba(245, 249, 250, 0.66);
+      --text-dim: rgba(245, 249, 250, 0.68);
     }
 
     * {
@@ -58,59 +60,81 @@
     }
 
     .glass-card {
-      background: linear-gradient(155deg, rgba(34, 52, 70, 0.88) 0%, rgba(15, 24, 36, 0.86) 100%);
+      background: linear-gradient(155deg, rgba(34, 52, 70, 0.89) 0%, rgba(15, 24, 36, 0.88) 100%);
       backdrop-filter: blur(26px) saturate(160%);
       -webkit-backdrop-filter: blur(26px) saturate(160%);
       border: 1.5px solid var(--glass-border);
       box-shadow:
         0 18px 42px rgba(0, 0, 0, 0.52),
         inset 0 1px 0 var(--glass-highlight);
-      border-radius: 22px;
+      border-radius: 20px;
       color: var(--text-main);
-      transition: all 0.24s cubic-bezier(0.2, 0.9, 0.2, 1);
+      transition: all 0.22s cubic-bezier(0.2, 0.9, 0.2, 1);
     }
 
+    /* Role Route Pills */
     .route-pill {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 4px 13px;
+      padding: 4px 12px;
       border-radius: 999px;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 12px;
       letter-spacing: -0.01em;
       color: #fff;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
       white-space: nowrap;
     }
-    .route-pill.urgent_page   { background: var(--urgent-red); }
-    .route-pill.provider_task { background: var(--provider-amber); }
-    .route-pill.nurse_task    { background: var(--nurse-blue); }
-    .route-pill.silent_log    { background: var(--silent-gray); }
+    .route-pill.hospital_admit   { background: var(--hospital-red); }
+    .route-pill.podiatry_visit   { background: var(--podiatry-amber); }
+    .route-pill.opat_id          { background: var(--opat-purple); }
+    .route-pill.wound_specialist { background: var(--specialist-pink); }
+    .route-pill.home_rn          { background: var(--rn-blue); }
+    .route-pill.silent_oars      { background: var(--silent-gray); }
 
-    /* Top Status Bar */
+    /* Modality & Comorbidity Sub-Pills */
+    .sub-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #e2e8f0;
+      white-space: nowrap;
+    }
+    .sub-pill.modality-home     { background: rgba(16, 185, 129, 0.22); border-color: rgba(16, 185, 129, 0.55); color: #a7f3d0; }
+    .sub-pill.modality-office   { background: rgba(245, 158, 11, 0.22); border-color: rgba(245, 158, 11, 0.55); color: #fde68a; }
+    .sub-pill.modality-hospital { background: rgba(239, 68, 68, 0.24); border-color: rgba(239, 68, 68, 0.58); color: #fecaca; }
+    .sub-pill.comorb-tag        { background: rgba(56, 189, 248, 0.18); border-color: rgba(56, 189, 248, 0.48); color: #bae6fd; }
+
+    /* Top Status & Filter Bar */
     #status-card {
       position: absolute;
-      top: 14px;
+      top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      min-width: 680px;
-      max-width: 880px;
-      padding: 11px 20px;
+      width: min(1040px, calc(100vw - 40px));
+      padding: 10px 18px;
       z-index: 30;
     }
     .status-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 6px;
+      flex-wrap: wrap;
     }
     .status-title-btn {
       background: none;
       border: none;
       color: var(--text-main);
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 800;
       cursor: pointer;
       display: flex;
@@ -118,12 +142,12 @@
       gap: 7px;
     }
     .status-title-btn .show-lbl {
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--cyan-glow);
     }
     .topic-pill {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       letter-spacing: 0.05em;
       padding: 4px 11px;
@@ -136,9 +160,9 @@
       background: rgba(255, 255, 255, 0.11);
       border: 1px solid rgba(255, 255, 255, 0.18);
       color: var(--text-main);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
-      padding: 4px 12px;
+      padding: 4px 11px;
       border-radius: 999px;
       cursor: pointer;
       text-decoration: none;
@@ -147,35 +171,70 @@
     .top-btn:hover {
       background: rgba(255, 255, 255, 0.22);
     }
+
+    /* Cohort Focus Filter Bar (replaces unrelated top tabs) */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .filter-chip {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: var(--text-dim);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .filter-chip:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .filter-chip.active {
+      background: rgba(45, 212, 191, 0.24);
+      border-color: var(--input-teal);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(45, 212, 191, 0.25);
+    }
+
     .status-metrics {
       display: flex;
       align-items: center;
-      gap: 20px;
-      font-size: 13px;
+      justify-content: space-between;
+      gap: 14px;
+      font-size: 12px;
+      flex-wrap: wrap;
     }
     .stat-inline {
       display: flex;
       align-items: baseline;
-      gap: 6px;
+      gap: 5px;
     }
     .stat-inline .val {
-      font-size: 19px;
+      font-size: 16px;
       font-weight: 800;
       font-variant-numeric: tabular-nums;
     }
     .stat-inline .lbl {
-      font-size: 12.5px;
+      font-size: 11.5px;
       color: var(--text-dim);
       font-weight: 600;
     }
     #status-drawer {
       display: none;
-      margin-top: 10px;
-      padding-top: 10px;
+      margin-top: 8px;
+      padding-top: 8px;
       border-top: 1px solid rgba(255, 255, 255, 0.14);
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-dim);
-      max-height: 150px;
+      max-height: 140px;
       overflow-y: auto;
     }
     #status-drawer.open {
@@ -184,37 +243,37 @@
     .audit-row {
       display: flex;
       justify-content: space-between;
-      padding: 4px 0;
+      padding: 3px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       font-family: "SF Mono", Menlo, monospace;
-      font-size: 11.5px;
+      font-size: 11px;
     }
 
-    /* LEFT COLUMN: INPUT NODES + WAITING QUEUE */
+    /* LEFT COLUMN: 5 SOTA INPUT NODES + WAITING QUEUE */
     #left-inputs-col {
       position: absolute;
-      left: 20px;
-      top: 98px;
-      bottom: 18px;
-      width: 325px;
+      left: 16px;
+      top: 118px;
+      bottom: 14px;
+      width: 345px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       z-index: 20;
       overflow-y: auto;
       padding-right: 4px;
     }
 
-    /* RIGHT COLUMN: OUTPUT ROLE NODES & TASK QUEUES */
+    /* RIGHT COLUMN: 6 ROLE-SPECIFIC OUTPUT NODES & TASK QUEUES */
     #right-outputs-col {
       position: absolute;
-      right: 20px;
-      top: 98px;
-      bottom: 18px;
-      width: 340px;
+      right: 16px;
+      top: 118px;
+      bottom: 14px;
+      width: 365px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       z-index: 20;
       overflow-y: auto;
       padding-left: 4px;
@@ -224,12 +283,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 6px 13px;
+      padding: 5px 12px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      flex-shrink: 0;
     }
     .col-zone-header.input-zone {
       background: rgba(45, 212, 191, 0.16);
@@ -244,9 +304,10 @@
 
     /* Node Cards (Input & Output) */
     .node-card {
-      padding: 12px 15px;
+      padding: 10px 13px;
       cursor: pointer;
       position: relative;
+      flex-shrink: 0;
     }
     .node-card:hover {
       border-color: rgba(255, 255, 255, 0.35);
@@ -254,27 +315,27 @@
     .node-card.active-input {
       border-color: var(--input-teal);
       box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.48),
-        0 0 22px rgba(45, 212, 191, 0.28);
+        0 10px 26px rgba(0, 0, 0, 0.48),
+        0 0 20px rgba(45, 212, 191, 0.26);
     }
     .node-card.pass-target {
       border-color: var(--pass-green);
       box-shadow:
-        0 14px 36px rgba(0, 0, 0, 0.55),
-        0 0 28px rgba(46, 204, 113, 0.38);
+        0 12px 32px rgba(0, 0, 0, 0.55),
+        0 0 26px rgba(16, 185, 129, 0.38);
     }
     .node-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 5px;
+      gap: 6px;
+      margin-bottom: 4px;
     }
     .node-kind-tag {
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 800;
-      letter-spacing: 0.06em;
-      padding: 2px 8px;
+      letter-spacing: 0.05em;
+      padding: 2px 7px;
       border-radius: 999px;
       text-transform: uppercase;
     }
@@ -283,13 +344,15 @@
       color: #5eead4;
       border: 1px solid rgba(45, 212, 191, 0.4);
     }
-    .node-kind-tag.out-urgent { background: rgba(231, 76, 60, 0.25); color: #fca5a5; border: 1px solid rgba(231, 76, 60, 0.5); }
-    .node-kind-tag.out-provider { background: rgba(243, 156, 18, 0.25); color: #fde68a; border: 1px solid rgba(243, 156, 18, 0.5); }
-    .node-kind-tag.out-nurse { background: rgba(52, 152, 219, 0.25); color: #bae6fd; border: 1px solid rgba(52, 152, 219, 0.5); }
-    .node-kind-tag.out-silent { background: rgba(100, 116, 139, 0.3); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.4); }
+    .node-kind-tag.out-hospital   { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.5); }
+    .node-kind-tag.out-podiatry   { background: rgba(245, 158, 11, 0.25); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.5); }
+    .node-kind-tag.out-opat       { background: rgba(168, 85, 247, 0.25); color: #e9d5ff; border: 1px solid rgba(168, 85, 247, 0.5); }
+    .node-kind-tag.out-specialist { background: rgba(236, 72, 153, 0.25); color: #fbcfe8; border: 1px solid rgba(236, 72, 153, 0.5); }
+    .node-kind-tag.out-rn         { background: rgba(59, 130, 246, 0.25); color: #bfdbfe; border: 1px solid rgba(59, 130, 246, 0.5); }
+    .node-kind-tag.out-silent     { background: rgba(100, 116, 139, 0.3); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.4); }
 
     .node-expand-lbl {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       color: var(--cyan-glow);
     }
@@ -298,36 +361,36 @@
       align-items: baseline;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
     .node-title {
-      font-size: 15.5px;
+      font-size: 14px;
       font-weight: 800;
     }
     .node-count {
-      font-size: 12.5px;
+      font-size: 11.5px;
       color: var(--text-dim);
       font-weight: 600;
       white-space: nowrap;
     }
     .node-count strong {
-      font-size: 16px;
+      font-size: 14.5px;
       color: #fff;
       font-weight: 800;
     }
     .node-live-reading {
-      font-size: 12.5px;
-      line-height: 1.35;
-      color: rgba(255, 255, 255, 0.88);
-      background: rgba(0, 0, 0, 0.24);
-      padding: 6px 9px;
-      border-radius: 10px;
+      font-size: 11.5px;
+      line-height: 1.32;
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(0, 0, 0, 0.26);
+      padding: 5px 8px;
+      border-radius: 8px;
       border-left: 3px solid var(--input-teal);
     }
     .node-sub {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-dim);
-      line-height: 1.35;
+      line-height: 1.32;
     }
     .node-card.pass-target .node-sub {
       color: #6ee7b7;
@@ -337,10 +400,10 @@
     /* Expandable Drawer inside Input & Output Cards */
     .node-drawer {
       display: none;
-      margin-top: 9px;
-      padding-top: 9px;
+      margin-top: 8px;
+      padding-top: 8px;
       border-top: 1px solid rgba(255, 255, 255, 0.13);
-      font-size: 12px;
+      font-size: 11.5px;
     }
     .node-card.expanded .node-drawer {
       display: block;
@@ -348,9 +411,9 @@
     .drawer-item {
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      padding: 7px 10px;
-      margin-bottom: 6px;
+      border-radius: 9px;
+      padding: 6px 9px;
+      margin-bottom: 5px;
       cursor: pointer;
       transition: background 0.15s;
     }
@@ -365,11 +428,12 @@
       justify-content: space-between;
       align-items: center;
       font-weight: 800;
-      font-size: 12.5px;
+      font-size: 11.5px;
       margin-bottom: 3px;
+      gap: 6px;
     }
     .drawer-item-body {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--text-dim);
       line-height: 1.32;
     }
@@ -378,10 +442,11 @@
     #center-stage {
       position: absolute;
       left: 50%;
-      top: 53%;
+      top: 55%;
       transform: translate(-50%, -50%);
-      width: 560px;
-      max-height: 82vh;
+      width: min(560px, calc(100vw - 750px));
+      min-width: 460px;
+      max-height: 80vh;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -389,11 +454,11 @@
     }
 
     #now-card {
-      padding: 20px 24px;
+      padding: 18px 22px;
       border-width: 2px;
       border-color: rgba(56, 189, 248, 0.48);
       overflow-y: auto;
-      max-height: 80vh;
+      max-height: 79vh;
     }
 
     /* Linkage Bar inside NOW Card */
@@ -401,19 +466,19 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 6px;
-      padding: 7px 11px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.28);
+      gap: 5px;
+      padding: 7px 10px;
+      border-radius: 11px;
+      background: rgba(0, 0, 0, 0.3);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      margin-bottom: 12px;
-      font-size: 11.5px;
+      margin-bottom: 10px;
+      font-size: 11px;
     }
     .link-chip {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 3px 9px;
+      padding: 2px 8px;
       border-radius: 999px;
       font-weight: 700;
       cursor: pointer;
@@ -426,8 +491,8 @@
       transform: scale(1.03);
     }
     .link-chip.out-chip {
-      background: rgba(46, 204, 113, 0.2);
-      border-color: rgba(46, 204, 113, 0.55);
+      background: rgba(16, 185, 129, 0.22);
+      border-color: rgba(16, 185, 129, 0.55);
       color: #a7f3d0;
     }
     .link-arrow {
@@ -438,62 +503,73 @@
     .now-row1 {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 11px;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 9px;
     }
     .now-badge {
       background: var(--now-blue);
       color: #fff;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 800;
-      padding: 4px 11px;
+      padding: 3px 10px;
       border-radius: 999px;
       letter-spacing: 0.04em;
     }
     .now-id {
-      font-size: 25px;
+      font-size: 23px;
       font-weight: 800;
       letter-spacing: -0.02em;
     }
     .now-right-badge {
       margin-left: auto;
       background: rgba(255, 255, 255, 0.13);
-      color: rgba(255, 255, 255, 0.92);
-      font-size: 12px;
+      color: rgba(255, 255, 255, 0.94);
+      font-size: 11.5px;
       font-weight: 800;
-      padding: 4px 12px;
+      padding: 3px 11px;
       border-radius: 999px;
     }
+
+    /* Differential & Visit Modality Strip */
+    .now-meta-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
     .now-story {
-      font-size: 17.5px;
+      font-size: 16px;
       font-weight: 600;
       line-height: 1.42;
       color: rgba(255, 255, 255, 0.96);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .now-task-preview {
-      font-size: 12.5px;
+      font-size: 12px;
       color: #a7f3d0;
-      background: rgba(46, 204, 113, 0.12);
-      border: 1px solid rgba(46, 204, 113, 0.35);
-      padding: 7px 12px;
+      background: rgba(16, 185, 129, 0.13);
+      border: 1px solid rgba(16, 185, 129, 0.38);
+      padding: 8px 11px;
       border-radius: 11px;
-      margin-bottom: 14px;
-      line-height: 1.35;
+      margin-bottom: 12px;
+      line-height: 1.36;
     }
 
     .now-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 13px;
+      gap: 9px;
+      margin-bottom: 11px;
       flex-wrap: wrap;
     }
     .action-btn {
       border: none;
       border-radius: 999px;
-      padding: 9px 20px;
-      font-size: 16px;
+      padding: 8px 18px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
       transition: transform 0.14s, filter 0.14s;
@@ -510,17 +586,17 @@
     .now-layers {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
+      gap: 7px;
+      margin-bottom: 7px;
       flex-wrap: wrap;
     }
     .layer-pill {
       background: rgba(255, 255, 255, 0.10);
       border: 1.5px solid rgba(255, 255, 255, 0.16);
       color: #fff;
-      padding: 6px 15px;
+      padding: 5px 14px;
       border-radius: 999px;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.18s;
@@ -531,15 +607,15 @@
       box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
     }
     .now-footer {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-dim);
     }
 
     /* In-Card Progressive Dossier Expansion */
     #dossier-inline {
       display: none;
-      margin-top: 12px;
-      padding-top: 12px;
+      margin-top: 11px;
+      padding-top: 11px;
       border-top: 1px solid rgba(255, 255, 255, 0.16);
     }
     #dossier-inline.open {
@@ -548,54 +624,54 @@
     .dossier-section {
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 13px;
-      padding: 11px 14px;
-      margin-bottom: 9px;
+      border-radius: 12px;
+      padding: 10px 13px;
+      margin-bottom: 8px;
     }
     .dossier-section.story { border-color: rgba(56, 189, 248, 0.45); background: rgba(56, 189, 248, 0.09); }
-    .dossier-section.rules { border-color: rgba(243, 156, 18, 0.45); background: rgba(243, 156, 18, 0.09); }
-    .dossier-section.more  { border-color: rgba(46, 204, 113, 0.45); background: rgba(46, 204, 113, 0.09); }
+    .dossier-section.rules { border-color: rgba(245, 158, 11, 0.45); background: rgba(245, 158, 11, 0.09); }
+    .dossier-section.more  { border-color: rgba(16, 185, 129, 0.45); background: rgba(16, 185, 129, 0.09); }
     .sec-badge {
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 800;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       color: var(--cyan-glow);
     }
-    .dossier-section.rules .sec-badge { color: #f39c12; }
-    .dossier-section.more .sec-badge { color: #2ecc71; }
+    .dossier-section.rules .sec-badge { color: #fbbf24; }
+    .dossier-section.more .sec-badge { color: #34d399; }
     .sec-row { margin-bottom: 6px; }
     .sec-row:last-child { margin-bottom: 0; }
-    .sec-lbl { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 1px; }
-    .sec-val { font-size: 12.5px; line-height: 1.38; color: rgba(255, 255, 255, 0.88); }
+    .sec-lbl { font-size: 11.5px; font-weight: 700; color: #fff; margin-bottom: 1px; }
+    .sec-val { font-size: 12px; line-height: 1.36; color: rgba(255, 255, 255, 0.88); }
     .voi-btn {
       margin-top: 7px;
       width: 100%;
       background: rgba(56, 189, 248, 0.25);
       border: 1px solid var(--cyan-glow);
       color: #fff;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 700;
-      padding: 7px 12px;
-      border-radius: 10px;
+      padding: 7px 11px;
+      border-radius: 9px;
       cursor: pointer;
     }
 
     /* Modify Route Popover */
     #modify-popover {
       display: none;
-      margin-top: 10px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      background: rgba(10, 18, 28, 0.94);
+      margin-top: 9px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(10, 18, 28, 0.96);
       border: 1.5px solid var(--cyan-glow);
     }
     #modify-popover.open {
       display: block;
     }
-    .mod-title { font-size: 15px; font-weight: 800; margin-bottom: 3px; }
-    .mod-sub { font-size: 12px; color: var(--text-dim); margin-bottom: 9px; }
+    .mod-title { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+    .mod-sub { font-size: 11.5px; color: var(--text-dim); margin-bottom: 8px; }
     .mod-opt {
       display: flex;
       align-items: center;
@@ -603,13 +679,13 @@
       width: 100%;
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 11px;
-      padding: 8px 12px;
-      margin-bottom: 6px;
+      border-radius: 10px;
+      padding: 7px 11px;
+      margin-bottom: 5px;
       color: #fff;
       cursor: pointer;
       text-align: left;
-      font-size: 12.5px;
+      font-size: 12px;
     }
     .mod-opt:hover {
       background: rgba(56, 189, 248, 0.2);
@@ -623,121 +699,178 @@
 
   <div id="spatial-volume">
 
-    <!-- TOP STATUS & COHORT BAR -->
+    <!-- TOP STATUS & COHORT FILTER BAR -->
     <div id="status-card" class="glass-card">
       <div class="status-top">
         <button class="status-title-btn" onclick="toggleStatusDrawer()">
-          <span>Status</span>
+          <span>Home DM Wound Care</span>
           <span class="show-lbl" id="status-show-lbl">Show Ledger</span>
         </button>
-        <span class="topic-pill">POST-DISCHARGE DIABETIC LIMB WOUND &amp; HOME GLYCEMIC CONTINUUM</span>
-        <button class="top-btn" onclick="resetCohort()">↻ Reset Cohort</button>
-        <a href="http://127.0.0.1:8780/workspace" class="top-btn">Inpatient Hospital (:8780) ↗</a>
-        <a href="/landing" class="top-btn">Landing</a>
+        <span class="topic-pill">SOTA HOME DIABETIC FOOT · NPWT · OPAT IV · SEPSIS / UTI / CAD / CRF ROUTER</span>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button class="top-btn" onclick="resetCohort()">↻ Reset Cohort</button>
+          <a href="/landing" class="top-btn">3D Architecture Overview</a>
+        </div>
       </div>
+
+      <!-- Clinical Focus Filters within Unified Home DM Wound Care Cohort -->
+      <div class="filter-bar">
+        <button class="filter-chip active" id="flt-ALL" onclick="applyCohortFilter('ALL')">All 12 Home DM Cases</button>
+        <button class="filter-chip" id="flt-WOUND_VAC" onclick="applyCohortFilter('WOUND_VAC')">Local Wound · NPWT (VAC) · Boot</button>
+        <button class="filter-chip" id="flt-OPAT_IV" onclick="applyCohortFilter('OPAT_IV')">Home IV Antibiotics (OPAT / OVIVA)</button>
+        <button class="filter-chip" id="flt-SEPSIS_UTI" onclick="applyCohortFilter('SEPSIS_UTI')">Sepsis &amp; Occult UTI / euDKA</button>
+        <button class="filter-chip" id="flt-CAD_CRF" onclick="applyCohortFilter('CAD_CRF')">Silent CAD &amp; Cardiorenal (CRF)</button>
+        <button class="filter-chip" id="flt-PODIATRY_MODALITY" onclick="applyCohortFilter('PODIATRY_MODALITY')">Podiatry (Home · Office · Hospital)</button>
+      </div>
+
       <div class="status-metrics">
         <div class="stat-inline">
-          <span class="val" id="stat-reviewed">0/10</span>
-          <span class="lbl">Post-Discharge Limb Cases</span>
+          <span class="val" id="stat-reviewed">0/12</span>
+          <span class="lbl">Reviewed</span>
         </div>
         <div class="stat-inline">
-          <span class="val" id="stat-alerts">0</span>
-          <span class="lbl">Urgent Readmit / Rescue</span>
+          <span class="val" id="stat-hospital">0</span>
+          <span class="lbl">Hospital Admit</span>
         </div>
         <div class="stat-inline">
-          <span class="val" id="stat-provider">0</span>
-          <span class="lbl">Provider Tasks</span>
+          <span class="val" id="stat-podiatry">0</span>
+          <span class="lbl">Podiatry (Home/Office)</span>
         </div>
         <div class="stat-inline">
-          <span class="val" id="stat-nurse">0</span>
-          <span class="lbl">Nurse / Coach Tasks</span>
+          <span class="val" id="stat-opat">0</span>
+          <span class="lbl">OPAT IV / ID</span>
+        </div>
+        <div class="stat-inline">
+          <span class="val" id="stat-specialist">0</span>
+          <span class="lbl">Wound Specialist</span>
+        </div>
+        <div class="stat-inline">
+          <span class="val" id="stat-rn">0</span>
+          <span class="lbl">Home RN</span>
+        </div>
+        <div class="stat-inline">
+          <span class="val" id="stat-silent">0</span>
+          <span class="lbl">Silent / OARS</span>
         </div>
         <div class="stat-inline">
           <span class="val" id="stat-corrections">0</span>
           <span class="lbl">Overrides</span>
         </div>
       </div>
+
       <div id="status-drawer">
-        <div style="margin-bottom:6px; font-weight:700; color:#fff;">
-          PHA × SALVAGE-AI Post-Discharge Diabetic Limb Wound &amp; Glycemic Ledger (<span id="sync-indicator">LIVE :8790</span>)
+        <div style="margin-bottom:5px; font-weight:700; color:#fff;">
+          SOTA Home DM Wound Care Cryptographic Decision Ledger (<span id="sync-indicator">LIVE :8790</span> · 5 Input Nodes → 6 Role Queues)
         </div>
         <div id="audit-log-rows">
-          <div class="audit-row"><span>Waiting for first decision...</span><span>3 Input Streams → 4 Role Queues</span></div>
+          <div class="audit-row"><span>Ready — 12 post-discharge Home DM Foot &amp; Multimorbidity cases loaded</span><span>5 Inputs → 6 Role Queues</span></div>
         </div>
       </div>
     </div>
 
-    <!-- LEFT COLUMN: 3 CLEARLY DELINEATED INPUT NODES + WAITING QUEUE -->
+    <!-- LEFT COLUMN: 5 SOTA HOME INPUT NODES + WAITING QUEUE -->
     <div id="left-inputs-col">
       <div class="col-zone-header input-zone">
-        <span>◀ Input Nodes (Home Sensors &amp; 4D Labs)</span>
+        <span>◀ 5 Home Input Nodes (Telemetry &amp; 4D Labs)</span>
         <span>Click to Expand</span>
       </div>
 
-      <!-- INPUT NODE 1: Smart Boot & Wound Photo -->
-      <div id="in-node-boot_wound" class="glass-card node-card" onclick="toggleInputNode('boot_wound')">
+      <!-- INPUT NODE 1: Local Foot, Smart Boot & NPWT (VAC) -->
+      <div id="in-node-foot_vac_boot" class="glass-card node-card" onclick="toggleInputNode('foot_vac_boot')">
         <div class="node-top">
-          <span class="node-kind-tag in-tag">INPUT NODE 1 · WOUND &amp; BOOT</span>
-          <span class="node-expand-lbl" id="in-exp-boot_wound">Expand ▾</span>
+          <span class="node-kind-tag in-tag">INPUT 1 · FOOT, NPWT (VAC) &amp; BOOT</span>
+          <span class="node-expand-lbl" id="in-exp-foot_vac_boot">Expand ▾</span>
         </div>
         <div class="node-title-row">
-          <span class="node-title">Smart Boot &amp; Wound Photo</span>
-          <span class="node-count"><strong id="in-cnt-boot_wound">0</strong> linked</span>
+          <span class="node-title">Local Wound, VAC &amp; Smart Boot</span>
+          <span class="node-count"><strong id="in-cnt-foot_vac_boot">0</strong> linked</span>
         </div>
-        <div class="node-live-reading" id="in-live-boot_wound">
-          Loading plantar ΔT &amp; offloading stream...
+        <div class="node-live-reading" id="in-live-foot_vac_boot">
+          Loading plantar ΔT, boot adherence %, VAC seal &amp; canister...
         </div>
-        <div class="node-drawer" id="in-drawer-boot_wound" onclick="event.stopPropagation()"></div>
+        <div class="node-drawer" id="in-drawer-foot_vac_boot" onclick="event.stopPropagation()"></div>
       </div>
 
-      <!-- INPUT NODE 2: Home CGM, Glucometer & BP/Scale -->
-      <div id="in-node-glycemic_cardio" class="glass-card node-card" onclick="toggleInputNode('glycemic_cardio')">
+      <!-- INPUT NODE 2: Home RN & OPAT IV Infusion Stream -->
+      <div id="in-node-rn_opat_iv" class="glass-card node-card" onclick="toggleInputNode('rn_opat_iv')">
         <div class="node-top">
-          <span class="node-kind-tag in-tag">INPUT NODE 2 · GLYCEMIC &amp; HEMODYNAMICS</span>
-          <span class="node-expand-lbl" id="in-exp-glycemic_cardio">Expand ▾</span>
+          <span class="node-kind-tag in-tag">INPUT 2 · HOME RN &amp; OPAT IV STREAM</span>
+          <span class="node-expand-lbl" id="in-exp-rn_opat_iv">Expand ▾</span>
         </div>
         <div class="node-title-row">
-          <span class="node-title">Home CGM, Insulin &amp; BP/Scale</span>
-          <span class="node-count"><strong id="in-cnt-glycemic_cardio">0</strong> linked</span>
+          <span class="node-title">PICC / OPAT IV &amp; Urine Dipstick</span>
+          <span class="node-count"><strong id="in-cnt-rn_opat_iv">0</strong> linked</span>
         </div>
-        <div class="node-live-reading" id="in-live-glycemic_cardio">
-          Loading CGM, finger-stick glucose &amp; weight stream...
+        <div class="node-live-reading" id="in-live-rn_opat_iv">
+          Loading PICC line, Vancomycin AUC/trough &amp; urinalysis...
         </div>
-        <div class="node-drawer" id="in-drawer-glycemic_cardio" onclick="event.stopPropagation()"></div>
+        <div class="node-drawer" id="in-drawer-rn_opat_iv" onclick="event.stopPropagation()"></div>
       </div>
 
-      <!-- INPUT NODE 3: 4D Outpatient Labs & Watch -->
-      <div id="in-node-labs_watch" class="glass-card node-card" onclick="toggleInputNode('labs_watch')">
+      <!-- INPUT NODE 3: Glycemic, Ketone & SGLT2i Stream -->
+      <div id="in-node-glycemic_ketone" class="glass-card node-card" onclick="toggleInputNode('glycemic_ketone')">
         <div class="node-top">
-          <span class="node-kind-tag in-tag">INPUT NODE 3 · 4D LABS &amp; WEARABLE</span>
-          <span class="node-expand-lbl" id="in-exp-labs_watch">Expand ▾</span>
+          <span class="node-kind-tag in-tag">INPUT 3 · CGM, KETONES &amp; SGLT2i</span>
+          <span class="node-expand-lbl" id="in-exp-glycemic_ketone">Expand ▾</span>
         </div>
         <div class="node-title-row">
-          <span class="node-title">4D Outpatient Labs &amp; Watch</span>
-          <span class="node-count"><strong id="in-cnt-labs_watch">0</strong> linked</span>
+          <span class="node-title">Home CGM, BHB Ketones &amp; Insulin</span>
+          <span class="node-count"><strong id="in-cnt-glycemic_ketone">0</strong> linked</span>
         </div>
-        <div class="node-live-reading" id="in-live-labs_watch">
-          Loading storetime culture, CRP, toe pressure &amp; RHR...
+        <div class="node-live-reading" id="in-live-glycemic_ketone">
+          Loading CGM trend, capillary blood ketones &amp; SGLT2i status...
         </div>
-        <div class="node-drawer" id="in-drawer-labs_watch" onclick="event.stopPropagation()"></div>
+        <div class="node-drawer" id="in-drawer-glycemic_ketone" onclick="event.stopPropagation()"></div>
+      </div>
+
+      <!-- INPUT NODE 4: Cardiorenal (CAD / CRF) & Hemodynamics -->
+      <div id="in-node-cardiorenal_hemo" class="glass-card node-card" onclick="toggleInputNode('cardiorenal_hemo')">
+        <div class="node-top">
+          <span class="node-kind-tag in-tag">INPUT 4 · CAD, CRF &amp; HEMODYNAMICS</span>
+          <span class="node-expand-lbl" id="in-exp-cardiorenal_hemo">Expand ▾</span>
+        </div>
+        <div class="node-title-row">
+          <span class="node-title">ECG Patch, Orthostatics, Cr/K+ &amp; Weight</span>
+          <span class="node-count"><strong id="in-cnt-cardiorenal_hemo">0</strong> linked</span>
+        </div>
+        <div class="node-live-reading" id="in-live-cardiorenal_hemo">
+          Loading silent CAD ST-shift, BP, daily weight Δkg, Cr/eGFR/K+...
+        </div>
+        <div class="node-drawer" id="in-drawer-cardiorenal_hemo" onclick="event.stopPropagation()"></div>
+      </div>
+
+      <!-- INPUT NODE 5: 4D Storetime Labs & Perfusion VOI -->
+      <div id="in-node-labs_voi" class="glass-card node-card" onclick="toggleInputNode('labs_voi')">
+        <div class="node-top">
+          <span class="node-kind-tag in-tag">INPUT 5 · 4D STORETIME LABS &amp; VOI</span>
+          <span class="node-expand-lbl" id="in-exp-labs_voi">Expand ▾</span>
+        </div>
+        <div class="node-title-row">
+          <span class="node-title">Cultures, CRP &amp; Hallux Toe Pressure</span>
+          <span class="node-count"><strong id="in-cnt-labs_voi">0</strong> linked</span>
+        </div>
+        <div class="node-live-reading" id="in-live-labs_voi">
+          Loading storetime bone/urine cultures, CRP &amp; Hallux TP VOI...
+        </div>
+        <div class="node-drawer" id="in-drawer-labs_voi" onclick="event.stopPropagation()"></div>
       </div>
 
       <!-- WAITING INTAKE QUEUE -->
       <div id="waiting-queue-card" class="glass-card node-card" onclick="toggleWaitingQueue()">
         <div class="node-top">
-          <span class="node-kind-tag in-tag">INTAKE STREAM</span>
+          <span class="node-kind-tag in-tag">COHORT INTAKE STREAM</span>
           <span class="node-expand-lbl" id="wait-exp-lbl">Expand ▾</span>
         </div>
         <div class="node-title-row">
-          <span class="node-title">Waiting Post-Discharge Queue</span>
-          <span class="node-count"><strong id="queue-count">9</strong> waiting</span>
+          <span class="node-title">Waiting Home DM Foot Queue</span>
+          <span class="node-count"><strong id="queue-count">11</strong> waiting</span>
         </div>
-        <div class="node-sub" id="wait-next-preview">Click to view or pull any waiting diabetic limb patient into NOW.</div>
+        <div class="node-sub" id="wait-next-preview">Click to view or pull any waiting Home DM Foot case into NOW.</div>
         <div class="node-drawer" id="waiting-drawer" onclick="event.stopPropagation()"></div>
       </div>
     </div>
 
-    <!-- CENTER STAGE: NOW DECISION CARD + INLINE PROGRESSIVE EXPANSION -->
+    <!-- CENTER STAGE: NOW CAUSAL CROSSROADS CARD -->
     <div id="center-stage">
       <div id="now-card" class="glass-card">
         <!-- Explicit Input -> NOW -> Output Role Linkage Bar -->
@@ -745,10 +878,13 @@
 
         <div class="now-row1">
           <span class="now-badge">NOW</span>
-          <span class="now-id" id="now-id">PD-DFI-01</span>
-          <span id="now-route-chip" class="route-pill provider_task">Provider task</span>
-          <span class="now-right-badge" id="now-badge-right">ΔT +2.6°C · CGM 248</span>
+          <span class="now-id" id="now-id">HDFU-01</span>
+          <span id="now-route-chip" class="route-pill hospital_admit">Hospital Direct Admit</span>
+          <span class="now-right-badge" id="now-badge-right">ΔT +3.1°C · Sepsis Gate</span>
         </div>
+
+        <!-- Differential Diagnosis Gate & Podiatry Visit Modality Tags -->
+        <div class="now-meta-row" id="now-meta-row"></div>
 
         <div class="now-story" id="now-story"></div>
 
@@ -756,40 +892,48 @@
 
         <div class="now-actions">
           <button class="action-btn btn-pass" id="btn-pass-main" onclick="passCurrent()">Pass ✓</button>
-          <button class="action-btn btn-modify" id="btn-mod-main" onclick="toggleModifyPopover()">Modify...</button>
+          <button class="action-btn btn-modify" id="btn-mod-main" onclick="toggleModifyPopover()">Modify Role...</button>
           <button class="action-btn btn-collapse" id="btn-col-main" onclick="collapseLayer()">Collapse</button>
-          <button class="action-btn btn-reset" id="btn-reset-main" onclick="resetCohort()">↻ Reset All 10 Cases</button>
+          <button class="action-btn btn-reset" id="btn-reset-main" onclick="resetCohort()">↻ Reset All 12 Cases</button>
         </div>
 
         <div class="now-layers">
           <button class="layer-pill active" id="pill-0" onclick="jumpLayer(0)">Awareness</button>
-          <button class="layer-pill" id="pill-1" onclick="jumpLayer(1)">Story</button>
-          <button class="layer-pill" id="pill-2" onclick="jumpLayer(2)">Rules</button>
-          <button class="layer-pill" id="pill-3" onclick="jumpLayer(3)">More</button>
+          <button class="layer-pill" id="pill-1" onclick="jumpLayer(1)">Story &amp; Inputs</button>
+          <button class="layer-pill" id="pill-2" onclick="jumpLayer(2)">Rules &amp; Differential</button>
+          <button class="layer-pill" id="pill-3" onclick="jumpLayer(3)">More &amp; VOI</button>
         </div>
         <div class="now-footer">
-          Click any Input Node (left) or Output Role Queue (right) to expand its linked tasks.
+          Click any Input Node (left) or Output Role Queue (right) to inspect linked telemetry &amp; queued tasks.
         </div>
 
-        <!-- Modify Route Popover -->
+        <!-- Modify Route Popover (All 6 Role Queues) -->
         <div id="modify-popover">
-          <div class="mod-title">Re-Route to Role Task Queue</div>
-          <div class="mod-sub">Select which role queue receives this post-discharge diabetic limb case.</div>
-          <button class="mod-opt" onclick="selectModifiedRoute('urgent_page')">
-            <span><strong>Urgent Escalation Queue</strong> · Hospital Bridge Readmit / Live Rescue</span>
-            <span class="route-pill urgent_page">Urgent page</span>
+          <div class="mod-title">Re-Route to Home Care or Hospital Role Queue</div>
+          <div class="mod-sub">Select which clinical role queue receives this Home DM Wound Care case.</div>
+          <button class="mod-opt" onclick="selectModifiedRoute('hospital_admit')">
+            <span><strong>Role 5 · Hospital / ED / Cardiology-Nephrology Direct Escalation</strong></span>
+            <span class="route-pill hospital_admit">Hospital Direct Admit</span>
           </button>
-          <button class="mod-opt" onclick="selectModifiedRoute('provider_task')">
-            <span><strong>Provider Consult Queue</strong> · Podiatry, Vascular &amp; Endocrine MD</span>
-            <span class="route-pill provider_task">Provider task</span>
+          <button class="mod-opt" onclick="selectModifiedRoute('podiatry_visit')">
+            <span><strong>Role 4 · Podiatry Visit Queue</strong> (Home Visit · Office Clinic · Inpatient)</span>
+            <span class="route-pill podiatry_visit">Podiatry Visit</span>
           </button>
-          <button class="mod-opt" onclick="selectModifiedRoute('nurse_task')">
-            <span><strong>Nurse &amp; Coach VOI Queue</strong> · Visiting RN Doppler / HCA OARS Coaching</span>
-            <span class="route-pill nurse_task">Nurse task</span>
+          <button class="mod-opt" onclick="selectModifiedRoute('opat_id')">
+            <span><strong>Role 3 · Home IV Antibiotics (OPAT &amp; ID Pharmacy)</strong></span>
+            <span class="route-pill opat_id">OPAT / ID Rx</span>
           </button>
-          <button class="mod-opt" onclick="selectModifiedRoute('silent_log')">
-            <span><strong>Silent Verified Ledger</strong> · OARS Affirmation &amp; Zero Alert</span>
-            <span class="route-pill silent_log">Silent log</span>
+          <button class="mod-opt" onclick="selectModifiedRoute('wound_specialist')">
+            <span><strong>Role 2 · Visiting Wound Care Specialist</strong> (CWOCN / Mobile NP)</span>
+            <span class="route-pill wound_specialist">Wound Specialist</span>
+          </button>
+          <button class="mod-opt" onclick="selectModifiedRoute('home_rn')">
+            <span><strong>Role 1 · Home Health RN Visit Queue</strong> (VAC / Labs / ECG / Rescue)</span>
+            <span class="route-pill home_rn">Home RN Visit</span>
+          </button>
+          <button class="mod-opt" onclick="selectModifiedRoute('silent_oars')">
+            <span><strong>Role 6 · Silent Remission &amp; HCA OARS Coaching Ledger</strong></span>
+            <span class="route-pill silent_oars">Silent / OARS</span>
           </button>
         </div>
 
@@ -800,67 +944,95 @@
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: 4 CLEARLY DELINEATED OUTPUT ROLE NODES & TASK QUEUES -->
+    <!-- RIGHT COLUMN: 6 ROLE-SPECIFIC OUTPUT NODES & TASK QUEUES -->
     <div id="right-outputs-col">
       <div class="col-zone-header output-zone">
-        <span>Output Nodes (Role Task Queues) ▶</span>
+        <span>6 Role Output Queues &amp; Visit Modalities ▶</span>
         <span>Click to Expand</span>
       </div>
 
-      <!-- OUTPUT ROLE 1: Urgent Escalation Queue (urgent_page) -->
-      <div id="out-node-urgent_page" class="glass-card node-card" onclick="toggleOutputNode('urgent_page')">
+      <!-- OUTPUT ROLE 1: Home Health RN Visit Queue (home_rn) -->
+      <div id="out-node-home_rn" class="glass-card node-card" onclick="toggleOutputNode('home_rn')">
         <div class="node-top">
-          <span class="node-kind-tag out-urgent">OUTPUT ROLE 1 · URGENT ESCALATION</span>
-          <span class="node-expand-lbl" id="out-exp-urgent_page">Queue (0) ▾</span>
+          <span class="node-kind-tag out-rn">ROLE 1 · HOME HEALTH RN VISIT</span>
+          <span class="node-expand-lbl" id="out-exp-home_rn">Queue (0) ▾</span>
         </div>
         <div class="node-title-row">
-          <span class="node-title">Hospital Bridge &amp; EMS Rescue</span>
-          <span class="node-count"><strong id="out-cnt-urgent_page">0</strong> tasks</span>
+          <span class="node-title">Home RN Visit Queue</span>
+          <span class="node-count"><strong id="out-cnt-home_rn">0</strong> tasks</span>
         </div>
-        <div class="node-sub" id="out-sub-urgent_page">Direct Vascular/ED readmission or live hypoglycemia rescue call</div>
-        <div class="node-drawer" id="out-drawer-urgent_page" onclick="event.stopPropagation()"></div>
+        <div class="node-sub" id="out-sub-home_rn">NPWT/VAC seal repair, dressing change, STAT blood/urine/ketone draw, 12-lead ECG</div>
+        <div class="node-drawer" id="out-drawer-home_rn" onclick="event.stopPropagation()"></div>
       </div>
 
-      <!-- OUTPUT ROLE 2: Provider Consult Queue (provider_task) -->
-      <div id="out-node-provider_task" class="glass-card node-card" onclick="toggleOutputNode('provider_task')">
+      <!-- OUTPUT ROLE 2: Visiting Wound Care Specialist Queue (wound_specialist) -->
+      <div id="out-node-wound_specialist" class="glass-card node-card" onclick="toggleOutputNode('wound_specialist')">
         <div class="node-top">
-          <span class="node-kind-tag out-provider">OUTPUT ROLE 2 · PHYSICIAN / APN QUEUE</span>
-          <span class="node-expand-lbl" id="out-exp-provider_task">Queue (0) ▾</span>
+          <span class="node-kind-tag out-specialist">ROLE 2 · VISITING WOUND SPECIALIST</span>
+          <span class="node-expand-lbl" id="out-exp-wound_specialist">Queue (0) ▾</span>
         </div>
         <div class="node-title-row">
-          <span class="node-title">Podiatry &amp; Endo Provider Queue</span>
-          <span class="node-count"><strong id="out-cnt-provider_task">0</strong> tasks</span>
+          <span class="node-title">Mobile Wound NP / CWOCN Queue</span>
+          <span class="node-count"><strong id="out-cnt-wound_specialist">0</strong> tasks</span>
         </div>
-        <div class="node-sub" id="out-sub-provider_task">Same-day tele-wound debridement, antibiotic Rx, or insulin/BP titration</div>
-        <div class="node-drawer" id="out-drawer-provider_task" onclick="event.stopPropagation()"></div>
+        <div class="node-sub" id="out-sub-wound_specialist">Home bedside sharp debridement, Levine deep swab, CAMP graft, Handheld Toe Doppler VOI</div>
+        <div class="node-drawer" id="out-drawer-wound_specialist" onclick="event.stopPropagation()"></div>
       </div>
 
-      <!-- OUTPUT ROLE 3: Nurse & Coach VOI Queue (nurse_task) -->
-      <div id="out-node-nurse_task" class="glass-card node-card" onclick="toggleOutputNode('nurse_task')">
+      <!-- OUTPUT ROLE 3: Home IV Antibiotics (OPAT & ID Pharmacy) Queue (opat_id) -->
+      <div id="out-node-opat_id" class="glass-card node-card" onclick="toggleOutputNode('opat_id')">
         <div class="node-top">
-          <span class="node-kind-tag out-nurse">OUTPUT ROLE 3 · RN &amp; HEALTH COACH QUEUE</span>
-          <span class="node-expand-lbl" id="out-exp-nurse_task">Queue (0) ▾</span>
+          <span class="node-kind-tag out-opat">ROLE 3 · HOME IV ANTIBIOTICS (OPAT)</span>
+          <span class="node-expand-lbl" id="out-exp-opat_id">Queue (0) ▾</span>
         </div>
         <div class="node-title-row">
-          <span class="node-title">Visiting RN &amp; HCA Coach Queue</span>
-          <span class="node-count"><strong id="out-cnt-nurse_task">0</strong> tasks</span>
+          <span class="node-title">OPAT &amp; ID Stewardship Queue</span>
+          <span class="node-count"><strong id="out-cnt-opat_id">0</strong> tasks</span>
         </div>
-        <div class="node-sub" id="out-sub-nurse_task">Outpatient hallux toe-pressure VOI, OARS boot coaching, or sensor re-check</div>
-        <div class="node-drawer" id="out-drawer-nurse_task" onclick="event.stopPropagation()"></div>
+        <div class="node-sub" id="out-sub-opat_id">Hold nephrotoxic Vancomycin (AKI-on-CRF), OVIVA IV-to-oral switch, UTI Rx, hold SGLT2i</div>
+        <div class="node-drawer" id="out-drawer-opat_id" onclick="event.stopPropagation()"></div>
       </div>
 
-      <!-- OUTPUT ROLE 4: Silent Verified Ledger (silent_log) -->
-      <div id="out-node-silent_log" class="glass-card node-card" onclick="toggleOutputNode('silent_log')">
+      <!-- OUTPUT ROLE 4: Podiatry Visit Queue (Home / Office / Hospital Modalities) (podiatry_visit) -->
+      <div id="out-node-podiatry_visit" class="glass-card node-card" onclick="toggleOutputNode('podiatry_visit')">
         <div class="node-top">
-          <span class="node-kind-tag out-silent">OUTPUT ROLE 4 · AUTOMATED LEDGER</span>
-          <span class="node-expand-lbl" id="out-exp-silent_log">Ledger (0) ▾</span>
+          <span class="node-kind-tag out-podiatry">ROLE 4 · PODIATRY (HOME · OFFICE · HOSP)</span>
+          <span class="node-expand-lbl" id="out-exp-podiatry_visit">Queue (0) ▾</span>
         </div>
         <div class="node-title-row">
-          <span class="node-title">Silent Remission &amp; OARS Log</span>
-          <span class="node-count"><strong id="out-cnt-silent_log">0</strong> logged</span>
+          <span class="node-title">Podiatry &amp; Limb Salvage Queue</span>
+          <span class="node-count"><strong id="out-cnt-podiatry_visit">0</strong> tasks</span>
         </div>
-        <div class="node-sub" id="out-sub-silent_log">Verified wound healing + glycemic stability logged with zero alert fatigue</div>
-        <div class="node-drawer" id="out-drawer-silent_log" onclick="event.stopPropagation()"></div>
+        <div class="node-sub" id="out-sub-podiatry_visit">4A Home Visit (homebound) · 4B Office Toe-and-Flow (X-ray/PTB/TCC) · 4C Inpatient OR</div>
+        <div class="node-drawer" id="out-drawer-podiatry_visit" onclick="event.stopPropagation()"></div>
+      </div>
+
+      <!-- OUTPUT ROLE 5: Hospital / ED / Cardiology-Nephrology Direct Escalation (hospital_admit) -->
+      <div id="out-node-hospital_admit" class="glass-card node-card" onclick="toggleOutputNode('hospital_admit')">
+        <div class="node-top">
+          <span class="node-kind-tag out-hospital">ROLE 5 · HOSPITAL DIRECT ESCALATION</span>
+          <span class="node-expand-lbl" id="out-exp-hospital_admit">Queue (0) ▾</span>
+        </div>
+        <div class="node-title-row">
+          <span class="node-title">Hospital / ED / Cardiorenal Admit</span>
+          <span class="node-count"><strong id="out-cnt-hospital_admit">0</strong> tasks</span>
+        </div>
+        <div class="node-sub" id="out-sub-hospital_admit">Direct admit for Foot Sepsis/Wet Gangrene, Urosepsis/euDKA, Silent NSTEMI, or K+ &gt; 6.0</div>
+        <div class="node-drawer" id="out-drawer-hospital_admit" onclick="event.stopPropagation()"></div>
+      </div>
+
+      <!-- OUTPUT ROLE 6: Silent Remission & HCA OARS Coaching Queue (silent_oars) -->
+      <div id="out-node-silent_oars" class="glass-card node-card" onclick="toggleOutputNode('silent_oars')">
+        <div class="node-top">
+          <span class="node-kind-tag out-silent">ROLE 6 · SILENT REMISSION &amp; OARS COACH</span>
+          <span class="node-expand-lbl" id="out-exp-silent_oars">Ledger (0) ▾</span>
+        </div>
+        <div class="node-title-row">
+          <span class="node-title">Silent EHR Log &amp; HCA OARS Coach</span>
+          <span class="node-count"><strong id="out-cnt-silent_oars">0</strong> logged</span>
+        </div>
+        <div class="node-sub" id="out-sub-silent_oars">Zero-alert granulation log + caregiver OARS offloading &amp; elevation coaching</div>
+        <div class="node-drawer" id="out-drawer-silent_oars" onclick="event.stopPropagation()"></div>
       </div>
     </div>
 
@@ -868,230 +1040,360 @@
 
   <script>
     const ROUTE_TITLES = {
-      urgent_page: "Urgent page",
-      provider_task: "Provider task",
-      nurse_task: "Nurse task",
-      silent_log: "Silent log"
+      home_rn: "Home RN Visit",
+      wound_specialist: "Wound Specialist",
+      opat_id: "OPAT / ID Rx",
+      podiatry_visit: "Podiatry Visit",
+      hospital_admit: "Hospital Direct Admit",
+      silent_oars: "Silent / OARS"
     };
 
     const ROLE_QUEUE_NAMES = {
-      urgent_page: "Hospital Bridge & EMS Rescue",
-      provider_task: "Podiatry & Endo Provider Queue",
-      nurse_task: "Visiting RN & HCA Coach Queue",
-      silent_log: "Silent Remission & OARS Log"
+      home_rn: "Home Health RN Visit Queue",
+      wound_specialist: "Mobile Wound NP / CWOCN Queue",
+      opat_id: "OPAT & ID Stewardship Queue",
+      podiatry_visit: "Podiatry & Limb Salvage Queue",
+      hospital_admit: "Hospital / ED / Cardiorenal Admit",
+      silent_oars: "Silent EHR Log & HCA OARS Coach"
     };
 
     const INPUT_NODE_NAMES = {
-      boot_wound: "Smart Boot & Wound Photo",
-      glycemic_cardio: "Home CGM, Insulin & BP/Scale",
-      labs_watch: "4D Outpatient Labs & Watch"
+      foot_vac_boot: "Local Wound, VAC & Boot",
+      rn_opat_iv: "PICC / OPAT IV & Urine Dip",
+      glycemic_ketone: "CGM, BHB Ketones & Insulin",
+      cardiorenal_hemo: "ECG, Orthostatics, Cr/K+ & Weight",
+      labs_voi: "4D Cultures, CRP & Hallux TP VOI"
     };
 
-    // Unified 10-Case Cohort: Every patient is a Post-Discharge Diabetic Limb Wound Patient
-    // combining Smart Boot/Wound sensors + Home Glycemic/BP/Weight + 4D Outpatient Labs!
-    const UNIFIED_PHA_CASES = [
+    // SOTA 12-Case Post-Discharge Home Diabetic Foot & Multimorbidity Cohort (HDFU-01 .. HDFU-12)
+    const SOTA_HOME_DFU_CASES = [
       {
-        id: "PD-DFI-01",
-        route: "provider_task",
-        badge: "ΔT +2.6°C · CGM 248",
-        activeInputs: ["boot_wound", "glycemic_cardio", "labs_watch"],
+        id: "HDFU-01",
+        route: "hospital_admit",
+        coRoutes: ["podiatry_visit", "home_rn"],
+        podiatryModality: "Modality 4C · Inpatient Podiatry/Vascular OR Consult",
+        podiatryModalityClass: "modality-hospital",
+        differentialGate: "Foot Sepsis Confirmed (vs. Occult UTI Ruled Out)",
+        comorbidities: ["Sepsis (Normothermic)", "DFI Abscess", "CKD 3b"],
+        filterTags: ["ALL", "SEPSIS_UTI", "WOUND_VAC", "PODIATRY_MODALITY"],
+        badge: "ΔT +3.1°C · Purulent · HR 104",
+        activeInputs: ["foot_vac_boot", "glycemic_ketone", "cardiorenal_hemo", "labs_voi"],
         inputs: {
-          boot_wound: "Plantar ΔT +2.6°C flare · Boot adherence dipped to 52%",
-          glycemic_cardio: "Home CGM 248 mg/dL (stress hyperglycemia) · BP 138/82",
-          labs_watch: "RHR 71→88 bpm · Deep MRSA swab PENDING (storetime 212h)"
+          foot_vac_boot: "Plantar ΔT +3.1°C flare · Redness 3cm above ankle · Foul purulent VAC canister",
+          rn_opat_iv: "Oral linezolid failing · Urine dipstick Nitrite/LE NEGATIVE (bladder clear)",
+          glycemic_ketone: "CGM velocity surge 142 → 288 mg/dL · Blood ketones BHB 0.4 mmol/L",
+          cardiorenal_hemo: "Normothermic 37.1°C (blunted by CKD) · RHR 104 bpm · HRV 14 ms · BP 98/60",
+          labs_voi: "Outpatient deep bone culture PENDING (storetime 196h) · Prior WBC 14.8k"
         },
-        roleTask: "Podiatry & Endo MD: Inspect plantar flare via tele-video, enforce 48h boot rest, adjust basal insulin, and bridge oral antibiotics while awaiting 212h culture.",
-        story: "Day 7 s/p 1st-ray foot debridement: Smart Boot detects +2.6°C plantar thermal flare with stress hyperglycemia (CGM 248 mg/dL) and RHR 88 bpm while outpatient MRSA wound culture is still pending (storetime 212h).",
-        purpose: "Catch early post-discharge diabetic foot relapse driven by plantar shear and hyperglycemia while blocking the Health Coach from encouraging step progression.",
-        whyFlagged: "Plantar ΔT >= +2.2°C (+2.6°C) + CGM rise to 248 mg/dL + RHR jump (+17 bpm) with outpatient deep culture locked in PENDING_AT_LANDMARK.",
-        context: "62M · Day 7 s/p 1st-ray resection · Plantar ΔT +2.6°C · CGM 248 mg/dL · RHR 88 bpm · Culture posts at 212h.",
-        methodsUsed: "3-Agent PHA Gate: DSA Target-Trial Gate fails closed on step progression; DEA masks unposted 212h culture under 4D storetime lock; HCA halts step goals.",
-        blindSpot: "An ungated wellness coach seeing 4,200 steps would praise walking, accelerating plantar breakdown before the 212h MRSA result posts.",
-        overallScope: "Routes to Podiatry & Endo Provider Queue for coordinated wound offloading, empiric antibiotic bridge, and insulin correction.",
-        voiText: "Order Home Wound Photo + 48h Offloading Rest & Basal Check (VOI 0.94)"
+        roleTask: "Hospital Direct Admit + Inpatient Podiatry/Vascular OR I&D: Bypass outpatient clinic; transmit sdr.decision.v1 packet for urgent surgical decompression & broad-spectrum IV antibiotics while Home RN draws peripheral blood cultures.",
+        story: "Day 5 s/p 1st-ray debridement: Normothermic (37.1°C) patient develops a +3.1°C plantar flare, purulent NPWT canister shift, stress hyperglycemia (CGM 288 mg/dL), RHR 104 bpm, and BP 98/60 mmHg.",
+        purpose: "Catch normothermic diabetic foot sepsis early (where CKD/diabetes blunt classic fever) and route directly to inpatient surgical limb salvage.",
+        whyFlagged: "Concordance of local plantar abscess (ΔT +3.1°C + purulent VAC) + stress CGM surge (288 mg/dL) + sympathetic collapse (HR 104, HRV 14 ms, SBP 98) with negative urine dipstick.",
+        methodsUsed: "Normothermic Sepsis Gate + 4D Storetime Lock (masking unresulted 196h bone swab) + Direct Inpatient Podiatry Modality 4C Router.",
+        blindSpot: "Waiting for oral temperature >= 38.0°C in a diabetic CKD patient misses >40% of ascending necrotizing foot infections until septic shock ensues.",
+        overallScope: "Primary route to Role 5 (Hospital Direct Admit) with linked co-tasks to Role 4C (Inpatient Podiatry OR) and Role 1 (Home RN STAT Blood Cultures).",
+        voiText: "Transmit Hospital Direct Admit Packet & Inpatient OR Alert (VOI 0.99)"
       },
       {
-        id: "PD-DFI-02",
-        route: "urgent_page",
-        badge: "Hypo 54 mg/dL · Solo",
-        activeInputs: ["glycemic_cardio", "boot_wound"],
+        id: "HDFU-02",
+        route: "hospital_admit",
+        coRoutes: ["opat_id", "home_rn"],
+        podiatryModality: "Foot Quiet — No Surgical Foot Exploration Needed",
+        podiatryModalityClass: "modality-home",
+        differentialGate: "Occult Urosepsis + SGLT2i Euglycemic DKA (Foot Spared)",
+        comorbidities: ["Complicated UTI / Urosepsis", "SGLT2i euDKA", "Neurogenic Bladder"],
+        filterTags: ["ALL", "SEPSIS_UTI", "OPAT_IV"],
+        badge: "Foot ΔT +0.4°C · Urine Nitrite+ · BHB 2.6",
+        activeInputs: ["rn_opat_iv", "glycemic_ketone", "foot_vac_boot", "cardiorenal_hemo"],
         inputs: {
-          boot_wound: "Heel flap intact (ΔT +0.7°C) · Zero morning steps logged",
-          glycemic_cardio: "Finger-stick 54 mg/dL → 58 mg/dL 15m after juice · Tremor",
-          labs_watch: "RHR 96 bpm · Lives alone · Post-op antibiotic reduced PO intake"
+          foot_vac_boot: "Surgical foot QUIET: Plantar ΔT +0.4°C · Clean granulating VAC bed · Boot 91%",
+          rn_opat_iv: "Suprapubic tenderness & new confusion · Home urine dip: Nitrite (+) & 3+ Leuk Esterase",
+          glycemic_ketone: "CGM only 204 mg/dL on Empagliflozin, BUT Capillary Blood Ketones BHB = 2.6 mmol/L!",
+          cardiorenal_hemo: "RHR 98 bpm · Tachypnea RR 24/min · Orthostatic SBP drop 132 → 98 mmHg",
+          labs_voi: "Urine culture drawn today (PENDING storetime) · Prior bladder scan PVR 240 mL"
         },
-        roleTask: "Hospital Bridge / Live Rescue: Immediate live clinician phone call to solo-living DFI patient, verify nasal glucagon readiness, and hold morning insulin.",
-        story: "Day 4 s/p heel ulcer debridement: Finger-stick glucose is 54 mg/dL before breakfast and stays 58 mg/dL 15m after juice; patient lives alone in offloading boot and reports shakiness.",
-        purpose: "Prevent hypoglycemic syncope and a mechanical fall on a fresh post-operative diabetic foot wound in a patient living alone.",
-        whyFlagged: "Rule-of-15 failure (two consecutive readings < 60 mg/dL despite rescue carbohydrate) + solo-living status + high fall risk in surgical offloading boot.",
-        context: "72F · Day 4 post-DFI debridement · Lives alone · Poor appetite on oral antibiotics · Glucose 54 → 58 mg/dL.",
-        methodsUsed: "Bundled Glycemic Rescue Gate (merging initial 54 and 15m repeat 58 mg/dL into one urgent rescue event) + Post-Op Fall Protection Rule.",
-        blindSpot: "Delayed rescue in a solo-living patient wearing a bulky surgical offloading walker risks neuroglycopenic fall and surgical dehiscence.",
-        overallScope: "Routes to Hospital Bridge & EMS Rescue Queue for immediate live voice contact and morning basal/bolus insulin hold.",
-        voiText: "Initiate Live Clinician Call & Verify Glucagon Rescue (VOI 0.98)"
+        roleTask: "Hospital Direct Medical Admit + OPAT/ID Hold SGLT2i: Admit for IV fluid resuscitation, insulin/dextrose closure of SGLT2i euglycemic DKA (BHB 2.6 mmol/L), and IV Ertapenem for urosepsis—sparing the quiet surgical foot from unnecessary debridement.",
+        story: "Day 8 post-midfoot debridement on Empagliflozin: Patient is confused and tachycardic (HR 98, RR 24), but the surgical foot is cool and clean (ΔT +0.4°C). Home RN dipstick is Nitrite+ and capillary ketones are 2.6 mmol/L despite glucose of only 204 mg/dL.",
+        purpose: "Differentiate non-foot urosepsis + SGLT2i euglycemic DKA from foot sepsis in a patient with diabetic autonomic cystopathy.",
+        whyFlagged: "Systemic sepsis & ketoacidosis signature (BHB 2.6 mmol/L, Nitrite+, RR 24) discordant with quiet local foot telemetry (ΔT +0.4°C).",
+        methodsUsed: "Multi-Source Sepsis Differential Gate (Foot vs. Urinary Tract) + SGLT2i Euglycemic DKA Ketone Guard (flagging BHB >= 1.5 mmol/L even when BG < 250 mg/dL).",
+        blindSpot: "Anchor bias on the recent foot surgery would rush the patient to the podiatry OR while missing life-threatening SGLT2i euglycemic DKA and ascending pyelonephritis.",
+        overallScope: "Routes to Role 5 (Medical/Obs Direct Admit) + Role 3 (OPAT/ID Hold Empagliflozin & Start Gram-Negative Coverage).",
+        voiText: "Hold SGLT2i, Transmit euDKA/Urosepsis Admit & Spare Foot Surgery (VOI 0.98)"
       },
       {
-        id: "PD-DFI-03",
-        route: "urgent_page",
-        badge: "Fever 38.9°C · Rigors",
-        activeInputs: ["boot_wound", "labs_watch", "glycemic_cardio"],
+        id: "HDFU-03",
+        route: "opat_id",
+        coRoutes: ["home_rn"],
+        podiatryModality: "Foot Healing — Continue Home Offloading",
+        podiatryModalityClass: "modality-home",
+        differentialGate: "OPAT Vancomycin Nephrotoxic AKI-on-CRF (Stage 4 CKD)",
+        comorbidities: ["CRF / Stage 4 CKD", "OPAT Vancomycin AKI", "Hyperkalemia K+ 5.8"],
+        filterTags: ["ALL", "OPAT_IV", "CAD_CRF"],
+        badge: "Vanc Trough 26.4 · Cr 1.8→2.9 · K+ 5.8",
+        activeInputs: ["rn_opat_iv", "cardiorenal_hemo", "labs_voi", "foot_vac_boot"],
         inputs: {
-          boot_wound: "Erythema spreading 3 cm above malleolus · Plantar ΔT +3.4°C",
-          glycemic_cardio: "CGM spiked to 312 mg/dL · Seated BP dropped to 96/58 mmHg",
-          labs_watch: "Home oral temp 38.9°C · Watch RHR 108 bpm (+28) · HRV 14 ms"
+          foot_vac_boot: "1st-ray osteomyelitis incision well-approximated · ΔT +0.8°C · Boot 89%",
+          rn_opat_iv: "PICC line Week 2 IV Vancomycin 1g q12h · Trough spiked to 26.4 mcg/mL (AUC 690)",
+          glycemic_ketone: "CGM TIR 79% (138 mg/dL) · No ketonemia (BHB 0.2 mmol/L)",
+          cardiorenal_hemo: "Serum Cr jumped 1.8 → 2.9 mg/dL (eGFR 19) · K+ 5.8 mEq/L · Spot UNa 24 mEq/L",
+          labs_voi: "4D Storetime verified BMP & Vancomycin level · Bone biopsy MRSA (Dapto/Linezolid S)"
         },
-        roleTask: "Hospital Bridge Readmit: Halt HCA coaching, transmit signed sdr.decision.v1 readmission packet to Vascular/ED for emergent IV antibiotics & surgical evaluation.",
-        story: "Day 5 s/p transmetatarsal debridement: Ascending erythema 3 cm above the ankle with home temperature 38.9°C, rigors, CGM 312 mg/dL, BP 96/58 mmHg, and watch RHR 108 bpm.",
-        purpose: "Execute immediate closed-loop Hospital Bridge Readmission (`sdr.decision.v1`) for post-discharge diabetic foot sepsis.",
-        whyFlagged: "Three-node red-line concordance: ascending wound erythema (ΔT +3.4°C) + systemic fever/tachycardia (38.9°C, HR 108) + hypotensive glycemic decompensation.",
-        context: "65M · Day 5 s/p TMA debridement · Temp 38.9°C · RHR 108 bpm · BP 96/58 mmHg · CGM 312 mg/dL.",
-        methodsUsed: "Vision Pro Spatial Gate Hard Escalation (`NOW_CARD_HARD_ESCALATION`) + HCA Immediate Coaching Halt (`HALTED_FOR_CLINICIAN_ESCALATION`).",
-        blindSpot: "Booking a routine outpatient podiatry visit for ascending post-op cellulitis with hypotension risks irreversible septic shock at home.",
-        overallScope: "Routes directly to Hospital Bridge & EMS Rescue Queue with pre-populated inpatient 4DMFEET admission orders.",
-        voiText: "Transmit Signed sdr.decision.v1 Hospital Readmission Packet (VOI 0.99)"
+        roleTask: "OPAT & ID Stewardship Queue: Immediately HOLD evening PICC Vancomycin dose, switch osteomyelitis regimen to renal-safe oral Linezolid (OVIVA) or Daptomycin, and dispatch Home RN for repeat STAT BMP + 12-lead ECG + oral K+ binder.",
+        story: "Day 11 of home PICC IV Vancomycin for MRSA 1st-ray osteomyelitis: Vancomycin trough returns supratherapeutic at 26.4 mcg/mL (AUC 690) with acute-on-chronic renal failure (Cr 1.8 → 2.9 mg/dL, eGFR 19) and K+ 5.8 mEq/L.",
+        purpose: "Intercept OPAT antibiotic-induced nephrotoxicity and hyperkalemia at home before oliguric renal shutdown or arrhythmia occurs.",
+        whyFlagged: "Vancomycin trough > 20 mcg/mL (26.4) + KDIGO Stage 2 AKI-on-CRF (Cr +1.1 mg/dL) + K+ > 5.5 mEq/L (5.8) with low Spot UNa (24 mEq/L, ruling out benign diuretic hemoconcentration).",
+        methodsUsed: "OPAT Bayesian AUC Nephrotoxicity Guard + Cardiorenal Differential Gate (distinguishing intrinsic nephrotoxic AKI from permissive diuretic Cr bump).",
+        blindSpot: "Allowing the automated home infusion pump to run the 18:00 Vancomycin dose while Cr is 2.9 and K+ is 5.8 risks dialysis-requiring tubular necrosis.",
+        overallScope: "Routes to Role 3 (OPAT & ID Pharmacy Hold/Switch) + Role 1 (Home RN STAT ECG & Potassium Binder Delivery).",
+        voiText: "Hold PICC Vancomycin, Switch to Linezolid & Dispatch RN ECG/BMP (VOI 0.97)"
       },
       {
-        id: "PD-DFI-04",
-        route: "nurse_task",
-        badge: "Toe Pressure Missing",
-        activeInputs: ["labs_watch", "boot_wound"],
+        id: "HDFU-04",
+        route: "hospital_admit",
+        coRoutes: ["home_rn"],
+        podiatryModality: "Hold Planned Debridement Pending Cardiac Clearance",
+        podiatryModalityClass: "modality-hospital",
+        differentialGate: "Silent Myocardial Ischemia / NSTEMI (Cardiac Autonomic Neuropathy)",
+        comorbidities: ["CAD / Silent NSTEMI", "Cardiac Autonomic Neuropathy", "Post-Op Anemia"],
+        filterTags: ["ALL", "CAD_CRF"],
+        badge: "Silent ST -1.8mm · Dyspnea · BP 96/62",
+        activeInputs: ["cardiorenal_hemo", "foot_vac_boot", "glycemic_ketone"],
         inputs: {
-          boot_wound: "Sluggish midfoot granulation · Plantar ΔT +1.8°C · Boot 76%",
-          glycemic_cardio: "CGM Time-in-Range 74% (Fasting 142 mg/dL) · BP 134/78",
-          labs_watch: "Prior calcified ABI 1.42 · Outpatient Hallux Toe Pressure = NONE"
+          foot_vac_boot: "Heel ulcer stable (ΔT +1.0°C) · Exertion walking in heavy knee-high walker boot",
+          rn_opat_iv: "Reports sudden cold diaphoresis, nausea & shortness of breath — ZERO chest pain",
+          glycemic_ketone: "CGM 164 mg/dL (normoglycemic — rules out hypoglycemia as cause of diaphoresis)",
+          cardiorenal_hemo: "ECG Patch: -1.8 mm horizontal ST-depression V4-V6 · Orthostatic SBP 138 → 96 mmHg",
+          labs_voi: "Discharge Hgb was 8.9 g/dL (post-debridement anemia) · Outpatient Troponin UNMEASURED"
         },
-        roleTask: "Visiting RN & HCA Queue: Perform handheld Doppler + Hallux Toe Pressure photoplethysmography (VOI 0.95) before clearing patient for weight-bearing progression.",
-        story: "Day 10 s/p midfoot ulcer debridement: Patient has medial arterial calcinosis (inpatient ABI 1.42) and sluggish wound granulation, but outpatient hallux toe pressure has never been measured.",
-        purpose: "Enforce 'Unavailable != Negative' in post-discharge limb salvage: measure true pedal perfusion before advancing physical therapy step counts.",
-        whyFlagged: "DEA 240-KC VOI Router ranked `pedal_doppler_toe_pressure_mmhg` #1 missing workup (`MISSING_UNORDERED`, VOI = 0.95).",
-        context: "71M · Prior non-compressible ABI 1.42 · Day 10 slow granulation · Hallux Toe Pressure = None · HbA1c 8.4%.",
-        methodsUsed: "Drosophila 240-KC Sparse WTA Missingness Encoder (refusing to treat unmeasured toe pressure as normal perfusion).",
-        blindSpot: "Assuming calcified ABI 1.42 equals normal pedal blood flow hides critical ischemia during post-op wound healing.",
-        overallScope: "Routes to Visiting RN & HCA Coach Queue to obtain objective hallux toe pressure and TBI prior to step-goal progression.",
-        voiText: "Dispatch Visiting RN Hallux Toe Pressure & TBI Check (VOI 0.95)"
+        roleTask: "Direct Cardiology / ED Escalation + Home RN 12-Lead ECG: Activate immediate EMS/Cardiology transfer for silent NSTEMI, administer aspirin per protocol, and cancel tomorrow's outpatient podiatry debridement until revascularized.",
+        story: "Day 6 s/p heel debridement: Patient with severe Cardiac Autonomic Neuropathy develops sudden cold sweats, dyspnea, and orthostatic hypotension (96/62 mmHg) without chest pain while walking in a heavy offloading boot; wearable ECG patch shows -1.8 mm ST-depression.",
+        purpose: "Detect angina-free (silent) myocardial ischemia in denervated diabetic foot patients and prevent fatal perioperative MI during outpatient debridement.",
+        whyFlagged: "Angina-equivalent symptoms (diaphoresis + dyspnea) + normoglycemia (164 mg/dL, ruling out hypoglycemic sweats) + wearable ST-segment depression (-1.8 mm).",
+        methodsUsed: "CAN Silent Ischemia Detector (pairing normoglycemic diaphoresis/dyspnea with ECG ST-shift and post-op anemia demand).",
+        blindSpot: "Dismissing diaphoresis as 'low blood sugar' or 'boot fatigue' in a patient without chest pain misses >40% of diabetic myocardial infarctions.",
+        overallScope: "Routes to Role 5 (Direct Cardiology/ED Escalation) and halts Role 4 outpatient surgical procedures.",
+        voiText: "Activate Cardiology/ED Transfer & STAT 12-Lead ECG (VOI 0.99)"
       },
       {
-        id: "PD-DFI-05",
-        route: "urgent_page",
-        badge: "+2.5 kg Fluid Surge",
-        activeInputs: ["glycemic_cardio", "boot_wound", "labs_watch"],
+        id: "HDFU-05",
+        route: "home_rn",
+        coRoutes: ["wound_specialist"],
+        podiatryModality: "In-Home NPWT Seal Repair (No Clinic Trip Needed)",
+        podiatryModalityClass: "modality-home",
+        differentialGate: "Mechanical NPWT (Wound VAC) Air-Leak Alarm — No Systemic Sepsis",
+        comorbidities: ["Post-TMA Wound VAC", "Periwound Maceration Risk"],
+        filterTags: ["ALL", "WOUND_VAC"],
+        badge: "VAC Seal Leak 3.5h · 0 mmHg · Vitals Stable",
+        activeInputs: ["foot_vac_boot", "rn_opat_iv", "glycemic_ketone"],
         inputs: {
-          boot_wound: "Bilateral lower-extremity pitting edema Tensioning foot incision",
-          glycemic_cardio: "Bluetooth scale +2.5 kg in 72h (88.0→90.5 kg) · Orthopnea",
-          labs_watch: "RHR 101 bpm · HRV 18 ms · Outpatient BMP & Spot UNa UNVERIFIED"
+          foot_vac_boot: "NPWT/VAC continuous air-leak alarm (0 mmHg for 3.5h) · Periwound white maceration rim",
+          rn_opat_iv: "Canister 65 mL serous exudate (non-purulent, non-bloody) · PICC line intact",
+          glycemic_ketone: "CGM 152 mg/dL (TIR 81%) · BHB 0.1 mmol/L",
+          cardiorenal_hemo: "Afebrile 36.8°C · RHR 74 bpm · BP 128/76 mmHg · Weight stable",
+          labs_voi: "Verified CRP trending down 42 → 14 mg/L"
         },
-        roleTask: "Hospital Bridge / Rapid Diuresis: Urgent Cardiorenal & Limb Salvage clinic handoff for STAT BMP, Spot Urine Na, and IV decongestive therapy to protect suture line.",
-        story: "Day 7 post-DFI & cardiorenal discharge: Patient gained +2.5 kg fluid weight in 72h (88.0→90.5 kg) with new pedal edema stretching the foot suture line, RHR 101 bpm, and unverified outpatient BMP/Spot UNa.",
-        purpose: "Prevent congestive pedal edema from causing surgical wound dehiscence while blocking unsafe autonomous home loop-diuretic doubling.",
-        whyFlagged: "72h weight surge >= +2.0 kg (+2.5 kg) + suture-line edema tension + DSA Target-Trial Positivity Gate failing closed (`NOT_IDENTIFIABLE`, overlap 28.5%).",
-        context: "74M · Post-DFI + cardiorenal syndrome · Weight +2.5 kg in 72h · Pedal edema at incision · BMP pending.",
-        methodsUsed: "Hernán–Robins Target-Trial Gate (blocking unguarded home torsemide doubling without potassium/creatinine) + Suture Dehiscence Guard.",
-        blindSpot: "Unchecked lower-extremity venous congestion starves the healing foot skin flap of microcirculatory oxygen and splits the incision.",
-        overallScope: "Routes to Hospital Bridge & EMS Rescue Queue for same-day rapid-access IV diuresis and electrolyte verification.",
-        voiText: "Order STAT BMP + Spot Urine Na & Rapid Decongestion (VOI 0.96)"
+        roleTask: "Home Health RN Visit Queue (within 2h): Dispatch Home RN to strip loose drape, apply hydrocolloid/skin-prep barrier ring to interdigital crease, re-establish -125 mmHg VAC seal, and upload photo to Visiting Wound Specialist.",
+        story: "Day 4 s/p transmetatarsal NPWT placement: Home Wound VAC has been alarming with loss of suction (0 mmHg) for 3.5 hours and early periwound maceration, while systemic vitals, CGM (152 mg/dL), and CRP (14 mg/L) are completely stable.",
+        purpose: "Restore negative pressure therapy within the 4-hour desiccation window via a rapid Home RN visit rather than sending the patient to the emergency room.",
+        whyFlagged: "NPWT vacuum seal < 50 mmHg for > 2 hours (3.5h) + periwound maceration with negative systemic sepsis screen.",
+        methodsUsed: "NPWT Seal Integrity Timer + M2 Earned-Autonomy Routine Nursing Triage.",
+        blindSpot: "Leaving a foam VAC dressing unsealed without suction > 6 hours converts it into a wet, macerating bacterial plug.",
+        overallScope: "Routes directly to Role 1 (Home Health RN Visit Queue) with photo co-sign by Role 2 (Visiting Wound Specialist).",
+        voiText: "Dispatch Home RN Within 2h for Hydrocolloid VAC Re-Seal (VOI 0.91)"
       },
       {
-        id: "PD-DFI-06",
-        route: "nurse_task",
-        badge: "Boot Drop 92%→48%",
-        activeInputs: ["boot_wound", "glycemic_cardio"],
+        id: "HDFU-06",
+        route: "wound_specialist",
+        coRoutes: ["podiatry_visit"],
+        podiatryModality: "Modality 4B · Podiatry/Vascular Office Toe-and-Flow Clinic (48h)",
+        podiatryModalityClass: "modality-office",
+        differentialGate: "Unmeasured Microvascular Perfusion VOI (Calcified ABI 1.44 Artifact)",
+        comorbidities: ["PAD / Medial Calcinosis", "Stagnant Midfoot Ulcer"],
+        filterTags: ["ALL", "WOUND_VAC", "PODIATRY_MODALITY"],
+        badge: "ABI 1.44 Calcified · Hallux TP Missing",
+        activeInputs: ["labs_voi", "foot_vac_boot", "cardiorenal_hemo"],
         inputs: {
-          boot_wound: "Smart-Boot adherence dropped 92% → 48% over 48h · ΔT 0.9°C",
-          glycemic_cardio: "Post-dinner CGM excursion 216 mg/dL · Weight stable",
-          labs_watch: "RHR 72 bpm · HRV 41 ms · Family event this weekend"
+          foot_vac_boot: "Week 3 midfoot ulcer stalled (<8% area reduction) despite 91% smart-boot adherence",
+          rn_opat_iv: "Pale-pink wound base · Scant serous exudate · No cellulitis (ΔT +0.6°C)",
+          glycemic_ketone: "CGM TIR 78% · HbA1c 7.3%",
+          cardiorenal_hemo: "Seated BP 136/78 mmHg · RHR 72 bpm · eGFR 48 mL/min",
+          labs_voi: "Inpatient brachial ABI was 1.44 (non-compressible) · Hallux Toe Pressure = UNMEASURED"
         },
-        roleTask: "Visiting RN & HCA Coach Queue: Conduct OARS Motivational Interviewing call to solve indoor offloading footwear barriers and post-meal glycemic walk alternatives.",
-        story: "Day 6 s/p plantar ulcer debridement: Smart-Boot offloading adherence fell from 92% to 48% over 48 hours ahead of a family event and post-dinner CGM rose to 216 mg/dL, though plantar ΔT is still 0.9°C.",
-        purpose: "Intervene behaviorally on offloading non-adherence and post-prandial hyperglycemia before mechanical plantar shear causes a thermal flare.",
-        whyFlagged: "48h offloading adherence drop (-44%) paired with post-prandial CGM > 200 mg/dL prior to tissue temperature spike.",
-        context: "60M · Day 6 post-plantar debridement · Boot adherence 48% · ΔT 0.9°C · Post-dinner CGM 216 mg/dL.",
-        methodsUsed: "HCA OARS Behavioral Barrier Detector + Non-Weight-Bearing Upper-Body Glycemic Exercise Substitution.",
-        blindSpot: "Waiting until plantar ΔT exceeds +2.2°C misses the preventive window where coaching prevents recurrent plantar ulceration.",
-        overallScope: "Routes to Visiting RN & HCA Coach Queue for a supportive OARS check-in and seated arm-ergometer glycemic coaching.",
-        voiText: "Launch HCA OARS Offloading & Seated Glycemic Coaching (VOI 0.81)"
+        roleTask: "Visiting Wound Specialist (CWOCN) + Podiatry/Vascular Office Visit (Modality 4B): CWOCN performs bedside portable PPG Hallux Toe Pressure & TBI today; if TP < 40 mmHg, book 48h Toe-and-Flow Office Arterial Duplex & revascularization consult.",
+        story: "Day 18 post-debridement: Despite 91% boot adherence and good glycemic control (TIR 78%), the midfoot wound has stalled (<8% contraction) with a pale base. Prior ABI of 1.44 was falsely elevated from medial arterial calcification, and Hallux Toe Pressure was never measured.",
+        purpose: "Enforce 'Unavailable != Negative' for diabetic pedal perfusion: obtain objective Hallux Toe Pressure (VOI 0.96) to unmask occult ischemia.",
+        whyFlagged: "DEA 240-KC Sparse VOI Router flagged `pedal_doppler_toe_pressure_mmhg = MISSING_UNORDERED` in a stalled wound with non-compressible ABI > 1.30.",
+        methodsUsed: "Drosophila 240-KC Missingness VOI Router + IWGDF Perfusion Threshold Gate (TP < 30–40 mmHg requires vascular imaging).",
+        blindSpot: "Treating a calcified ABI of 1.44 as 'normal blood flow' wastes weeks applying expensive skin grafts to an ischemic wound bed.",
+        overallScope: "Routes to Role 2 (Visiting Wound Specialist handheld PPG Toe Pressure) and Role 4B (Podiatry/Vascular Office Toe-and-Flow Duplex).",
+        voiText: "Perform Portable PPG Hallux Toe Pressure & Book Toe-and-Flow Duplex (VOI 0.96)"
       },
       {
-        id: "PD-DFI-07",
-        route: "provider_task",
-        badge: "Exudate + CRP 64",
-        activeInputs: ["boot_wound", "labs_watch", "glycemic_cardio"],
+        id: "HDFU-07",
+        route: "wound_specialist",
+        coRoutes: ["podiatry_visit"],
+        podiatryModality: "Modality 4A · Podiatry Home / Tele-Co-Visit (Homebound Patient)",
+        podiatryModalityClass: "modality-home",
+        differentialGate: "Local Callus Margin Shear in Homebound Patient (Perfusion Adequate)",
+        comorbidities: ["Homebound / Wheelchair", "Periwound Hyperkeratosis"],
+        filterTags: ["ALL", "WOUND_VAC", "PODIATRY_MODALITY"],
+        badge: "Homebound · Callus Rim + ΔT +2.2°C · TP 54",
+        activeInputs: ["foot_vac_boot", "labs_voi", "rn_opat_iv"],
         inputs: {
-          boot_wound: "Home dressing photo: new serosanguinous drainage · ΔT +2.1°C",
-          glycemic_cardio: "Fasting glucose rose 118 → 194 mg/dL over 72h · BP 174/100 (missed med)",
-          labs_watch: "Verified outpatient CRP rose 18 → 64 mg/L (storetime verified)"
+          foot_vac_boot: "Thick hyperkeratotic callus ring around 2nd-metatarsal head · Plantar ΔT +2.2°C · Boot 94%",
+          rn_opat_iv: "No purulence · Bedbound/wheelchair osteoarthritis (ambulance transport required for clinic)",
+          glycemic_ketone: "CGM TIR 82% · Fasting 128 mg/dL",
+          cardiorenal_hemo: "Afebrile · RHR 70 bpm · Stable CKD 3a (eGFR 52)",
+          labs_voi: "Verified Hallux Toe Pressure 54 mmHg (adequate perfusion) · Bone X-ray negative"
         },
-        roleTask: "Podiatry & Endo Provider Queue: Book same-day add-on podiatry debridement + deep swab and authorize make-up antihypertensive + basal insulin adjustment.",
-        story: "Day 9 s/p heel debridement: Home dressing photo shows new malodorous drainage, verified outpatient CRP rose from 18 to 64 mg/L, fasting glucose climbed to 194 mg/dL, and BP is 174/100 after a missed morning med.",
-        purpose: "Coordinate same-day outpatient podiatry wound debridement with medical optimization of rebound hypertension and rising fasting glucose.",
-        whyFlagged: "Multimodal concordance: dressing exudate shift + verified CRP > 50 mg/L (64 mg/L) + fasting hyperglycemia shift + missed-dose BP surge.",
-        context: "67F · Day 9 s/p heel debridement · New exudate · CRP 64 mg/L · Fasting glucose 194 mg/dL · BP 174/100.",
-        methodsUsed: "DEA Multimodal Wound-Metabolic Progression Rule under verified 4D outpatient storetime.",
-        blindSpot: "Treating the blood pressure or glucose in isolation misses the underlying deep heel space infection driving the metabolic stress.",
-        overallScope: "Routes to Podiatry & Endo Provider Queue for same-day clinic debridement, deep tissue culture, and antihypertensive restart.",
-        voiText: "Book Same-Day Podiatry Clinic Slot & Confirm Med Restart (VOI 0.91)"
+        roleTask: "Visiting Wound Specialist (Home Sharp Debridement) + Podiatry Home/Tele-Co-Visit (Modality 4A): Mobile Wound NP performs bedside conservative sharp paring of the callus halo and post-debridement Levine swab with live Podiatry tele-supervision at home.",
+        story: "Day 14 post-ulcer discharge: Frail wheelchair-bound patient has a rolled hyperkeratotic callus rim and localized +2.2°C hotspot despite 94% offloading adherence and adequate Hallux Toe Pressure (54 mmHg).",
+        purpose: "Deliver SOTA sharp callus debridement and Podiatry co-evaluation inside the patient's home (Modality 4A), avoiding traumatic and costly stretcher transport.",
+        whyFlagged: "Periwound callus halo + localized ΔT +2.2°C with verified perfusion (TP 54 mmHg) and homebound mobility status.",
+        methodsUsed: "3-Tier Podiatry Visit Modality Router (selecting Modality 4A Home/Tele-Co-Visit over Modality 4B Office Visit when X-ray/duplex are already verified).",
+        blindSpot: "Forcing an ambulance clinic trip for routine callus paring exhausts frail patients and leads to missed appointments.",
+        overallScope: "Routes to Role 2 (Visiting Wound Specialist bedside sharp debridement) + Role 4A (Podiatry Home/Tele-Co-Visit).",
+        voiText: "Schedule In-Home Sharp Callus Debridement & Podiatry Tele-Co-Visit (VOI 0.90)"
       },
       {
-        id: "PD-DFI-08",
-        route: "nurse_task",
-        badge: "02:15 AM CGM 66↓ + Heel +2.3°C",
-        activeInputs: ["glycemic_cardio", "boot_wound"],
+        id: "HDFU-08",
+        route: "podiatry_visit",
+        coRoutes: ["silent_oars"],
+        podiatryModality: "Modality 4B · Podiatry Office Visit (Probe-to-Bone, X-Ray & TCC-EZ Cast)",
+        podiatryModalityClass: "modality-office",
+        differentialGate: "Mechanical Offloading Relapse Requiring Office Radiography & Total Contact Cast",
+        comorbidities: ["Removable Boot Non-Adherence (46%)", "Suspected Deep Sinus Tract"],
+        filterTags: ["ALL", "WOUND_VAC", "PODIATRY_MODALITY"],
+        badge: "Boot 46% · ΔT +2.7°C · Needs Office X-Ray/TCC",
+        activeInputs: ["foot_vac_boot", "labs_voi", "glycemic_ketone"],
         inputs: {
-          boot_wound: "Surgical right foot cool (+0.4°C), Contralateral left heel +2.3°C hotspot",
-          glycemic_cardio: "02:15 AM CGM trending down 88 → 66 mg/dL (logged 24U glargine vs 18U)",
-          labs_watch: "Sleep fragmented · High gait asymmetry from rigid boot"
+          foot_vac_boot: "Smart-boot wear time dropped to 46% (4,900 indoor steps) · Plantar ΔT +2.7°C · Deeper central sinus",
+          rn_opat_iv: "Serosanguinous spotting on sock · Ambulatory patient able to travel to clinic",
+          glycemic_ketone: "Post-meal CGM 224 mg/dL · No ketonemia",
+          cardiorenal_hemo: "Afebrile 36.9°C · RHR 78 bpm · BP 134/80 mmHg (systemically stable)",
+          labs_voi: "Hallux Toe Pressure 58 mmHg · Needs weight-bearing foot X-ray & sterile Probe-to-Bone"
         },
-        roleTask: "Visiting RN & HCA Queue: Prompt immediate 15g bedtime carb+protein snack for glargine over-bolus and dispatch contralateral shoe-lift balancer + heel pad.",
-        story: "Day 8 post-salvage: Nocturnal CGM trends down to 66 mg/dL at 02:15 AM after an accidental 24U vs 18U bedtime glargine dose, while bilateral insoles flag a +2.3°C hotspot on the intact contralateral heel.",
-        purpose: "Prevent 04:00 AM nocturnal hypoglycemia from basal insulin over-dosing AND protect the intact contralateral foot from transfer-gait ulceration.",
-        whyFlagged: "Dual home-safety rule: nocturnal CGM crossing < 70 mg/dL downward after +6U glargine discrepancy + contralateral heel ΔT > +2.2°C (+2.3°C).",
-        context: "63M · Right 1st-ray recovery · Logged 24U glargine (ordered 18U) · 02:15 AM CGM 66↓ · Left heel ΔT +2.3°C.",
-        methodsUsed: "30-Min Horizon CGM Velocity Predictor + Bilateral Plantar Asymmetry Decomposition.",
-        blindSpot: "Focusing only on the operated right foot ignores both nocturnal neuroglycopenia and the 30% risk of contralateral transfer ulceration.",
-        overallScope: "Routes to Visiting RN & HCA Coach Queue for nocturnal carb rescue confirmation and contralateral Even-Up shoe balancer delivery.",
-        voiText: "Confirm Carb Snack Finger-Stick & Ship Contralateral Shoe Lift (VOI 0.89)"
+        roleTask: "Podiatry Office Visit (Modality 4B — 24h Hot-Foot Clinic): Bring ambulatory patient into the Podiatry Office for sterile Probe-to-Bone (PTB) check, weight-bearing digital foot X-ray, and conversion from removable walker to non-removable Total Contact Cast (TCC-EZ).",
+        story: "Day 10 s/p plantar neuropathic ulcer care: Ambulatory patient wore the removable walker boot only 46% of the time (4,900 steps), triggering a +2.7°C plantar flare and a deeper central ulcer crater without systemic sepsis.",
+        purpose: "Route to an in-person Podiatry Office Visit (Modality 4B) when clinic-only diagnostics (weight-bearing X-ray, Probe-to-Bone) and gold-standard IWGDF non-removable TCC-EZ casting are required.",
+        whyFlagged: "Removable boot adherence < 50% (46%) + plantar ΔT +2.7°C + deeper crater requiring radiographic osteomyelitis rule-out and irremovable offloading.",
+        methodsUsed: "IWGDF Offloading Escalation Hierarchy (transitioning failed removable walker to non-removable knee-high TCC-EZ in clinic) + DSA Target-Trial Step Halt.",
+        blindSpot: "Repeatedly lecturing a patient with dense peripheral neuropathy ('loss of protective sensation') without switching to an irremovable TCC-EZ leads to plantar bone exposure.",
+        overallScope: "Routes to Role 4B (Podiatry Office Hot-Foot Clinic within 24h) + Role 6 (HCA OARS non-judgmental cast preparation).",
+        voiText: "Book 24h Podiatry Office Visit for PTB, X-Ray & TCC-EZ Cast (VOI 0.94)"
       },
       {
-        id: "PD-DFI-09",
-        route: "silent_log",
-        badge: "Permissive Cr 1.82 · UNa 84",
-        activeInputs: ["labs_watch", "glycemic_cardio", "boot_wound"],
+        id: "HDFU-09",
+        route: "home_rn",
+        coRoutes: ["podiatry_visit"],
+        podiatryModality: "Modality 4A · Podiatry Tele-Check of Suture Line Tension",
+        podiatryModalityClass: "modality-home",
+        differentialGate: "Cardiorenal Venous Congestion (+2.4 kg Edema) Threatening Suture Dehiscence",
+        comorbidities: ["Cardiorenal Syndrome / HFpEF", "CRF Stage 3b", "Incision Edema Tension"],
+        filterTags: ["ALL", "CAD_CRF", "WOUND_VAC"],
+        badge: "+2.4 kg Edema · Suture Tension · UNa 84",
+        activeInputs: ["cardiorenal_hemo", "foot_vac_boot", "labs_voi"],
         inputs: {
-          boot_wound: "Surgical foot edema resolved · Plantar ΔT +0.4°C · Boot 95%",
-          glycemic_cardio: "Weight -1.8 kg (82.4→80.6 kg) on torsemide · CGM TIR 86%",
-          labs_watch: "Outpatient Cr 1.55→1.82 mg/dL · Spot Urine Na 84 mmol/L · HRV 38 ms"
+          foot_vac_boot: "Bilateral 2+ pitting pedal edema stretching dorsal foot suture margins · Plantar ΔT +0.7°C",
+          rn_opat_iv: "Dietary sodium indiscretion + missed 1 torsemide dose · Incision edges taut but intact",
+          glycemic_ketone: "CGM TIR 80% · BHB 0.2 mmol/L",
+          cardiorenal_hemo: "Weight +2.4 kg in 72h · Cr rose 1.55 → 1.84 mg/dL · K+ 4.4 mEq/L · BP 148/86",
+          labs_voi: "Verified Spot Urine Sodium (UNa) = 84 mmol/L (brisk natriuretic response preserved!)"
         },
-        roleTask: "Silent Remission & OARS Log: Record beneficial natriuretic decongestion (reducing pedal wound edema) and maintain current torsemide + offloading plan with zero alert.",
-        story: "Day 12 post-DFI & cardiorenal discharge: Lower-extremity edema resolved (-1.8 kg weight loss), plantar ΔT is 0.4°C, CGM Time-in-Range is 86%, and mild Cr rise (1.82 mg/dL) is paired with brisk Spot Urine Na 84 mmol/L.",
-        purpose: "Prevent false-positive 'AKI' alarms from stopping the diuresis that is actively keeping the healing diabetic foot free of venous edema.",
-        whyFlagged: "Permissive hypercreatininemia rule (PHA-04): mild Cr bump (+0.27 mg/dL) with Spot UNa > 70 mmol/L and improving wound/autonomic metrics.",
-        context: "67F · Day 12 post-DFI · Edema resolved (-1.8 kg) · ΔT 0.4°C · CGM TIR 86% · Cr 1.82 · Spot UNa 84 mmol/L.",
-        methodsUsed: "Cardiorenal-Limb Reward Alignment (`EXPLORATORY_FEASIBLE_WITH_BOUNDS`, RD = -0.131 supporting continued decongestion).",
-        blindSpot: "Reflexively holding torsemide for hemoconcentration Cr 1.82 causes rebound pedal edema that macerates the healing foot wound.",
-        overallScope: "Routes to Silent Remission & OARS Log—recording verified multi-system recovery without interrupting the clinical team.",
-        voiText: "Log Verified Natriuretic & Wound Recovery (VOI 0.09)"
+        roleTask: "Home Health RN Visit + Podiatry Suture Tele-Check: Administer prescribed oral torsemide rescue dose, apply toe-to-knee multi-layer modified compression (verified TP 56 mmHg), elevate limb 30° with heel floated, and DO NOT halt diuresis for benign Cr 1.84 bump.",
+        story: "Day 9 post-TMA closure & HFpEF: Patient gained +2.4 kg over 72h with bilateral pitting edema pulling on the dorsal foot sutures. Serum Cr rose from 1.55 to 1.84 mg/dL after resuming torsemide, but Spot Urine Sodium is brisk at 84 mmol/L.",
+        purpose: "Relieve suture-splitting venous pedal edema while using Spot Urine Sodium (UNa 84 mmol/L) to recognize permissive hypercreatininemia and avoid prematurely stopping diuresis.",
+        whyFlagged: "Bilateral congestive weight surge (+2.4 kg) threatening wound dehiscence + Cr +0.29 mg/dL paired with high Spot UNa > 70 mmol/L (84 mmol/L) and safe Hallux TP (56 mmHg).",
+        methodsUsed: "Cardiorenal-Limb Salvage Reward Alignment (distinguishing venous edema suture hazard from intrinsic AKI via Spot UNa).",
+        blindSpot: "Stopping loop diuretics because Cr rose to 1.84 leaves the foot engorged with venous edema, causing hypoxic suture line dehiscence.",
+        overallScope: "Routes to Role 1 (Home RN decongestive protocol & safe compression) + Role 4A (Podiatry suture tension tele-review).",
+        voiText: "Maintain Decongestive Torsemide (UNa 84) & Apply Safe Edema Offloading (VOI 0.92)"
       },
       {
-        id: "PD-DFI-10",
-        route: "silent_log",
-        badge: "Healed · 94% Boot · TIR 91%",
-        activeInputs: ["boot_wound", "glycemic_cardio", "labs_watch"],
+        id: "HDFU-10",
+        route: "home_rn",
+        coRoutes: ["silent_oars"],
+        podiatryModality: "Contralateral Transfer Hotspot Prevention",
+        podiatryModalityClass: "modality-home",
+        differentialGate: "Post-Infection Insulin Sensitivity Recovery Driving 03:00 AM Hypoglycemia & Boot Removal",
+        comorbidities: ["Nocturnal Hypoglycemia (54 mg/dL)", "Boot-Off Fall Risk", "Contralateral Heel ΔT +2.3°C"],
+        filterTags: ["ALL", "WOUND_VAC"],
+        badge: "03:15 AM CGM 54↓ · Boot Off in Dark",
+        activeInputs: ["glycemic_ketone", "foot_vac_boot", "rn_opat_iv"],
         inputs: {
-          boot_wound: "Complete plantar epithelialization · ΔT 0.3°C · 94% adherence",
-          glycemic_cardio: "CGM Time-in-Range 91% · BP 122/74 mmHg · Euvolemic 71.8 kg",
-          labs_watch: "Verified CRP 4.2 mg/L · Hallux Toe Pressure 58 mmHg · HRV 48 ms"
+          foot_vac_boot: "Operated right foot cool (ΔT +0.4°C), Contralateral left heel +2.3°C · Boot removed at night!",
+          rn_opat_iv: "Infection CRP resolved (62 → 9 mg/L), causing sharp drop in insulin resistance",
+          glycemic_ketone: "03:15 AM CGM 54 mg/dL (still on discharge high-dose 26U bedtime glargine) · BHB 0.1",
+          cardiorenal_hemo: "RHR 88 bpm (adrenergic tremor) · Lives with spouse",
+          labs_voi: "eGFR 44 mL/min (reduced renal insulin clearance prolonging glargine half-life)"
         },
-        roleTask: "Silent Remission & OARS Log: Archive 21-day surgical bridge episode, send OARS graduation affirmation, and transition to custom diabetic footwear.",
-        story: "Day 21 post-ray resection: Complete wound epithelialization with plantar ΔT 0.3°C, 94% smart-boot adherence, 91% CGM Time-in-Range, verified toe pressure 58 mmHg, and CRP 4.2 mg/L.",
-        purpose: "Confirm safe graduation from acute post-discharge surgical monitoring to longitudinal custom pedorthic footwear maintenance.",
-        whyFlagged: "Vision Pro Spatial Gate (`SUPPRESSED_ROUTINE_SYNC`, 95% KC sparsity) verified all wound, vascular, glycemic, and inflammatory milestones.",
-        context: "58F · Day 21 s/p 2nd-toe ray resection · Healed · ΔT 0.3°C · CGM TIR 91% · Toe pressure 58 mmHg · CRP 4.2 mg/L.",
-        methodsUsed: "90 Hz Vision Pro Spatial Gate Routine Sync Filter + HCA OARS Graduation Protocol (+3.00 aligned functional salvage utility).",
-        blindSpot: "Interrupting clinicians on stable graduation days creates alert fatigue; failing to transition to custom insoles risks future callus relapse.",
-        overallScope: "Routes to Silent Remission & OARS Log and triggers custom pedorthic insole surveillance.",
-        voiText: "Send OARS Graduation Affirmation & Archive Episode (VOI 0.04)"
+        roleTask: "Home Health RN Live Call & Basal Insulin -20% Protocol + HCA OARS Setup: Verify immediate 15g glucose tab rescue at bedside (so patient never walks barefoot to kitchen in the dark), reduce bedtime glargine by 20% per protocol, and fit contralateral Even-Up shoe balancer.",
+        story: "Day 9 post-DFI: As the foot infection resolved (CRP 62 → 9 mg/L), stress insulin resistance vanished—causing 03:15 AM hypoglycemia (54 mg/dL) on the discharge glargine dose. The patient took off the surgical boot in the dark to walk to the kitchen.",
+        purpose: "Prevent the classic post-DFI 'insulin sensitivity rebound' from causing nocturnal hypoglycemia and barefoot mechanical trauma to the healing foot.",
+        whyFlagged: "CGM < 55 mg/dL (54 mg/dL) following CRP normalization + nocturnal unbooted steps + contralateral heel transfer hotspot (+2.3°C).",
+        methodsUsed: "Post-Infection Insulin De-Escalation Rule + Bilateral Plantar Transfer-Ulcer Detector.",
+        blindSpot: "Failing to reduce discharge insulin doses once DFI inflammation subsides is a leading cause of home hypoglycemic falls on surgical foot flaps.",
+        overallScope: "Routes to Role 1 (Home RN live rescue & -20% basal insulin protocol) + Role 6 (Caregiver bedside glucose stash & Even-Up shoe lift).",
+        voiText: "Execute -20% Basal Insulin De-Escalation & Bedside Rescue Setup (VOI 0.93)"
+      },
+      {
+        id: "HDFU-11",
+        route: "opat_id",
+        coRoutes: ["home_rn"],
+        podiatryModality: "Continue Outpatient Podiatry Remission Track",
+        podiatryModalityClass: "modality-home",
+        differentialGate: "OVIVA Criteria Met: Safe OPAT PICC IV-to-Oral Osteomyelitis Switch",
+        comorbidities: ["Resolving DFO Osteomyelitis", "PICC Exit-Site Dermatitis"],
+        filterTags: ["ALL", "OPAT_IV"],
+        badge: "OVIVA Ready · CRP 68→11 · Pull PICC",
+        activeInputs: ["rn_opat_iv", "labs_voi", "foot_vac_boot"],
+        inputs: {
+          foot_vac_boot: "Granulating 1st-metatarsal bed (64% area reduction) · Plantar ΔT +0.6°C · Boot 93%",
+          rn_opat_iv: "Day 14 IV Cefepime + Vancomycin via PICC · Mild chlorhexidine dermatitis at PICC site",
+          glycemic_ketone: "CGM TIR 85% · Intact GI absorption",
+          cardiorenal_hemo: "Afebrile · RHR 68 bpm · Stable Cr 1.18 mg/dL (eGFR 64)",
+          labs_voi: "Verified bone biopsy MSSA + E. coli pan-susceptible to oral Levofloxacin + Rifampin · CRP 68 → 11 mg/L"
+        },
+        roleTask: "OPAT & ID Stewardship Queue: Transition patient from 2-drug PICC IV therapy to high-bioavailability oral Levofloxacin + Rifampin per OVIVA trial protocol, and schedule Home RN to remove PICC line today (eliminating CLABSI & DVT risk).",
+        story: "Day 14 of home IV antibiotics for polymicrobial forefoot osteomyelitis: Wound has contracted 64% (ΔT +0.6°C), CRP fell from 68 to 11 mg/L, bone culture is pan-susceptible to high-bioavailability oral agents, and the PICC dressing site is irritated.",
+        purpose: "Proactively transition eligible stable osteomyelitis patients from PICC IV infusions to oral therapy (OVIVA protocol) to eliminate catheter-related bloodstream infection (CLABSI) and nephrotoxicity risk.",
+        whyFlagged: "OVIVA Eligibility Gate: >= 7–14 days IV complete + CRP down >80% (11 mg/L) + verified high-bioavailability oral susceptibility + intact gut absorption.",
+        methodsUsed: "IDSA / OVIVA Oral Switch Stewardship Engine + PICC Line-Day Minimizer.",
+        blindSpot: "Leaving a PICC line in place for 6 weeks when oral bioavailable equivalents are verified exposes the patient to avoidable line sepsis and deep vein thrombosis.",
+        overallScope: "Routes to Role 3 (OPAT/ID Pharmacy Oral Switch) + Role 1 (Home RN PICC Line Discontinuation).",
+        voiText: "Authorize OVIVA Oral Switch & Schedule Home RN PICC Removal (VOI 0.89)"
+      },
+      {
+        id: "HDFU-12",
+        route: "silent_oars",
+        coRoutes: [],
+        podiatryModality: "Custom Diabetic Footwear & Smart Insole Graduation",
+        podiatryModalityClass: "modality-home",
+        differentialGate: "All 5 Home Telemetry & 4D Lab Streams in Verified Remission",
+        comorbidities: ["Healed Post-DFI Remission", "Stable CKD 3a & Sinus Rhythm"],
+        filterTags: ["ALL", "WOUND_VAC", "CAD_CRF"],
+        badge: "Day 21 Healed · ΔT +0.3°C · TIR 91%",
+        activeInputs: ["foot_vac_boot", "glycemic_ketone", "cardiorenal_hemo", "labs_voi"],
+        inputs: {
+          foot_vac_boot: "Complete plantar epithelialization · ΔT +0.3°C · 95% offloading adherence",
+          rn_opat_iv: "No IV lines · Intact skin integrity bilaterally · Normal voiding",
+          glycemic_ketone: "CGM Time-in-Range 91% · Zero hypoglycemia · BHB 0.1 mmol/L",
+          cardiorenal_hemo: "ECG normal sinus rhythm (HR 66, HRV 49 ms) · Euvolemic 74.2 kg · Cr 1.12 mg/dL",
+          labs_voi: "Verified CRP 3.4 mg/L · Hallux Toe Pressure 60 mmHg"
+        },
+        roleTask: "Silent EHR Log & HCA OARS Coach: Log verified 21-day surgical limb-salvage remission to EHR with zero clinician interruption, deliver OARS graduation affirmation, and initiate custom depth-inlay diabetic shoe & thermal insole surveillance.",
+        story: "Day 21 post-ray resection: Complete wound epithelialization with plantar ΔT +0.3°C, 95% offloading adherence, 91% CGM Time-in-Range, normal sinus ECG, stable renal function (Cr 1.12 mg/dL), and verified Hallux Toe Pressure 60 mmHg.",
+        purpose: "Suppress routine benign telemetry syncs from interrupting clinicians (100% specificity) while automating custom diabetic footwear graduation.",
+        whyFlagged: "Vision Pro Spatial Gate (`SUPPRESSED_ROUTINE_SYNC`, 95% KC sparsity) verified concordance across all wound, vascular, glycemic, cardiac, and renal milestones.",
+        methodsUsed: "90 Hz Spatial Routine Sync Filter + HCA OARS Remission Graduation Protocol (+3.00 aligned functional limb-salvage utility).",
+        blindSpot: "Paging clinicians on healthy remission syncs causes alert fatigue; failing to transition smoothly into custom diabetic shoes risks recurrence.",
+        overallScope: "Routes to Role 6 (Silent Remission EHR Log & HCA OARS Graduation Coaching).",
+        voiText: "Log Verified Remission & Issue Custom Footwear Graduation (VOI 0.04)"
       }
     ];
 
+    let currentFilter = "ALL";
     let activeQueue = [];
     let currentCase = null;
     let currentLayer = 0;
@@ -1099,34 +1401,66 @@
     let correctionsCount = 0;
     let statusOpen = false;
     let waitingOpen = false;
-    let expandedInputs = { boot_wound: false, glycemic_cardio: false, labs_watch: false };
-    let expandedOutputs = { urgent_page: true, provider_task: true, nurse_task: false, silent_log: false };
-    let roleQueues = {
-      urgent_page: [],
-      provider_task: [],
-      nurse_task: [],
-      silent_log: []
+
+    let expandedInputs = {
+      foot_vac_boot: false,
+      rn_opat_iv: false,
+      glycemic_ketone: false,
+      cardiorenal_hemo: false,
+      labs_voi: false
     };
+
+    let expandedOutputs = {
+      home_rn: true,
+      wound_specialist: false,
+      opat_id: true,
+      podiatry_visit: true,
+      hospital_admit: true,
+      silent_oars: false
+    };
+
+    let roleQueues = {
+      home_rn: [],
+      wound_specialist: [],
+      opat_id: [],
+      podiatry_visit: [],
+      hospital_admit: [],
+      silent_oars: []
+    };
+
     let pulseAnimations = [];
 
-    function initVolume() {
-      activeQueue = UNIFIED_PHA_CASES.map(c => ({ ...c }));
-      currentCase = activeQueue.shift();
+    function initVolume(filterTag = "ALL") {
+      currentFilter = filterTag;
+      document.querySelectorAll(".filter-chip").forEach(btn => {
+        btn.classList.toggle("active", btn.id === "flt-" + filterTag);
+      });
+
+      const filtered = SOTA_HOME_DFU_CASES.filter(c => c.filterTags.includes(filterTag));
+      activeQueue = filtered.map(c => ({ ...c }));
+      currentCase = activeQueue.shift() || null;
       currentLayer = 0;
       reviewedCount = 0;
       correctionsCount = 0;
       roleQueues = {
-        urgent_page: [],
-        provider_task: [],
-        nurse_task: [],
-        silent_log: []
+        home_rn: [],
+        wound_specialist: [],
+        opat_id: [],
+        podiatry_visit: [],
+        hospital_admit: [],
+        silent_oars: []
       };
       renderAll();
     }
 
+    function applyCohortFilter(filterTag) {
+      initVolume(filterTag);
+      appendAuditRow("FILTER", `Focused cohort on ${filterTag} (${ (currentCase ? 1 : 0) + activeQueue.length } cases)`);
+    }
+
     function resetCohort() {
-      initVolume();
-      appendAuditRow("COHORT", "Reset all 10 post-discharge diabetic limb wound cases");
+      initVolume(currentFilter);
+      appendAuditRow("COHORT", `Reset Home DM Wound Care cohort (${currentFilter})`);
     }
 
     function renderAll() {
@@ -1139,20 +1473,22 @@
 
     function renderNowCard() {
       const strip = document.getElementById("now-linkage-strip");
+      const metaRow = document.getElementById("now-meta-row");
       const passBtn = document.getElementById("btn-pass-main");
       const modBtn = document.getElementById("btn-mod-main");
       const colBtn = document.getElementById("btn-col-main");
       const rstBtn = document.getElementById("btn-reset-main");
 
       if (!currentCase) {
-        strip.innerHTML = `<span style="color:#99f6e4;font-weight:700;">All 3 Input Streams Processed</span> <span class="link-arrow">➔</span> <strong>Cohort Complete (10/10)</strong> <span class="link-arrow">➔</span> <span style="color:#bae6fd;font-weight:700;">Click any Output Role Queue on the right to inspect routed tasks</span>`;
-        document.getElementById("now-id").textContent = "All 10 Post-Discharge Limb Cases Routed";
+        strip.innerHTML = `<span style="color:#99f6e4;font-weight:700;">All 5 Input Nodes Processed</span> <span class="link-arrow">➔</span> <strong>Cohort Complete (${reviewedCount}/${reviewedCount})</strong> <span class="link-arrow">➔</span> <span style="color:#bae6fd;font-weight:700;">Click any of the 6 Role Output Queues on the right to inspect tasks</span>`;
+        document.getElementById("now-id").textContent = "All Cases in View Routed";
         const nowChip = document.getElementById("now-route-chip");
         nowChip.textContent = "Complete";
-        nowChip.className = "route-pill silent_log";
-        document.getElementById("now-badge-right").textContent = "10/10 Done";
-        document.getElementById("now-story").textContent = "Every post-discharge diabetic limb wound & glycemic case has been routed into its role-specific task queue on the right. Click any Output Role Queue card to expand its tasks or click Reset below.";
-        document.getElementById("now-task-preview").textContent = "Tip: Click any routed item inside the Right Output Role Queues to re-open and inspect its full Input → Output lineage in NOW.";
+        nowChip.className = "route-pill silent_oars";
+        document.getElementById("now-badge-right").textContent = `${reviewedCount}/${reviewedCount} Done`;
+        metaRow.innerHTML = `<span class="sub-pill comorb-tag">✓ 5 Input Nodes Verified</span><span class="sub-pill modality-home">✓ 6 Role Queues Populated</span>`;
+        document.getElementById("now-story").textContent = "Every Home DM Wound Care & Multimorbidity case in this view has been routed into its designated role queue on the right. Click any Role Output Queue card to inspect or re-open its tasks, or select another Cohort Filter above.";
+        document.getElementById("now-task-preview").textContent = "Tip: Click any routed item inside the 6 Right Role Output Queues to pull it back into NOW and inspect its full 5-Input → 6-Role causal lineage.";
         passBtn.style.display = "none";
         modBtn.style.display = "none";
         colBtn.style.display = "none";
@@ -1166,7 +1502,7 @@
       colBtn.style.display = "inline-block";
       rstBtn.style.display = "none";
 
-      // Build explicit clickable Input -> NOW -> Output linkage bar
+      // Build explicit clickable 5-Input -> NOW -> 6-Role Output linkage bar
       const inChips = currentCase.activeInputs.map(k =>
         `<span class="link-chip" onclick="focusInputNode('${k}')">⚡ ${INPUT_NODE_NAMES[k]}</span>`
       ).join("");
@@ -1178,8 +1514,19 @@
       nowChip.textContent = ROUTE_TITLES[currentCase.route];
       nowChip.className = "route-pill " + currentCase.route;
       document.getElementById("now-badge-right").textContent = currentCase.badge;
+
+      // Render Differential Gate + Podiatry Modality + Comorbidity Pills
+      const comorbHtml = (currentCase.comorbidities || []).map(tag =>
+        `<span class="sub-pill comorb-tag">${tag}</span>`
+      ).join("");
+      metaRow.innerHTML = `
+        <span class="sub-pill ${currentCase.podiatryModalityClass || 'modality-home'}">🦶 ${currentCase.podiatryModality}</span>
+        <span class="sub-pill" style="border-color:rgba(255,255,255,0.35);color:#fff;">🧭 ${currentCase.differentialGate}</span>
+        ${comorbHtml}
+      `;
+
       document.getElementById("now-story").textContent = currentCase.story;
-      document.getElementById("now-task-preview").innerHTML = `<strong>Role Task on Pass ✓ (${ROLE_QUEUE_NAMES[currentCase.route]}):</strong> ${currentCase.roleTask}`;
+      document.getElementById("now-task-preview").innerHTML = `<strong>Primary Role Task on Pass ✓ (${ROLE_QUEUE_NAMES[currentCase.route]}):</strong> ${currentCase.roleTask}`;
 
       for (let i = 0; i <= 3; i++) {
         const pill = document.getElementById("pill-" + i);
@@ -1202,21 +1549,23 @@
       if (currentLayer >= 1) {
         html += `
           <div class="dossier-section story">
-            <div class="sec-badge">Story · Purpose, Why It Flagged &amp; Input Lineage</div>
+            <div class="sec-badge">Story · Purpose, Why It Flagged &amp; 5-Node Home Telemetry Lineage</div>
             <div class="sec-row">
-              <div class="sec-lbl">Purpose of This Post-Discharge Limb Review</div>
+              <div class="sec-lbl">Clinical Purpose of This Home DM Review</div>
               <div class="sec-val">${currentCase.purpose}</div>
             </div>
             <div class="sec-row">
-              <div class="sec-lbl">Why It Flagged Across Wound &amp; Glycemic Streams</div>
+              <div class="sec-lbl">Why It Flagged Across Wound, OPAT &amp; Multimorbidity Streams</div>
               <div class="sec-val">${currentCase.whyFlagged}</div>
             </div>
             <div class="sec-row">
-              <div class="sec-lbl">Linked Input Signals for ${currentCase.id}</div>
+              <div class="sec-lbl">All 5 Input Nodes for ${currentCase.id}</div>
               <div class="sec-val">
-                • <strong>Smart Boot &amp; Wound:</strong> ${currentCase.inputs.boot_wound}<br/>
-                • <strong>Home CGM, Insulin &amp; BP/Scale:</strong> ${currentCase.inputs.glycemic_cardio}<br/>
-                • <strong>4D Outpatient Labs &amp; Watch:</strong> ${currentCase.inputs.labs_watch}
+                • <strong>Input 1 (Foot, VAC &amp; Boot):</strong> ${currentCase.inputs.foot_vac_boot}<br/>
+                • <strong>Input 2 (Home RN &amp; OPAT IV):</strong> ${currentCase.inputs.rn_opat_iv}<br/>
+                • <strong>Input 3 (CGM, Ketones &amp; SGLT2i):</strong> ${currentCase.inputs.glycemic_ketone}<br/>
+                • <strong>Input 4 (CAD, CRF &amp; Hemodynamics):</strong> ${currentCase.inputs.cardiorenal_hemo}<br/>
+                • <strong>Input 5 (4D Storetime Labs &amp; VOI):</strong> ${currentCase.inputs.labs_voi}
               </div>
             </div>
           </div>
@@ -1226,13 +1575,17 @@
       if (currentLayer >= 2) {
         html += `
           <div class="dossier-section rules">
-            <div class="sec-badge">Rules · Understandable Transparency (Methods &amp; Blind Spot)</div>
+            <div class="sec-badge">Rules · Differential Diagnosis Gate, SOTA Methods &amp; Blind Spot</div>
             <div class="sec-row">
-              <div class="sec-lbl">Info &amp; 3-Agent PHA Methods Used</div>
+              <div class="sec-lbl">Differential Gate (Sepsis vs. UTI/euDKA vs. CAD vs. CRF)</div>
+              <div class="sec-val">${currentCase.differentialGate} · <strong>Podiatry Modality:</strong> ${currentCase.podiatryModality}</div>
+            </div>
+            <div class="sec-row">
+              <div class="sec-lbl">SOTA 2023–2026 IWGDF / IDSA / PHA Methods Used</div>
               <div class="sec-val">${currentCase.methodsUsed}</div>
             </div>
             <div class="sec-row">
-              <div class="sec-lbl">Blind Spot / If-Wrong Risk</div>
+              <div class="sec-lbl">Clinical Blind Spot / If-Wrong Hazard Prevented</div>
               <div class="sec-val">${currentCase.blindSpot}</div>
             </div>
           </div>
@@ -1240,16 +1593,17 @@
       }
 
       if (currentLayer >= 3) {
+        const coList = (currentCase.coRoutes || []).map(r => ROLE_QUEUE_NAMES[r]).join(" + ") || "None (Single-Role Execution)";
         html += `
           <div class="dossier-section more">
-            <div class="sec-badge">More · Role Queue Scope &amp; Overall Continuum Impact</div>
+            <div class="sec-badge">More · Role Queue Scope, Co-Routed Teams &amp; High-VOI Action</div>
             <div class="sec-row">
-              <div class="sec-lbl">What This Decision Means Across the Care Team</div>
+              <div class="sec-lbl">What This Decision Means Across the Home &amp; Hospital Care Team</div>
               <div class="sec-val">${currentCase.overallScope}</div>
             </div>
             <div class="sec-row">
-              <div class="sec-lbl">Queued Task for ${ROLE_QUEUE_NAMES[currentCase.route]}</div>
-              <div class="sec-val">${currentCase.roleTask}</div>
+              <div class="sec-lbl">Synchronized Co-Routed Role Queues</div>
+              <div class="sec-val">${coList}</div>
             </div>
             <button class="voi-btn" onclick="triggerVoiAction()">⚡ ${currentCase.voiText}</button>
           </div>
@@ -1260,7 +1614,7 @@
     }
 
     function renderInputNodes() {
-      const keys = ["boot_wound", "glycemic_cardio", "labs_watch"];
+      const keys = ["foot_vac_boot", "rn_opat_iv", "glycemic_ketone", "cardiorenal_hemo", "labs_voi"];
       keys.forEach(k => {
         const card = document.getElementById("in-node-" + k);
         const liveEl = document.getElementById("in-live-" + k);
@@ -1283,7 +1637,7 @@
         if (currentCase) {
           liveEl.innerHTML = `<strong>NOW (${currentCase.id}):</strong> ${currentCase.inputs[k]}`;
         } else {
-          liveEl.innerHTML = `Stream idle — all 10 cases routed.`;
+          liveEl.innerHTML = `Stream idle — all cases in current filter routed.`;
         }
 
         const matchingWaiting = activeQueue.filter(c => c.activeInputs.includes(k));
@@ -1307,7 +1661,7 @@
             <div class="drawer-item" onclick="promoteFromQueue(${qIdx})">
               <div class="drawer-item-head">
                 <span>WAITING · ${item.id}</span>
-                <span style="color:#38bdf8;font-size:11px;">Pull to NOW ↗</span>
+                <span style="color:#38bdf8;font-size:10.5px;">Pull to NOW ↗</span>
               </div>
               <div class="drawer-item-body">${item.inputs[k]}</div>
             </div>
@@ -1337,9 +1691,9 @@
       }
 
       if (activeQueue.length > 0) {
-        prev.textContent = `Next: ${activeQueue[0].id} (${activeQueue[0].badge}) — Click to expand all ${activeQueue.length}`;
+        prev.textContent = `Next: ${activeQueue[0].id} (${activeQueue[0].badge}) — Click to view all ${activeQueue.length}`;
       } else {
-        prev.textContent = "All waiting cases have entered NOW.";
+        prev.textContent = "All waiting cases in this filter have entered NOW.";
       }
 
       drawer.innerHTML = activeQueue.map((item, idx) => `
@@ -1348,13 +1702,25 @@
             <span>${item.id} · ${item.badge}</span>
             <span class="route-pill ${item.route}">${ROUTE_TITLES[item.route]}</span>
           </div>
-          <div class="drawer-item-body">${item.story}</div>
+          <div class="drawer-item-body">
+            <strong>${item.differentialGate}</strong><br/>
+            ${item.story}
+          </div>
         </div>
       `).join("") || `<div class="drawer-item-body">Queue empty.</div>`;
     }
 
     function renderOutputNodes() {
-      const routes = ["urgent_page", "provider_task", "nurse_task", "silent_log"];
+      const routes = ["home_rn", "wound_specialist", "opat_id", "podiatry_visit", "hospital_admit", "silent_oars"];
+      const defaultSubs = {
+        home_rn: "NPWT/VAC seal repair, dressing change, STAT blood/urine/ketone draw, 12-lead ECG",
+        wound_specialist: "Home bedside sharp debridement, Levine deep swab, CAMP graft, Handheld Toe Doppler VOI",
+        opat_id: "Hold nephrotoxic Vancomycin (AKI-on-CRF), OVIVA IV-to-oral switch, UTI Rx, hold SGLT2i",
+        podiatry_visit: "4A Home Visit (homebound) · 4B Office Toe-and-Flow (X-ray/PTB/TCC) · 4C Inpatient OR",
+        hospital_admit: "Direct admit for Foot Sepsis/Wet Gangrene, Urosepsis/euDKA, Silent NSTEMI, or K+ > 6.0",
+        silent_oars: "Zero-alert granulation log + caregiver OARS offloading & elevation coaching"
+      };
+
       routes.forEach(r => {
         const card = document.getElementById("out-node-" + r);
         const cntEl = document.getElementById("out-cnt-" + r);
@@ -1365,16 +1731,18 @@
         const qList = roleQueues[r];
         cntEl.textContent = qList.length;
 
-        const isTarget = currentCase && currentCase.route === r;
-        if (isTarget) {
+        const isPrimaryTarget = currentCase && currentCase.route === r;
+        const isCoTarget = currentCase && (currentCase.coRoutes || []).includes(r);
+
+        if (isPrimaryTarget) {
           card.classList.add("pass-target");
-          subEl.textContent = `▶ Pass ✓ sends ${currentCase.id} here: ${currentCase.roleTask}`;
+          subEl.textContent = `▶ Primary Pass ✓ Target (${currentCase.id}): ${currentCase.roleTask}`;
+        } else if (isCoTarget) {
+          card.classList.add("pass-target");
+          subEl.textContent = `⚡ Linked Co-Task on Pass ✓ (${currentCase.id}): ${currentCase.podiatryModality}`;
         } else {
           card.classList.remove("pass-target");
-          if (r === "urgent_page") subEl.textContent = "Direct Vascular/ED readmission or live hypoglycemia rescue call";
-          if (r === "provider_task") subEl.textContent = "Same-day tele-wound debridement, antibiotic Rx, or insulin/BP titration";
-          if (r === "nurse_task") subEl.textContent = "Outpatient hallux toe-pressure VOI, OARS boot coaching, or sensor re-check";
-          if (r === "silent_log") subEl.textContent = "Verified wound healing + glycemic stability logged with zero alert fatigue";
+          subEl.textContent = defaultSubs[r];
         }
 
         if (expandedOutputs[r]) {
@@ -1392,11 +1760,12 @@
             <div class="drawer-item" onclick="reopenFromRoleQueue('${r}', ${idx})">
               <div class="drawer-item-head">
                 <span>✓ ${item.id} (${item.badge})</span>
-                <span style="color:#6ee7b7;font-size:11px;">Re-open in NOW ↗</span>
+                <span style="color:#6ee7b7;font-size:10.5px;">Re-open in NOW ↗</span>
               </div>
               <div class="drawer-item-body">
+                <strong>Modality / Gate:</strong> ${item.podiatryModality} · ${item.differentialGate}<br/>
                 <strong>Task:</strong> ${item.roleTask}<br/>
-                <span style="color:#99f6e4;">Linked Inputs: ${item.activeInputs.map(k => INPUT_NODE_NAMES[k]).join(" + ")}</span>
+                <span style="color:#99f6e4;">Inputs: ${item.activeInputs.map(k => INPUT_NODE_NAMES[k]).join(" + ")}</span>
               </div>
             </div>
           `).join("");
@@ -1405,11 +1774,14 @@
     }
 
     function updateMetrics() {
-      const total = UNIFIED_PHA_CASES.length;
+      const total = reviewedCount + (currentCase ? 1 : 0) + activeQueue.length;
       document.getElementById("stat-reviewed").textContent = `${reviewedCount}/${total}`;
-      document.getElementById("stat-alerts").textContent = roleQueues.urgent_page.length;
-      document.getElementById("stat-provider").textContent = roleQueues.provider_task.length;
-      document.getElementById("stat-nurse").textContent = roleQueues.nurse_task.length;
+      document.getElementById("stat-hospital").textContent = roleQueues.hospital_admit.length;
+      document.getElementById("stat-podiatry").textContent = roleQueues.podiatry_visit.length;
+      document.getElementById("stat-opat").textContent = roleQueues.opat_id.length;
+      document.getElementById("stat-specialist").textContent = roleQueues.wound_specialist.length;
+      document.getElementById("stat-rn").textContent = roleQueues.home_rn.length;
+      document.getElementById("stat-silent").textContent = roleQueues.silent_oars.length;
       document.getElementById("stat-corrections").textContent = correctionsCount;
     }
 
@@ -1462,7 +1834,7 @@
         currentCase.route = newRoute;
         currentCase.badge = "Modified → " + ROUTE_TITLES[newRoute];
         correctionsCount += 1;
-        appendAuditRow(currentCase.id, `Override -> ${ROLE_QUEUE_NAMES[newRoute]}`);
+        appendAuditRow(currentCase.id, `Role Override -> ${ROLE_QUEUE_NAMES[newRoute]}`);
       }
       document.getElementById("modify-popover").classList.remove("open");
       renderAll();
@@ -1475,9 +1847,16 @@
 
       roleQueues[destRoute].unshift({ ...currentCase });
       expandedOutputs[destRoute] = true;
-      reviewedCount = Math.min(UNIFIED_PHA_CASES.length, reviewedCount + 1);
 
-      appendAuditRow(currentCase.id, `Routed -> ${ROLE_QUEUE_NAMES[destRoute]}`);
+      // Also populate any synchronized co-routed queues if not already primary
+      (currentCase.coRoutes || []).forEach(co => {
+        if (co !== destRoute && roleQueues[co]) {
+          spawnSpokePulse(co, currentCase.activeInputs);
+        }
+      });
+
+      reviewedCount += 1;
+      appendAuditRow(currentCase.id, `Routed -> ${ROLE_QUEUE_NAMES[destRoute]} (${currentCase.podiatryModality})`);
       postDecisionToServer(currentCase.id, destRoute);
 
       currentCase = activeQueue.shift() || null;
@@ -1502,14 +1881,14 @@
       if (currentCase) activeQueue.unshift(currentCase);
       currentCase = picked;
       reviewedCount = Math.max(0, reviewedCount - 1);
-      currentLayer = 1; // Open directly to Story & Input Lineage
+      currentLayer = 1; // Open directly to Story & 5-Node Input Lineage
       renderAll();
     }
 
     function triggerVoiAction() {
       if (!currentCase) return;
       appendAuditRow(currentCase.id, `Dispatched VOI: ${currentCase.voiText}`);
-      currentCase.badge = "VOI Dispatched";
+      currentCase.badge = "VOI Dispatched ✓";
       renderAll();
     }
 
@@ -1537,22 +1916,22 @@
 
     async function postDecisionToServer(caseId, route) {
       try {
-        await fetch("/api/multiseat/decision", {
+        await fetch("/api/multiseat/event", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            peer_id: "web_pha_unified_continuum",
+            peer_id: "web_home_dm_wound_care",
             seat_role: "overseer",
-            domain_id: "pha_continuum",
+            domain_id: "home_dm_wound_care",
             item_id: caseId,
-            gesture: route === "urgent_page" ? "alert" : "pass",
+            gesture: route === "hospital_admit" ? "alert" : "pass",
             answer: ROLE_QUEUE_NAMES[route]
           })
         });
       } catch (_) {}
     }
 
-    // 3D Room Canvas: Draws Input Node Spokes -> Center NOW -> 4 Role Output Queue Spokes
+    // 3D Room Canvas: Connects 5 Left Input Nodes -> Center NOW -> 6 Right Output Role Queues
     const canvas = document.getElementById("room-canvas");
     const ctx = canvas.getContext("2d");
 
@@ -1581,7 +1960,7 @@
       ctx.clearRect(0, 0, W, H);
 
       const cx = W * 0.50;
-      const cy = H * 0.53;
+      const cy = H * 0.55;
 
       // Perspective Floor Grid
       ctx.save();
@@ -1606,53 +1985,70 @@
       const hubPos = getCardCenter("now-card", cx, cy);
 
       const inNodes = {
-        boot_wound: getCardCenter("in-node-boot_wound", W * 0.14, H * 0.26),
-        glycemic_cardio: getCardCenter("in-node-glycemic_cardio", W * 0.14, H * 0.48),
-        labs_watch: getCardCenter("in-node-labs_watch", W * 0.14, H * 0.70)
+        foot_vac_boot: getCardCenter("in-node-foot_vac_boot", W * 0.14, H * 0.22),
+        rn_opat_iv: getCardCenter("in-node-rn_opat_iv", W * 0.14, H * 0.36),
+        glycemic_ketone: getCardCenter("in-node-glycemic_ketone", W * 0.14, H * 0.50),
+        cardiorenal_hemo: getCardCenter("in-node-cardiorenal_hemo", W * 0.14, H * 0.64),
+        labs_voi: getCardCenter("in-node-labs_voi", W * 0.14, H * 0.78)
       };
 
       const outNodes = {
-        urgent_page: getCardCenter("out-node-urgent_page", W * 0.86, H * 0.24),
-        provider_task: getCardCenter("out-node-provider_task", W * 0.86, H * 0.44),
-        nurse_task: getCardCenter("out-node-nurse_task", W * 0.86, H * 0.64),
-        silent_log: getCardCenter("out-node-silent_log", W * 0.86, H * 0.84)
+        home_rn: getCardCenter("out-node-home_rn", W * 0.86, H * 0.20),
+        wound_specialist: getCardCenter("out-node-wound_specialist", W * 0.86, H * 0.34),
+        opat_id: getCardCenter("out-node-opat_id", W * 0.86, H * 0.48),
+        podiatry_visit: getCardCenter("out-node-podiatry_visit", W * 0.86, H * 0.62),
+        hospital_admit: getCardCenter("out-node-hospital_admit", W * 0.86, H * 0.76),
+        silent_oars: getCardCenter("out-node-silent_oars", W * 0.86, H * 0.90)
       };
 
-      // Draw Input Spokes (Left -> Center NOW)
+      // Draw 5 Input Spokes (Left -> Center NOW)
       Object.keys(inNodes).forEach(k => {
-        const p0 = { x: inNodes[k].x + 145, y: inNodes[k].y };
-        const p1 = { x: hubPos.x - 260, y: hubPos.y };
+        const p0 = { x: inNodes[k].x + 155, y: inNodes[k].y };
+        const p1 = { x: hubPos.x - 250, y: hubPos.y };
         const active = currentCase && currentCase.activeInputs.includes(k);
         drawSpokeCurve(
           p0,
           p1,
-          active ? "rgba(45, 212, 191, 0.82)" : "rgba(148, 163, 184, 0.20)",
-          active ? 4.5 : 2
+          active ? "rgba(45, 212, 191, 0.84)" : "rgba(148, 163, 184, 0.18)",
+          active ? 3.2 : 1.4
         );
-        drawOrbNode(p0.x, p0.y, active ? 10 : 6, active ? "#2dd4bf" : "#475569");
+        drawOrbNode(p0.x, p0.y, active ? 9 : 5, active ? "#2dd4bf" : "#64748b");
       });
 
-      // Draw Output Role Spokes (Center NOW -> Right Role Queues)
+      // Draw 6 Role Output Spokes (Center NOW -> Right Role Queues)
       const routeColors = {
-        urgent_page: "#e74c3c",
-        provider_task: "#f39c12",
-        nurse_task: "#3498db",
-        silent_log: "#94a3b8"
+        home_rn: "#3b82f6",
+        wound_specialist: "#ec4899",
+        opat_id: "#a855f7",
+        podiatry_visit: "#f59e0b",
+        hospital_admit: "#ef4444",
+        silent_oars: "#64748b"
       };
+
       Object.keys(outNodes).forEach(r => {
-        const p0 = { x: hubPos.x + 260, y: hubPos.y };
-        const p1 = { x: outNodes[r].x - 155, y: outNodes[r].y };
-        const isTarget = currentCase && currentCase.route === r;
+        const p0 = { x: hubPos.x + 250, y: hubPos.y };
+        const p1 = { x: outNodes[r].x - 165, y: outNodes[r].y };
+        const isPrimary = currentCase && currentCase.route === r;
+        const isCo = currentCase && (currentCase.coRoutes || []).includes(r);
         drawSpokeCurve(
           p0,
           p1,
-          isTarget ? "rgba(46, 204, 113, 0.90)" : "rgba(148, 163, 184, 0.22)",
-          isTarget ? 5.5 : 2.2
+          isPrimary
+            ? "rgba(16, 185, 129, 0.92)"
+            : isCo
+            ? "rgba(56, 189, 248, 0.70)"
+            : "rgba(148, 163, 184, 0.20)",
+          isPrimary ? 4.2 : isCo ? 2.6 : 1.5
         );
-        drawOrbNode(p1.x, p1.y, isTarget ? 12 : 7, isTarget ? "#2ecc71" : routeColors[r]);
+        drawOrbNode(
+          p1.x,
+          p1.y,
+          isPrimary ? 11 : isCo ? 8 : 6,
+          isPrimary ? "#10b981" : routeColors[r]
+        );
       });
 
-      // Animate Handoff Pulses along Input -> NOW -> Output Role Spoke
+      // Animate Handoff Pulses along NOW -> Output Role Spoke
       for (let i = pulseAnimations.length - 1; i >= 0; i--) {
         const p = pulseAnimations[i];
         p.t += 0.04;
@@ -1661,11 +2057,11 @@
           continue;
         }
         const p0 = { x: hubPos.x + 240, y: hubPos.y };
-        const destCenter = outNodes[p.destRoute] || outNodes.provider_task;
-        const p1 = { x: destCenter.x - 155, y: destCenter.y };
+        const destCenter = outNodes[p.destRoute] || outNodes.podiatry_visit;
+        const p1 = { x: destCenter.x - 165, y: destCenter.y };
         const px = (1 - p.t) * p0.x + p.t * p1.x;
-        const py = (1 - p.t) * p0.y + p.t * p1.y - Math.sin(p.t * Math.PI) * 28;
-        drawOrbNode(px, py, 13, routeColors[p.destRoute] || "#2ecc71");
+        const py = (1 - p.t) * p0.y + p.t * p1.y - Math.sin(p.t * Math.PI) * 26;
+        drawOrbNode(px, py, 12, routeColors[p.destRoute] || "#10b981");
       }
 
       requestAnimationFrame(drawRoom);
@@ -1678,7 +2074,7 @@
       ctx.lineCap = "round";
       ctx.beginPath();
       const midX = (p0.x + p1.x) / 2;
-      const midY = (p0.y + p1.y) / 2 - 18;
+      const midY = (p0.y + p1.y) / 2 - 16;
       ctx.moveTo(p0.x, p0.y);
       ctx.quadraticCurveTo(midX, midY, p1.x, p1.y);
       ctx.stroke();
@@ -1698,7 +2094,10 @@
       ctx.restore();
     }
 
-    initVolume();
+    // Support URL hash or query parameter filter (e.g. ?filter=OPAT_IV)
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialFilter = (urlParams.get("filter") || "ALL").toUpperCase();
+    initVolume(["ALL", "WOUND_VAC", "OPAT_IV", "SEPSIS_UTI", "CAD_CRF", "PODIATRY_MODALITY"].includes(initialFilter) ? initialFilter : "ALL");
     requestAnimationFrame(drawRoom);
   </script>
 </body>

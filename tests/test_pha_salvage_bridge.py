@@ -172,6 +172,28 @@ class TestPHASalvageBridge(unittest.TestCase):
         self.assertEqual(sim_flare["hca_output"]["coaching_mode"], "HALTED_FOR_CLINICIAN_ESCALATION")
         self.assertIsNotNone(sim_flare["hca_output"]["clinician_nowcard_handoff"])
 
+    def test_sota_home_dm_wound_care_5_inputs_6_role_queues_and_12_cases(self) -> None:
+        """Verify workspace.html and landing.html implement all 5 Input Nodes, 6 Role Queues, 3 Podiatry Modalities, and 12 HDFU cases."""
+        from pha_salvage_bridge.server import STATIC_LANDING_PATH, STATIC_WORKSPACE_PATH
+
+        ws_html = STATIC_WORKSPACE_PATH.read_text(encoding="utf-8")
+        land_html = STATIC_LANDING_PATH.read_text(encoding="utf-8")
+
+        for i in range(1, 13):
+            self.assertIn(f"HDFU-{i:02d}", ws_html)
+
+        for in_node in ["foot_vac_boot", "rn_opat_iv", "glycemic_ketone", "cardiorenal_hemo", "labs_voi"]:
+            self.assertIn(f"in-node-{in_node}", ws_html)
+
+        for out_role in ["home_rn", "wound_specialist", "opat_id", "podiatry_visit", "hospital_admit", "silent_oars"]:
+            self.assertIn(f"out-node-{out_role}", ws_html)
+
+        for modality in ["Modality 4A", "Modality 4B", "Modality 4C"]:
+            self.assertIn(modality, ws_html)
+
+        self.assertIn("Home_DM_Wound_Care", land_html)
+        self.assertIn("SOTA Post-Discharge Home Diabetic Foot", land_html)
+
 
 if __name__ == "__main__":
     unittest.main()
