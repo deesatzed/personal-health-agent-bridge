@@ -249,43 +249,43 @@
       font-size: 11px;
     }
 
-    /* LEFT COLUMN: 5 SOTA INPUT NODES + WAITING QUEUE */
+    /* LEFT COLUMN: 5 SOTA INPUT NODES + WAITING QUEUE (100% Fit, Zero Vertical Scroll) */
     #left-inputs-col {
       position: absolute;
       left: 16px;
-      top: 118px;
-      bottom: 14px;
+      top: 114px;
+      bottom: 12px;
       width: 345px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      z-index: 20;
-      overflow-y: auto;
-      padding-right: 4px;
+      justify-content: space-between;
+      gap: 6px;
+      z-index: 35;
+      overflow: visible;
     }
 
-    /* RIGHT COLUMN: 6 ROLE-SPECIFIC OUTPUT NODES & TASK QUEUES */
+    /* RIGHT COLUMN: 6 ROLE-SPECIFIC OUTPUT NODES & TASK QUEUES (100% Fit, Horizontal Expansion) */
     #right-outputs-col {
       position: absolute;
       right: 16px;
-      top: 118px;
-      bottom: 14px;
+      top: 114px;
+      bottom: 12px;
       width: 365px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      z-index: 20;
-      overflow-y: auto;
-      padding-left: 4px;
+      justify-content: space-between;
+      gap: 6px;
+      z-index: 35;
+      overflow: visible;
     }
 
     .col-zone-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 5px 12px;
+      padding: 4px 12px;
       border-radius: 999px;
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 800;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -302,12 +302,20 @@
       color: #bae6fd;
     }
 
-    /* Node Cards (Input & Output) */
+    /* Node Cards (Input & Output) — Fixed Vertical Slot, Horizontal Flyout Expansion */
     .node-card {
-      padding: 10px 13px;
+      padding: 8px 12px;
       cursor: pointer;
       position: relative;
-      flex-shrink: 0;
+      flex: 1 1 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .node-card.expanded {
+      z-index: 95;
+      border-color: var(--cyan-glow);
     }
     .node-card:hover {
       border-color: rgba(255, 255, 255, 0.35);
@@ -329,10 +337,10 @@
       align-items: center;
       justify-content: space-between;
       gap: 6px;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
     .node-kind-tag {
-      font-size: 9.5px;
+      font-size: 9px;
       font-weight: 800;
       letter-spacing: 0.05em;
       padding: 2px 7px;
@@ -352,76 +360,189 @@
     .node-kind-tag.out-silent     { background: rgba(100, 116, 139, 0.3); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.4); }
 
     .node-expand-lbl {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       color: var(--cyan-glow);
+      white-space: nowrap;
     }
     .node-title-row {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
     .node-title {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .node-count {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--text-dim);
       font-weight: 600;
       white-space: nowrap;
     }
     .node-count strong {
-      font-size: 14.5px;
+      font-size: 14px;
       color: #fff;
       font-weight: 800;
     }
     .node-live-reading {
-      font-size: 11.5px;
-      line-height: 1.32;
+      font-size: 11px;
+      line-height: 1.28;
       color: rgba(255, 255, 255, 0.9);
       background: rgba(0, 0, 0, 0.26);
-      padding: 5px 8px;
-      border-radius: 8px;
+      padding: 4px 7px;
+      border-radius: 7px;
       border-left: 3px solid var(--input-teal);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .node-sub {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--text-dim);
-      line-height: 1.32;
+      line-height: 1.26;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .node-card.pass-target .node-sub {
       color: #6ee7b7;
       font-weight: 700;
     }
 
-    /* Expandable Drawer inside Input & Output Cards */
+    /* Always-Visible Horizontal Case Strip on Role Cards (Situational Awareness) */
+    .role-chip-strip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding-top: 2px;
+      min-height: 20px;
+      scrollbar-width: none;
+    }
+    .role-chip-strip::-webkit-scrollbar { display: none; }
+    .mini-case-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.22);
+      border: 1px solid rgba(16, 185, 129, 0.55);
+      color: #a7f3d0;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.14s;
+    }
+    .mini-case-chip:hover {
+      background: rgba(56, 189, 248, 0.32);
+      border-color: var(--cyan-glow);
+      color: #fff;
+    }
+    .mini-empty-hint {
+      font-size: 10px;
+      color: rgba(245, 249, 250, 0.42);
+      font-style: italic;
+    }
+
+    /* HORIZONTAL Flyout Drawer inside Input & Output Role Cards (Never Pushes Cards Vertically) */
     .node-drawer {
       display: none;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(255, 255, 255, 0.13);
+      position: absolute;
+      top: 0;
+      width: max-content;
+      max-width: min(820px, calc(100vw - 410px));
+      background: linear-gradient(155deg, rgba(14, 25, 38, 0.98) 0%, rgba(7, 13, 22, 0.98) 100%);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1.5px solid var(--cyan-glow);
+      border-radius: 16px;
+      padding: 10px 12px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.82), 0 0 28px rgba(56, 189, 248, 0.28);
       font-size: 11.5px;
+      z-index: 100;
+    }
+    #right-outputs-col .node-drawer {
+      right: calc(100% + 12px);
+    }
+    #left-inputs-col .node-drawer {
+      left: calc(100% + 12px);
+    }
+    /* Anchor bottom cards to bottom: 0 so horizontal drawers never overflow viewport bottom */
+    #out-node-hospital_admit .node-drawer,
+    #out-node-silent_oars .node-drawer,
+    #in-node-labs_voi .node-drawer,
+    #waiting-queue-card .node-drawer {
+      top: auto;
+      bottom: 0;
     }
     .node-card.expanded .node-drawer {
       display: block;
     }
-    .drawer-item {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 9px;
-      padding: 6px 9px;
-      margin-bottom: 5px;
+    .horiz-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding-bottom: 7px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--cyan-glow);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .horiz-close-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      color: #fff;
+      border-radius: 999px;
+      padding: 2px 9px;
+      font-size: 10.5px;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.15s;
+    }
+    .horiz-close-btn:hover {
+      background: rgba(239, 68, 68, 0.35);
+      border-color: #ef4444;
+    }
+    .horiz-card-strip {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      max-width: min(790px, calc(100vw - 435px));
+    }
+    .drawer-item {
+      width: 255px;
+      min-width: 255px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 11px;
+      padding: 8px 10px;
+      margin-bottom: 0;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .drawer-item:hover {
       background: rgba(56, 189, 248, 0.18);
-    }
-    .drawer-item:last-child {
-      margin-bottom: 0;
+      border-color: var(--cyan-glow);
     }
     .drawer-item-head {
       display: flex;
@@ -429,13 +550,14 @@
       align-items: center;
       font-weight: 800;
       font-size: 11.5px;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
       gap: 6px;
     }
     .drawer-item-body {
       font-size: 11px;
       color: var(--text-dim);
-      line-height: 1.32;
+      line-height: 1.34;
+      white-space: normal;
     }
 
     /* CENTER STAGE: NOW CARD + EXPANDABLE DOSSIER */
@@ -703,10 +825,10 @@
     <div id="status-card" class="glass-card">
       <div class="status-top">
         <button class="status-title-btn" onclick="toggleStatusDrawer()">
-          <span>Home DM Wound Care</span>
+          <span>4DMLIMB · Home DM Wound Care</span>
           <span class="show-lbl" id="status-show-lbl">Show Ledger</span>
         </button>
-        <span class="topic-pill">SOTA HOME DIABETIC FOOT · NPWT · OPAT IV · SEPSIS / UTI / CAD / CRF ROUTER</span>
+        <span class="topic-pill">4DMLIMB · SOTA HOME DIABETIC LIMB · NPWT · OPAT IV · SEPSIS / UTI / CAD / CRF ROUTER</span>
         <div style="display:flex;gap:6px;align-items:center;">
           <button class="top-btn" onclick="resetCohort()">↻ Reset Cohort</button>
           <a href="/landing" class="top-btn">3D Architecture Overview</a>
@@ -944,24 +1066,25 @@
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: 6 ROLE-SPECIFIC OUTPUT NODES & TASK QUEUES -->
+    <!-- RIGHT COLUMN: 6 ROLE-SPECIFIC OUTPUT NODES & TASK QUEUES (Horizontal Expansion by Role) -->
     <div id="right-outputs-col">
       <div class="col-zone-header output-zone">
-        <span>6 Role Output Queues &amp; Visit Modalities ▶</span>
-        <span>Click to Expand</span>
+        <span>6 Role Output Queues ▶</span>
+        <span>◂ Expand Horizontally</span>
       </div>
 
       <!-- OUTPUT ROLE 1: Home Health RN Visit Queue (home_rn) -->
       <div id="out-node-home_rn" class="glass-card node-card" onclick="toggleOutputNode('home_rn')">
         <div class="node-top">
           <span class="node-kind-tag out-rn">ROLE 1 · HOME HEALTH RN VISIT</span>
-          <span class="node-expand-lbl" id="out-exp-home_rn">Queue (0) ▾</span>
+          <span class="node-expand-lbl" id="out-exp-home_rn">◂ Expand (0)</span>
         </div>
         <div class="node-title-row">
           <span class="node-title">Home RN Visit Queue</span>
           <span class="node-count"><strong id="out-cnt-home_rn">0</strong> tasks</span>
         </div>
         <div class="node-sub" id="out-sub-home_rn">NPWT/VAC seal repair, dressing change, STAT blood/urine/ketone draw, 12-lead ECG</div>
+        <div class="role-chip-strip" id="out-chips-home_rn" onclick="event.stopPropagation()"></div>
         <div class="node-drawer" id="out-drawer-home_rn" onclick="event.stopPropagation()"></div>
       </div>
 
@@ -969,13 +1092,14 @@
       <div id="out-node-wound_specialist" class="glass-card node-card" onclick="toggleOutputNode('wound_specialist')">
         <div class="node-top">
           <span class="node-kind-tag out-specialist">ROLE 2 · VISITING WOUND SPECIALIST</span>
-          <span class="node-expand-lbl" id="out-exp-wound_specialist">Queue (0) ▾</span>
+          <span class="node-expand-lbl" id="out-exp-wound_specialist">◂ Expand (0)</span>
         </div>
         <div class="node-title-row">
           <span class="node-title">Mobile Wound NP / CWOCN Queue</span>
           <span class="node-count"><strong id="out-cnt-wound_specialist">0</strong> tasks</span>
         </div>
         <div class="node-sub" id="out-sub-wound_specialist">Home bedside sharp debridement, Levine deep swab, CAMP graft, Handheld Toe Doppler VOI</div>
+        <div class="role-chip-strip" id="out-chips-wound_specialist" onclick="event.stopPropagation()"></div>
         <div class="node-drawer" id="out-drawer-wound_specialist" onclick="event.stopPropagation()"></div>
       </div>
 
@@ -983,13 +1107,14 @@
       <div id="out-node-opat_id" class="glass-card node-card" onclick="toggleOutputNode('opat_id')">
         <div class="node-top">
           <span class="node-kind-tag out-opat">ROLE 3 · HOME IV ANTIBIOTICS (OPAT)</span>
-          <span class="node-expand-lbl" id="out-exp-opat_id">Queue (0) ▾</span>
+          <span class="node-expand-lbl" id="out-exp-opat_id">◂ Expand (0)</span>
         </div>
         <div class="node-title-row">
           <span class="node-title">OPAT &amp; ID Stewardship Queue</span>
           <span class="node-count"><strong id="out-cnt-opat_id">0</strong> tasks</span>
         </div>
         <div class="node-sub" id="out-sub-opat_id">Hold nephrotoxic Vancomycin (AKI-on-CRF), OVIVA IV-to-oral switch, UTI Rx, hold SGLT2i</div>
+        <div class="role-chip-strip" id="out-chips-opat_id" onclick="event.stopPropagation()"></div>
         <div class="node-drawer" id="out-drawer-opat_id" onclick="event.stopPropagation()"></div>
       </div>
 
@@ -997,13 +1122,14 @@
       <div id="out-node-podiatry_visit" class="glass-card node-card" onclick="toggleOutputNode('podiatry_visit')">
         <div class="node-top">
           <span class="node-kind-tag out-podiatry">ROLE 4 · PODIATRY (HOME · OFFICE · HOSP)</span>
-          <span class="node-expand-lbl" id="out-exp-podiatry_visit">Queue (0) ▾</span>
+          <span class="node-expand-lbl" id="out-exp-podiatry_visit">◂ Expand (0)</span>
         </div>
         <div class="node-title-row">
           <span class="node-title">Podiatry &amp; Limb Salvage Queue</span>
           <span class="node-count"><strong id="out-cnt-podiatry_visit">0</strong> tasks</span>
         </div>
         <div class="node-sub" id="out-sub-podiatry_visit">4A Home Visit (homebound) · 4B Office Toe-and-Flow (X-ray/PTB/TCC) · 4C Inpatient OR</div>
+        <div class="role-chip-strip" id="out-chips-podiatry_visit" onclick="event.stopPropagation()"></div>
         <div class="node-drawer" id="out-drawer-podiatry_visit" onclick="event.stopPropagation()"></div>
       </div>
 
@@ -1011,13 +1137,14 @@
       <div id="out-node-hospital_admit" class="glass-card node-card" onclick="toggleOutputNode('hospital_admit')">
         <div class="node-top">
           <span class="node-kind-tag out-hospital">ROLE 5 · HOSPITAL DIRECT ESCALATION</span>
-          <span class="node-expand-lbl" id="out-exp-hospital_admit">Queue (0) ▾</span>
+          <span class="node-expand-lbl" id="out-exp-hospital_admit">◂ Expand (0)</span>
         </div>
         <div class="node-title-row">
           <span class="node-title">Hospital / ED / Cardiorenal Admit</span>
           <span class="node-count"><strong id="out-cnt-hospital_admit">0</strong> tasks</span>
         </div>
         <div class="node-sub" id="out-sub-hospital_admit">Direct admit for Foot Sepsis/Wet Gangrene, Urosepsis/euDKA, Silent NSTEMI, or K+ &gt; 6.0</div>
+        <div class="role-chip-strip" id="out-chips-hospital_admit" onclick="event.stopPropagation()"></div>
         <div class="node-drawer" id="out-drawer-hospital_admit" onclick="event.stopPropagation()"></div>
       </div>
 
@@ -1025,13 +1152,14 @@
       <div id="out-node-silent_oars" class="glass-card node-card" onclick="toggleOutputNode('silent_oars')">
         <div class="node-top">
           <span class="node-kind-tag out-silent">ROLE 6 · SILENT REMISSION &amp; OARS COACH</span>
-          <span class="node-expand-lbl" id="out-exp-silent_oars">Ledger (0) ▾</span>
+          <span class="node-expand-lbl" id="out-exp-silent_oars">◂ Expand (0)</span>
         </div>
         <div class="node-title-row">
           <span class="node-title">Silent EHR Log &amp; HCA OARS Coach</span>
           <span class="node-count"><strong id="out-cnt-silent_oars">0</strong> logged</span>
         </div>
         <div class="node-sub" id="out-sub-silent_oars">Zero-alert granulation log + caregiver OARS offloading &amp; elevation coaching</div>
+        <div class="role-chip-strip" id="out-chips-silent_oars" onclick="event.stopPropagation()"></div>
         <div class="node-drawer" id="out-drawer-silent_oars" onclick="event.stopPropagation()"></div>
       </div>
     </div>
@@ -1411,13 +1539,19 @@
     };
 
     let expandedOutputs = {
-      home_rn: true,
+      home_rn: false,
       wound_specialist: false,
-      opat_id: true,
-      podiatry_visit: true,
-      hospital_admit: true,
+      opat_id: false,
+      podiatry_visit: false,
+      hospital_admit: false,
       silent_oars: false
     };
+
+    function closeAllHorizontalDrawers() {
+      Object.keys(expandedInputs).forEach(k => { expandedInputs[k] = false; });
+      Object.keys(expandedOutputs).forEach(r => { expandedOutputs[r] = false; });
+      waitingOpen = false;
+    }
 
     let roleQueues = {
       home_rn: [],
@@ -1628,10 +1762,10 @@
 
         if (expandedInputs[k]) {
           card.classList.add("expanded");
-          expEl.textContent = "Collapse ▴";
+          expEl.textContent = "Close ✕";
         } else {
           card.classList.remove("expanded");
-          expEl.textContent = "Expand ▾";
+          expEl.textContent = "Expand ▸";
         }
 
         if (currentCase) {
@@ -1643,9 +1777,9 @@
         const matchingWaiting = activeQueue.filter(c => c.activeInputs.includes(k));
         cntEl.textContent = (isActive ? 1 : 0) + matchingWaiting.length;
 
-        let dHtml = "";
+        let cardsHtml = "";
         if (currentCase) {
-          dHtml += `
+          cardsHtml += `
             <div class="drawer-item" style="border-color:rgba(45,212,191,0.5);">
               <div class="drawer-item-head">
                 <span>ACTIVE IN NOW · ${currentCase.id}</span>
@@ -1657,7 +1791,7 @@
         }
         matchingWaiting.forEach(item => {
           const qIdx = activeQueue.findIndex(x => x.id === item.id);
-          dHtml += `
+          cardsHtml += `
             <div class="drawer-item" onclick="promoteFromQueue(${qIdx})">
               <div class="drawer-item-head">
                 <span>WAITING · ${item.id}</span>
@@ -1667,10 +1801,16 @@
             </div>
           `;
         });
-        if (!dHtml) {
-          dHtml = `<div class="drawer-item-body">No remaining cases waiting on this input node.</div>`;
+        if (!cardsHtml) {
+          cardsHtml = `<div class="drawer-item-body">No remaining cases waiting on this input node.</div>`;
         }
-        drawer.innerHTML = dHtml;
+        drawer.innerHTML = `
+          <div class="horiz-drawer-header">
+            <span>▶ ${INPUT_NODE_NAMES[k]} — Horizontal Stream Deck</span>
+            <button class="horiz-close-btn" onclick="toggleInputNode('${k}')">✕ Close</button>
+          </div>
+          <div class="horiz-card-strip">${cardsHtml}</div>
+        `;
       });
     }
 
@@ -1684,19 +1824,19 @@
       cnt.textContent = activeQueue.length;
       if (waitingOpen) {
         card.classList.add("expanded");
-        exp.textContent = "Collapse ▴";
+        exp.textContent = "Close ✕";
       } else {
         card.classList.remove("expanded");
-        exp.textContent = "Expand ▾";
+        exp.textContent = "Expand ▸";
       }
 
       if (activeQueue.length > 0) {
-        prev.textContent = `Next: ${activeQueue[0].id} (${activeQueue[0].badge}) — Click to view all ${activeQueue.length}`;
+        prev.textContent = `Next: ${activeQueue[0].id} (${activeQueue[0].badge}) — Click to fan out ${activeQueue.length} horizontally`;
       } else {
         prev.textContent = "All waiting cases in this filter have entered NOW.";
       }
 
-      drawer.innerHTML = activeQueue.map((item, idx) => `
+      const cardsHtml = activeQueue.map((item, idx) => `
         <div class="drawer-item" onclick="promoteFromQueue(${idx})">
           <div class="drawer-item-head">
             <span>${item.id} · ${item.badge}</span>
@@ -1708,6 +1848,14 @@
           </div>
         </div>
       `).join("") || `<div class="drawer-item-body">Queue empty.</div>`;
+
+      drawer.innerHTML = `
+        <div class="horiz-drawer-header">
+          <span>▶ Waiting Home DM Queue — Horizontal Deck (${activeQueue.length})</span>
+          <button class="horiz-close-btn" onclick="toggleWaitingQueue()">✕ Close</button>
+        </div>
+        <div class="horiz-card-strip">${cardsHtml}</div>
+      `;
     }
 
     function renderOutputNodes() {
@@ -1726,6 +1874,7 @@
         const cntEl = document.getElementById("out-cnt-" + r);
         const expEl = document.getElementById("out-exp-" + r);
         const subEl = document.getElementById("out-sub-" + r);
+        const chipsEl = document.getElementById("out-chips-" + r);
         const drawer = document.getElementById("out-drawer-" + r);
 
         const qList = roleQueues[r];
@@ -1736,40 +1885,57 @@
 
         if (isPrimaryTarget) {
           card.classList.add("pass-target");
-          subEl.textContent = `▶ Primary Pass ✓ Target (${currentCase.id}): ${currentCase.roleTask}`;
+          subEl.textContent = `▶ Pass ✓ Target (${currentCase.id}): ${currentCase.roleTask}`;
         } else if (isCoTarget) {
           card.classList.add("pass-target");
-          subEl.textContent = `⚡ Linked Co-Task on Pass ✓ (${currentCase.id}): ${currentCase.podiatryModality}`;
+          subEl.textContent = `⚡ Linked Co-Task (${currentCase.id}): ${currentCase.podiatryModality}`;
         } else {
           card.classList.remove("pass-target");
           subEl.textContent = defaultSubs[r];
         }
 
-        if (expandedOutputs[r]) {
-          card.classList.add("expanded");
-          expEl.textContent = `Hide (${qList.length}) ▴`;
-        } else {
-          card.classList.remove("expanded");
-          expEl.textContent = `Queue (${qList.length}) ▾`;
+        // Render Always-Visible Horizontal Chip Strip on the card face for 100% Situational Awareness
+        if (chipsEl) {
+          if (qList.length === 0) {
+            chipsEl.innerHTML = `<span class="mini-empty-hint">0 queued — all role cards visible</span>`;
+          } else {
+            chipsEl.innerHTML = qList.map((item, idx) =>
+              `<span class="mini-case-chip" title="Click to re-open ${item.id} in NOW" onclick="reopenFromRoleQueue('${r}', ${idx})">✓ ${item.id} · ${item.badge}</span>`
+            ).join("");
+          }
         }
 
-        if (qList.length === 0) {
-          drawer.innerHTML = `<div class="drawer-item-body">No tasks routed to ${ROLE_QUEUE_NAMES[r]} yet.</div>`;
+        if (expandedOutputs[r]) {
+          card.classList.add("expanded");
+          expEl.textContent = `Close (${qList.length}) ✕`;
         } else {
-          drawer.innerHTML = qList.map((item, idx) => `
+          card.classList.remove("expanded");
+          expEl.textContent = `◂ Expand (${qList.length})`;
+        }
+
+        const cardsHtml = qList.length === 0
+          ? `<div class="drawer-item-body" style="padding:6px 4px;">No tasks routed to ${ROLE_QUEUE_NAMES[r]} yet. Click Pass ✓ on NOW when this role is targeted.</div>`
+          : qList.map((item, idx) => `
             <div class="drawer-item" onclick="reopenFromRoleQueue('${r}', ${idx})">
               <div class="drawer-item-head">
                 <span>✓ ${item.id} (${item.badge})</span>
-                <span style="color:#6ee7b7;font-size:10.5px;">Re-open in NOW ↗</span>
+                <span style="color:#6ee7b7;font-size:10.5px;">Re-open ↗</span>
               </div>
               <div class="drawer-item-body">
-                <strong>Modality / Gate:</strong> ${item.podiatryModality} · ${item.differentialGate}<br/>
+                <strong>Modality / Gate:</strong> ${item.podiatryModality}<br/>
                 <strong>Task:</strong> ${item.roleTask}<br/>
                 <span style="color:#99f6e4;">Inputs: ${item.activeInputs.map(k => INPUT_NODE_NAMES[k]).join(" + ")}</span>
               </div>
             </div>
           `).join("");
-        }
+
+        drawer.innerHTML = `
+          <div class="horiz-drawer-header">
+            <span>◀ ${ROLE_QUEUE_NAMES[r]} — Horizontal Role Task Deck (${qList.length})</span>
+            <button class="horiz-close-btn" onclick="toggleOutputNode('${r}')">✕ Close</button>
+          </div>
+          <div class="horiz-card-strip">${cardsHtml}</div>
+        `;
       });
     }
 
@@ -1786,28 +1952,36 @@
     }
 
     function toggleInputNode(k) {
-      expandedInputs[k] = !expandedInputs[k];
-      renderInputNodes();
+      const willOpen = !expandedInputs[k];
+      closeAllHorizontalDrawers();
+      expandedInputs[k] = willOpen;
+      renderAll();
     }
 
     function focusInputNode(k) {
+      closeAllHorizontalDrawers();
       expandedInputs[k] = true;
-      renderInputNodes();
+      renderAll();
     }
 
     function toggleWaitingQueue() {
-      waitingOpen = !waitingOpen;
-      renderWaitingQueue();
+      const willOpen = !waitingOpen;
+      closeAllHorizontalDrawers();
+      waitingOpen = willOpen;
+      renderAll();
     }
 
     function toggleOutputNode(r) {
-      expandedOutputs[r] = !expandedOutputs[r];
-      renderOutputNodes();
+      const willOpen = !expandedOutputs[r];
+      closeAllHorizontalDrawers();
+      expandedOutputs[r] = willOpen;
+      renderAll();
     }
 
     function focusOutputNode(r) {
+      closeAllHorizontalDrawers();
       expandedOutputs[r] = true;
-      renderOutputNodes();
+      renderAll();
     }
 
     function jumpLayer(lvl) {
@@ -1846,7 +2020,7 @@
       spawnSpokePulse(destRoute, currentCase.activeInputs);
 
       roleQueues[destRoute].unshift({ ...currentCase });
-      expandedOutputs[destRoute] = true;
+      closeAllHorizontalDrawers();
 
       // Also populate any synchronized co-routed queues if not already primary
       (currentCase.coRoutes || []).forEach(co => {
